@@ -672,3 +672,50 @@ Below is a detailed, line‑by‑line audit that addresses the five requested ca
 | `attachmentEmail(from:)` – chain of `??` operators | **Silent loss of email** when all three fields are `nil`. The function returns `nil`, but callers may assume a non‑nil email (e.g., for attachment headers). | Down‑stream code could construct malformed MIME parts or send a request without proper authentication. | Document the optional return and enforce handling at call‑sites. Consider returning a default “unknown@invalid” placeholder for logging, or throw a custom error if a valid email is required. |
 | `shouldTrustUsageEmail(sourceLabel:)` – whitespace trimming only for *space* characters | **Unicode whitespace bypass**. An attacker could send a label containing a non‑ASCII whitespace (e.g., `\u{2003}` EM SPACE) that `trimmingCharacters(in: .whitespacesAndNewlines)` does **not** remove, causing the `lowercased()` string to be `"codex‑cli​"` (with hidden char) → default `false`. Conversely, a malicious label `"codex‑cli​"` would *not* be trusted, which is safe, but the opposite direction (adding hidden chars to a trusted label) could bypass trust if the check used `contains`. | The current implementation is safe for its intended “trusted” set, but future modifications that use `contains` would become vulnerable. | Keep the exact‑match logic as‑is, but add a comment that the function is **strict‑equality** and not a substring test
 
+[2026-05-16 21:54:33] VULNERABILITY:
+**File:** `app/models/grace_period_deduction.rb`  
+**Language:** Ruby (Rails 6+)
+
+---
+
+## 1. BUGS & Logical Errors  
+
+| Area | Observation | Why it matters | Likelihood |
+|------|-------------|----------------|------------|
+| **Missing validations** | No `validates :deduction, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }`. | An invalid record (e.g., `deduction = nil` or a negative value) can be persisted, breaking downstream calculations that assume a non‑negative integer. | **High** |
+| **`belongs_to :membership, optional: true`** | Allows a `GracePeriodDeduction` without a linked `Membership`. The `has_one :course, through: :membership` will raise `NoMethodError` when called on a record without a membership (`nil.course`). | Any view or service that does `deduction.course` will crash if the association is missing. | **Medium** |
+| **Cascade delete not defined** | No `dependent: :destroy` (or `:nullify`) on `belongs_to`. If a `Membership` is removed, its deductions remain orphaned. | Orphaned rows waste DB space and can cause confusion when aggregating deductions per user. | **Low‑Medium** |
+| **Potential `N+1` usage** | The model itself is fine, but typical usage (`Membership.includes(:grace_period_deductions)`) is required. If developers call `deduction.course` inside a loop without eager loading, each call triggers a separate query. | Performance degradation on pages that list many deductions. | **Medium** |
+
+---
+
+## 2. SECURITY VULNERABILITIES  
+
+| Vector | Assessment | Reasoning |
+|--------|------------|-----------|
+| **Mass‑Assignment / Strong Parameters** | Not directly a model issue – Rails ≥5 uses Strong Parameters in controllers, so the model will only receive permitted attributes. | No evidence of unsafe `attr_accessible` or `attr_protected`. |
+| **SQL Injection** | None – ActiveRecord builds queries safely. | All column references are static. |
+| **Authorization Bypass** | The model does not enforce any policy; any user with access to the controller can create or modify deductions. | Must rely on controller‑level `before_action` checks (e.g., Pundit, CanCanCan). |
+| **XSS/CSRF** | Not applicable at model layer. | Ensure that any `deduction` values displayed in views are escaped (Rails does this by default). |
+| **Data Leakage** | `belongs_to :membership, optional: true` may expose a `nil` association, but no sensitive data is automatically exposed. | No direct risk. |
+
+**Overall:** No intrinsic security flaw in the model, but **authorization** must be enforced elsewhere.
+
+---
+
+## 3. PERFORMANCE CONSIDERATIONS  
+
+| Concern | Explanation | Recommendation |
+|---------|-------------|----------------|
+| **Eager Loading** | Accessing `deduction.course` in a loop will fire a separate query per row (`N+1`). | Use `GracePeriodDeduction.includes(membership: :course)` when loading collections. |
+| **Index Usage** | Primary key `id` and `membership_id` are indexed (as shown). Queries like `where(membership_id: X)` are efficient. | No change needed. |
+| **Batch Updates** | If many deductions need to be created/updated (e.g., nightly batch), use `insert_all` / `upsert_all` (Rails 6+) instead of individual `save` calls. | Improves bulk‑operation speed. |
+
+---
+
+## 4. CODE QUALITY & Best‑Practice Review  
+
+| Issue | Why it’s sub‑optimal | Fix / Improvement |
+|-------|---------------------|-------------------|
+| **Rubocop disables that aren’t needed** | `Layout/LineLength` and `
+
