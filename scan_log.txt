@@ -1,0 +1,287 @@
+[2026-05-16 14:56:18] GitHub Agent online. Scanning every 15 minutes across all languages.
+[2026-05-16 14:56:18] === SCAN CYCLE STARTING ===
+[2026-05-16 14:56:18] Language: kotlin
+[2026-05-16 14:56:19] Repo: CeuiLiSA/Pixiv-Shaft | Stars: 7113
+[2026-05-16 14:56:19] Reading: app/src/main/java/ceui/pixiv/ui/discover/DiscoverFragment.kt
+[2026-05-16 14:56:22] Saved. Vuln: False
+[2026-05-16 14:56:25] Reading: app/src/main/java/ceui/loxia/StreetResponse.kt
+[2026-05-16 14:56:28] Saved. Vuln: False
+[2026-05-16 14:56:31] Reading: app/src/main/java/ceui/loxia/SquareResponse.kt
+[2026-05-16 14:56:40] Saved. Vuln: False
+[2026-05-16 14:56:43] Open issues to analyze: 3
+[2026-05-16 14:56:43] Issue: 可否整合这个网页用的OCR和图片翻译插件？
+[2026-05-16 14:56:55] Issue solution saved.
+[2026-05-16 14:56:58] Issue: pixivcat 可否加回来
+[2026-05-16 14:57:13] Issue solution saved.
+[2026-05-16 14:57:16] Issue: 关于小说翻译功能的建议
+[2026-05-16 14:57:28] Issue solution saved.
+[2026-05-16 14:57:31] === CYCLE DONE === Next in 15 min.
+[2026-05-16 15:12:31] === SCAN CYCLE STARTING ===
+[2026-05-16 15:12:31] Language: php
+[2026-05-16 15:12:32] Repo: Notifiarr/dockwatch | Stars: 330
+[2026-05-16 15:12:32] Reading: root/app/www/public/classes/traits/CronExpression/FieldFactory.php
+[2026-05-16 15:12:35] Saved. Vuln: False
+[2026-05-16 15:12:38] Reading: root/app/www/public/migrations/017_last_update_min_age.php
+[2026-05-16 15:12:40] Saved. Vuln: False
+[2026-05-16 15:12:43] Reading: root/app/www/public/api/server/endpoints.php
+[2026-05-16 15:12:46] Saved. Vuln: True
+[2026-05-16 15:12:50] Open issues to analyze: 3
+[2026-05-16 15:12:50] Issue: FR: Add Topic Support for Telegram notifications
+[2026-05-16 15:12:51] Issue solution saved.
+[2026-05-16 15:12:54] Issue: chore(deps): update ghcr.io/linuxserver/baseimage-alpine-nginx:3.23 docker digest to 5787b2d
+[2026-05-16 15:13:07] Issue solution saved.
+[2026-05-16 15:13:10] Issue: Bug - Container cannot be connected to multiple network endpoints on start
+[2026-05-16 15:13:21] Issue solution saved.
+[2026-05-16 15:13:24] === CYCLE DONE === Next in 15 min.
+[2026-05-16 15:28:24] === SCAN CYCLE STARTING ===
+[2026-05-16 15:28:24] Language: c
+[2026-05-16 15:28:24] Repo: superturtlee/gbl_root_canoe | Stars: 648
+[2026-05-16 15:28:25] Reading: edk2/MdePkg/Library/BaseSynchronizationLib/Synchronization.c
+[2026-05-16 15:28:29] Saved. Vuln: False
+[2026-05-16 15:28:32] Reading: edk2/SourceLevelDebugPkg/Library/DebugCommunicationLibUsb3/DebugCommunicationLibUsb3Common.c
+[2026-05-16 15:28:35] Saved. Vuln: False
+[2026-05-16 15:28:38] Reading: edk2/MdeModulePkg/Universal/CapsuleRuntimeDxe/X64/SaveLongModeContext.c
+[2026-05-16 15:28:40] Saved. Vuln: False
+[2026-05-16 15:28:44] Open issues to analyze: 0
+[2026-05-16 15:28:44] === CYCLE DONE === Next in 15 min.
+[2026-05-16 15:38:53] GitHub Agent online. Scanning every 15 minutes across all languages.
+[2026-05-16 15:38:53] === SCAN CYCLE STARTING ===
+[2026-05-16 15:38:53] Language: go
+[2026-05-16 15:38:53] Repo: oneclickvirt/oneclickvirt | Stars: 270
+[2026-05-16 15:38:54] Reading: server/provider/proxmox/delete.go
+[2026-05-16 15:38:57] Saved. Vuln: False
+[2026-05-16 15:39:00] Reading: server/service/domain/service.go
+[2026-05-16 15:39:02] Saved. Vuln: False
+[2026-05-16 15:39:05] Reading: server/provider/lxd/api.go
+[2026-05-16 15:39:08] Saved. Vuln: False
+[2026-05-16 15:39:11] Open issues to analyze: 1
+[2026-05-16 15:39:11] Issue: Add Kunernetes
+[2026-05-16 15:39:22] Issue solution saved.
+[2026-05-16 15:39:25] === CYCLE DONE === Next in 15 min.
+[2026-05-16 15:54:25] === SCAN CYCLE STARTING ===
+[2026-05-16 15:54:25] Language: typescript
+[2026-05-16 15:54:25] Repo: FallenMax/1paper | Stars: 110
+[2026-05-16 15:54:26] Reading: src/client/view/editor.ts
+[2026-05-16 15:54:29] Saved. Vuln: False
+[2026-05-16 15:54:32] Reading: src/client/service/note.service.ts
+[2026-05-16 15:54:34] Saved. Vuln: True
+[2026-05-16 15:54:37] Reading: src/client/module.d.ts
+[2026-05-16 15:54:40] Saved. Vuln: True
+[2026-05-16 15:54:43] Open issues to analyze: 0
+[2026-05-16 15:54:43] === CYCLE DONE === Next in 15 min.
+[2026-05-16 16:09:43] === SCAN CYCLE STARTING ===
+[2026-05-16 16:09:43] Language: javascript
+[2026-05-16 16:09:44] Repo: gsd-build/get-shit-done | Stars: 62535
+[2026-05-16 16:09:44] Reading: hooks/gsd-statusline.js
+[2026-05-16 16:09:47] Saved. Vuln: False
+[2026-05-16 16:09:50] Reading: scripts/build-hooks.js
+[2026-05-16 16:09:53] Saved. Vuln: False
+[2026-05-16 16:09:56] Reading: hooks/gsd-check-update.js
+[2026-05-16 16:09:58] Saved. Vuln: False
+[2026-05-16 16:10:02] Open issues to analyze: 3
+[2026-05-16 16:10:02] Issue: gsd-health W002 false positives on archived phase numbers in STATE.md narrative body
+[2026-05-16 16:10:04] Issue solution saved.
+[2026-05-16 16:10:07] Issue: Enforce documentation updates via lint:docs + PR templates
+[2026-05-16 16:10:08] Issue solution saved.
+[2026-05-16 16:10:11] Issue: Track `hooks/lib/` helpers in install manifest and clean them up on uninstall
+[2026-05-16 16:10:13] Issue solution saved.
+[2026-05-16 16:10:16] === CYCLE DONE === Next in 15 min.
+[2026-05-16 16:25:16] === SCAN CYCLE STARTING ===
+[2026-05-16 16:25:16] Language: typescript
+[2026-05-16 16:25:17] Repo: tridactyl/tridactyl | Stars: 6201
+[2026-05-16 16:25:17] Reading: src/background/editor.ts
+[2026-05-16 16:25:20] Saved. Vuln: False
+[2026-05-16 16:25:23] Reading: compiler/metadata/FileMetadata.ts
+[2026-05-16 16:25:26] Saved. Vuln: True
+[2026-05-16 16:25:29] Reading: src/parsers/exmode.ts
+[2026-05-16 16:25:31] Saved. Vuln: False
+[2026-05-16 16:25:35] Open issues to analyze: 3
+[2026-05-16 16:25:35] Issue: Plain `:mode` cripples tridactyl
+[2026-05-16 16:25:37] Issue solution saved.
+[2026-05-16 16:25:40] Issue: [bug]: sometimes if on first tab pressing `r` reloads all tabs
+[2026-05-16 16:25:43] Issue solution saved.
+[2026-05-16 16:25:46] Issue: Implement the ability to show (only) history
+[2026-05-16 16:25:56] Issue solution saved.
+[2026-05-16 16:25:59] === CYCLE DONE === Next in 15 min.
+[2026-05-16 16:40:59] === SCAN CYCLE STARTING ===
+[2026-05-16 16:40:59] Language: javascript
+[2026-05-16 16:40:59] Repo: gsd-build/get-shit-done | Stars: 62538
+[2026-05-16 16:41:00] Reading: hooks/gsd-update-banner.js
+[2026-05-16 16:41:03] Saved. Vuln: False
+[2026-05-16 16:41:06] Reading: hooks/gsd-context-monitor.js
+[2026-05-16 16:41:08] Saved. Vuln: False
+[2026-05-16 16:41:11] Reading: hooks/lib/git-cmd.js
+[2026-05-16 16:41:15] Saved. Vuln: False
+[2026-05-16 16:41:18] Open issues to analyze: 3
+[2026-05-16 16:41:18] Issue: `gsd-sdk query commit` is invisible to PostToolUse hooks because git is invoked via `spawnSync`, not the shell
+[2026-05-16 16:41:26] Issue solution saved.
+[2026-05-16 16:41:29] Issue: gsd-health W002 false positives on archived phase numbers in STATE.md narrative body
+[2026-05-16 16:41:37] Issue solution saved.
+[2026-05-16 16:41:40] Issue: Enforce documentation updates via lint:docs + PR templates
+[2026-05-16 16:41:48] Issue solution saved.
+[2026-05-16 16:41:51] === CYCLE DONE === Next in 15 min.
+[2026-05-16 16:56:51] === SCAN CYCLE STARTING ===
+[2026-05-16 16:56:51] Language: javascript
+[2026-05-16 16:56:51] Repo: smithersai/smithers | Stars: 177
+[2026-05-16 16:56:52] Reading: packages/agents/src/BaseCliAgent/runRpcCommandEffect.js
+[2026-05-16 16:56:54] Saved. Vuln: False
+[2026-05-16 16:56:57] Reading: packages/react-reconciler/src/jsx-runtime.js
+[2026-05-16 16:57:00] Saved. Vuln: False
+[2026-05-16 16:57:03] Reading: apps/observability/src/metrics/alertsEscalatedTotal.js
+[2026-05-16 16:57:06] Saved. Vuln: True
+[2026-05-16 16:57:09] Open issues to analyze: 1
+[2026-05-16 16:57:09] Issue: feat(observability): canonical agent trace OTEL logs (re-port of #119)
+[2026-05-16 16:57:12] Issue solution saved.
+[2026-05-16 16:57:15] === CYCLE DONE === Next in 15 min.
+[2026-05-16 17:12:15] === SCAN CYCLE STARTING ===
+[2026-05-16 17:12:15] Language: rust
+[2026-05-16 17:12:15] Repo: adysec/tracker | Stars: 1278
+[2026-05-16 17:12:15] Reading: tracker-checker/src/main.rs
+[2026-05-16 17:12:18] Saved. Vuln: False
+[2026-05-16 17:12:22] Open issues to analyze: 0
+[2026-05-16 17:12:22] === CYCLE DONE === Next in 15 min.
+[2026-05-16 17:27:22] === SCAN CYCLE STARTING ===
+[2026-05-16 17:27:22] Language: kotlin
+[2026-05-16 17:27:22] Repo: GAME-OVER-op/ZDT-D | Stars: 191
+[2026-05-16 17:27:23] Reading: application/app/src/main/java/com/android/zdtd/service/ui/ProgramDescriptions.kt
+[2026-05-16 17:27:25] Saved. Vuln: False
+[2026-05-16 17:27:28] Reading: application/app/src/main/java/com/android/zdtd/service/worldmap/root/PeerVisualMapper.kt
+[2026-05-16 17:27:31] Saved. Vuln: True
+[2026-05-16 17:27:34] Reading: application/app/src/main/java/com/android/zdtd/service/ui/AmneziaWgProfileScreen.kt
+[2026-05-16 17:27:36] Saved. Vuln: False
+[2026-05-16 17:27:40] Open issues to analyze: 0
+[2026-05-16 17:27:40] === CYCLE DONE === Next in 15 min.
+[2026-05-16 17:42:40] === SCAN CYCLE STARTING ===
+[2026-05-16 17:42:40] Language: php
+[2026-05-16 17:42:40] Repo: drupal/drupal | Stars: 4265
+[2026-05-16 17:42:42] Reading: core/lib/Drupal/Component/PhpStorage/FileStorage.php
+[2026-05-16 17:42:44] Saved. Vuln: False
+[2026-05-16 17:42:47] Reading: core/lib/Drupal/Core/Installer/InstallerThemeExtensionList.php
+[2026-05-16 17:42:50] Saved. Vuln: False
+[2026-05-16 17:42:53] Reading: core/modules/views/src/Plugin/Block/ViewsBlockBase.php
+[2026-05-16 17:42:56] Saved. Vuln: False
+[2026-05-16 17:42:59] Open issues to analyze: 0
+[2026-05-16 17:42:59] === CYCLE DONE === Next in 15 min.
+[2026-05-16 17:57:59] === SCAN CYCLE STARTING ===
+[2026-05-16 17:57:59] Language: rust
+[2026-05-16 17:58:00] Repo: EricLBuehler/mistral.rs | Stars: 7140
+[2026-05-16 17:58:00] Reading: mistralrs-quant/src/scalar_fp8/mod.rs
+[2026-05-16 17:58:03] Saved. Vuln: True
+[2026-05-16 17:58:06] Reading: mistralrs-core/src/vision_models/voxtral/audio_processing.rs
+[2026-05-16 17:58:08] Saved. Vuln: False
+[2026-05-16 17:58:11] Reading: mistralrs-quant/src/utils/mod.rs
+[2026-05-16 17:58:14] Saved. Vuln: False
+[2026-05-16 17:58:18] Open issues to analyze: 3
+[2026-05-16 17:58:18] Issue: feat(qwen3.5,gguf): add quantized Qwen3.5 model - CPU + Metal (Cuda WIP)
+[2026-05-16 17:58:19] Issue solution saved.
+[2026-05-16 17:58:22] Issue: Add architecture support for `paddleocr_vl` (PaddleOCR-VL-1.5)
+[2026-05-16 17:58:24] Issue solution saved.
+[2026-05-16 17:58:27] Issue: Metal inference broken on M1: Device memory reports 0MB
+[2026-05-16 17:58:42] Issue solution saved.
+[2026-05-16 17:58:45] === CYCLE DONE === Next in 15 min.
+[2026-05-16 18:13:45] === SCAN CYCLE STARTING ===
+[2026-05-16 18:13:45] Language: c
+[2026-05-16 18:13:45] Repo: ring-lang/ring | Stars: 1439
+[2026-05-16 18:13:47] Reading: extensions/libdepwin/nappgui/src/gui/imageview.c
+[2026-05-16 18:13:49] Saved. Vuln: False
+[2026-05-16 18:13:52] Reading: extensions/libdepwin/nappgui/src/gui/combo.c
+[2026-05-16 18:13:55] Saved. Vuln: True
+[2026-05-16 18:13:58] Reading: language/src/vm.c
+[2026-05-16 18:14:01] Saved. Vuln: True
+[2026-05-16 18:14:04] Open issues to analyze: 0
+[2026-05-16 18:14:04] === CYCLE DONE === Next in 15 min.
+[2026-05-16 18:29:04] === SCAN CYCLE STARTING ===
+[2026-05-16 18:29:04] Language: php
+[2026-05-16 18:29:05] Repo: Cacti/plugin_weathermap | Stars: 105
+[2026-05-16 18:29:05] Reading: lib/post/WeatherMapPostProcessorExample.php
+[2026-05-16 18:29:07] Saved. Vuln: True
+[2026-05-16 18:29:10] Reading: locales/po/index.php
+[2026-05-16 18:29:13] Saved. Vuln: True
+[2026-05-16 18:29:16] Reading: lib/HTML_ImageMap.class.php
+[2026-05-16 18:29:19] Saved. Vuln: True
+[2026-05-16 18:29:23] Open issues to analyze: 3
+[2026-05-16 18:29:23] Issue: refactor: safe PHP 7.4 modernization
+[2026-05-16 18:29:25] Issue solution saved.
+[2026-05-16 18:29:28] Issue: test: add Pest v1 security test infrastructure
+[2026-05-16 18:29:30] Issue solution saved.
+[2026-05-16 18:29:33] Issue: Security: defense-in-depth audit findings (26 items)
+[2026-05-16 18:29:34] Issue solution saved.
+[2026-05-16 18:29:37] === CYCLE DONE === Next in 15 min.
+[2026-05-16 18:44:37] === SCAN CYCLE STARTING ===
+[2026-05-16 18:44:37] Language: php
+[2026-05-16 18:44:38] Repo: FOSSBilling/FOSSBilling | Stars: 1565
+[2026-05-16 18:44:39] Reading: src/library/FOSSBilling/Environment.php
+[2026-05-16 18:44:41] Saved. Vuln: True
+[2026-05-16 18:44:44] Reading: src/library/Model/Setting.php
+[2026-05-16 18:44:48] Saved. Vuln: True
+[2026-05-16 18:44:51] Reading: src/modules/Email/Repository/EmailTemplateRepository.php
+[2026-05-16 18:44:54] Saved. Vuln: True
+[2026-05-16 18:44:57] Open issues to analyze: 3
+[2026-05-16 18:44:57] Issue: Introduce E2E tests using Cypress
+[2026-05-16 18:44:59] Issue solution saved.
+[2026-05-16 18:45:02] Issue: Enable honeypot prevention by default
+[2026-05-16 18:45:05] Issue solution saved.
+[2026-05-16 18:45:08] Issue: Allow the use of 3rd party currency rates
+[2026-05-16 18:45:09] Issue solution saved.
+[2026-05-16 18:45:12] === CYCLE DONE === Next in 15 min.
+[2026-05-16 19:00:12] === SCAN CYCLE STARTING ===
+[2026-05-16 19:00:12] Language: javascript
+[2026-05-16 19:00:13] Repo: RocketChat/EmbeddedChat | Stars: 154
+[2026-05-16 19:00:13] Reading: packages/ui-kit/src/elements/DatePickerElement.js
+[2026-05-16 19:00:16] Saved. Vuln: True
+[2026-05-16 19:00:19] Reading: packages/ui-kit/src/index.js
+[2026-05-16 19:00:23] Saved. Vuln: True
+[2026-05-16 19:00:26] Reading: packages/react/src/stories/RCVariantStories/Simplistic.stories.js
+[2026-05-16 19:00:29] Saved. Vuln: True
+[2026-05-16 19:00:32] Open issues to analyze: 3
+[2026-05-16 19:00:32] Issue: chore(deps): bump @babel/plugin-transform-modules-systemjs from 7.25.0 to 7.29.4 in /packages/docs
+[2026-05-16 19:00:35] Issue solution saved.
+[2026-05-16 19:00:38] Issue: chore(deps): bump fast-uri from 3.0.1 to 3.1.2 in /packages/docs
+[2026-05-16 19:00:42] Issue solution saved.
+[2026-05-16 19:00:45] Issue: getUserRoles only fetches admins, moderator and owner badges never shown
+[2026-05-16 19:00:52] Issue solution saved.
+[2026-05-16 19:00:55] === CYCLE DONE === Next in 15 min.
+[2026-05-16 19:15:55] === SCAN CYCLE STARTING ===
+[2026-05-16 19:15:55] Language: cpp
+[2026-05-16 19:15:55] Repo: p4lang/PI | Stars: 176
+[2026-05-16 19:15:56] Reading: proto/tests/server/utils.cpp
+[2026-05-16 19:15:58] Saved. Vuln: False
+[2026-05-16 19:16:01] Reading: proto/frontend/src/table_info_store.cpp
+[2026-05-16 19:16:05] Saved. Vuln: False
+[2026-05-16 19:16:08] Reading: proto/tests/test_proto_fe_bytestrings.cpp
+[2026-05-16 19:16:10] Saved. Vuln: False
+[2026-05-16 19:16:14] Open issues to analyze: 3
+[2026-05-16 19:16:14] Issue: Add copyright and license info for m4 files and third party libs
+[2026-05-16 19:16:16] Issue solution saved.
+[2026-05-16 19:16:19] Issue: Update the docker image to Ubuntu 24.
+[2026-05-16 19:16:21] Issue solution saved.
+[2026-05-16 19:16:24] Issue: Why are there reserved multicast group IDs?
+[2026-05-16 19:16:26] Issue solution saved.
+[2026-05-16 19:16:29] === CYCLE DONE === Next in 15 min.
+[2026-05-16 19:31:29] === SCAN CYCLE STARTING ===
+[2026-05-16 19:31:29] Language: kotlin
+[2026-05-16 19:31:30] Repo: vitorpamplona/amethyst | Stars: 1525
+[2026-05-16 19:31:31] Reading: quartz/src/commonMain/kotlin/com/vitorpamplona/quartz/nip03Timestamp/tags/TargetEventTag.kt
+[2026-05-16 19:31:33] Saved. Vuln: True
+[2026-05-16 19:31:36] Reading: quartz/src/commonMain/kotlin/com/vitorpamplona/quartz/nip68Picture/TagArrayBuilderExt.kt
+[2026-05-16 19:31:39] Saved. Vuln: False
+[2026-05-16 19:31:42] Reading: quartz/src/commonTest/kotlin/com/vitorpamplona/quartz/nip51Lists/muteList/TagArrayExtMutedThreadsTest.kt
+[2026-05-16 19:31:45] Saved. Vuln: True
+[2026-05-16 19:31:49] Open issues to analyze: 3
+[2026-05-16 19:31:49] Issue: [BUG] Jackson ExceptionInInitializerError Amethyst Desktop
+[2026-05-16 19:31:52] Issue solution saved.
+[2026-05-16 19:31:55] Issue: [FEATURE] tor establishes new circuits for socks connections with distinct SOCKS username
+[2026-05-16 19:31:57] Issue solution saved.
+[2026-05-16 19:32:00] Issue: Reels-style swipeable Video tab
+[2026-05-16 19:32:12] Issue solution saved.
+[2026-05-16 19:32:15] === CYCLE DONE === Next in 15 min.
+[2026-05-16 19:47:15] === SCAN CYCLE STARTING ===
+[2026-05-16 19:47:15] Language: go
+[2026-05-16 19:47:15] Repo: rix4uni/medium-writeups | Stars: 169
+[2026-05-16 19:47:15] Reading: main.go
+[2026-05-16 19:47:18] Saved. Vuln: False
+[2026-05-16 19:47:21] Open issues to analyze: 1
+[2026-05-16 19:47:21] Issue: I want to learn hacking.
+
+[2026-05-16 19:47:21] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199422, Requested 1726. Please try again in 8m15.936s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-16 19:47:24] === CYCLE DONE === Next in 15 min.
