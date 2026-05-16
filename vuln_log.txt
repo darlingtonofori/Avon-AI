@@ -650,3 +650,25 @@ The test itself is well‑structured, but it exercises only the “happy path”
 ### 1.1. Assumed contract of `mutedThreads()`  
 *The
 
+[2026-05-16 20:14:26] VULNERABILITY:
+## 📋 Quick Summary
+| Aspect | Verdict |
+|--------|---------|
+| **Logical bugs / edge‑case failures** | ✅ Minor – possible `nil` crash in `makeLiveWebInput` and `attachmentEmail` if the email‑normalizer does not accept `nil`. |
+| **Security vulnerabilities** | ✅ Low – no direct injection or auth bypass, but **trust‑usage‑email** logic can be spoofed if an attacker controls `sourceLabel`. |
+| **Performance** | ✅ No measurable bottlenecks; all operations are O(1). |
+| **Code‑quality / style** | ✅ Good use of optionals, but can be tightened (e.g., guard statements, clearer naming, unit tests). |
+| **Key take‑aways** | ✅ Centralise email‑normalisation, keep trust decisions in a dedicated policy object, and write exhaustive unit tests for each static factory. |
+
+Below is a detailed, line‑by‑line audit that addresses the five requested categories.
+
+---
+
+## 1️⃣ BUGS – Logical errors & edge‑case handling
+
+| Line / construct | Issue | Why it matters | Fix / mitigation |
+|------------------|-------|----------------|-------------------|
+| `targetEmail: CodexIdentityResolver.normalizeEmail(routingTargetEmail)` (in `makeLiveWebInput`) | **Potential crash** if `normalizeEmail(_:)` is declared as `func normalizeEmail(_ email: String) -> String` (non‑optional). Passing `nil` will raise a runtime exception. | The caller may pass `nil` (the parameter is optional). If the normaliser does not internally guard against `nil`, the app will terminate. | 1. Change the signature of `normalizeEmail` to accept an optional (`String? -> String?`).<br>2. Or guard before calling: <br>`let target = routingTargetEmail.flatMap(CodexIdentityResolver.normalizeEmail)`.<br>3. Add unit test for `nil` path. |
+| `attachmentEmail(from:)` – chain of `??` operators | **Silent loss of email** when all three fields are `nil`. The function returns `nil`, but callers may assume a non‑nil email (e.g., for attachment headers). | Down‑stream code could construct malformed MIME parts or send a request without proper authentication. | Document the optional return and enforce handling at call‑sites. Consider returning a default “unknown@invalid” placeholder for logging, or throw a custom error if a valid email is required. |
+| `shouldTrustUsageEmail(sourceLabel:)` – whitespace trimming only for *space* characters | **Unicode whitespace bypass**. An attacker could send a label containing a non‑ASCII whitespace (e.g., `\u{2003}` EM SPACE) that `trimmingCharacters(in: .whitespacesAndNewlines)` does **not** remove, causing the `lowercased()` string to be `"codex‑cli​"` (with hidden char) → default `false`. Conversely, a malicious label `"codex‑cli​"` would *not* be trusted, which is safe, but the opposite direction (adding hidden chars to a trusted label) could bypass trust if the check used `contains`. | The current implementation is safe for its intended “trusted” set, but future modifications that use `contains` would become vulnerable. | Keep the exact‑match logic as‑is, but add a comment that the function is **strict‑equality** and not a substring test
+
