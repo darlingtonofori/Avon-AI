@@ -719,3 +719,162 @@ Below is a detailed, line‑by‑line audit that addresses the five requested ca
 |-------|---------------------|-------------------|
 | **Rubocop disables that aren’t needed** | `Layout/LineLength` and `
 
+[2026-05-16 22:40:21] VULNERABILITY:
+**File:** `src/hooks/useBuildNumber.ts`  
+**Language:** TypeScript (React hook)
+
+---
+
+## 1. BUGS – Logical Errors & Edge‑Case Risks  
+
+| # | Description | Why it matters | Suggested fix |
+|---|-------------|----------------|---------------|
+| 1 | **`useBuildNumber` can return `undefined` indefinitely** if the Tauri call never resolves (e.g., the Tauri backend is offline). The component rendering the hook may assume a string exists and crash. | React components often treat a missing build number as an error state; an indefinite `undefined` makes UI logic harder. | Initialise the state with a sentinel value (`''` or `'‑'`) or add a timeout fallback. Example:<br>`const [buildNumber, setBuildNumber] = useState<string>('');` |
+| 2 | **Error handling swallows the real error** – the `.catch` block discards the error object, replacing the UI value with `'b?'`. This makes debugging impossible. | Developers lose visibility into why the call failed (e.g., permission denied, missing command). | Log the error (or expose it via a second state) while still providing a fallback UI value. ```ts .catch((err) => { console.error('get_build_number failed', err); if (mounted) setBuildNumber('b?'); })``` |
+| 3 | **Mounted flag race condition** – the `mounted` variable is a primitive captured by the async callbacks. If the component unmounts *after* the promise resolves but before the `.then` callback runs, the flag correctly prevents a state update. However, if the component re‑mounts quickly, a *new* `mounted` flag is created, but the old promise may still resolve and set state on the *old* component instance (which is now unmounted). This is a classic “stale closure” problem. | May cause React warnings like “Can't perform a React state update on an unmounted component”. | Use an `AbortController`‑style cancellation or track the promise with a ref. Simpler: use `let cancelled = false;` and check `if (!cancelled)`; also clear the flag on unmount. |
+| 4 | **Missing dependency array comment** – the effect runs only on mount (`[]`). If the Tauri environment can change (e.g., hot‑reloading the mock), the hook will never re‑run. | In a test harness that toggles `isTauri` at runtime, the hook would keep using the stale implementation. | Add a comment explaining why the empty dependency array is intentional, or include `isTauri` / `mockInvoke` in the deps if they can change. |
+
+---
+
+## 2. SECURITY VULNERABILITIES  
+
+| # | Issue | Impact | Mitigation |
+|---|-------|--------|------------|
+| 1 | **Potential command injection via `tauriCall`** – `invoke<T>(cmd)` receives a raw string (`'get_build_number'`). If any caller ever passes a user‑controlled string to `tauriCall`, the backend could be tricked into executing arbitrary commands. | Remote code execution on the native side if the Tauri command handler does not validate input. | Keep `tauriCall` internal‑only (not exported) and enforce a whitelist of allowed commands. Use a TypeScript enum: `type TauriCommand = 'get_build_number' | ...;` and change the signature to `tauriCall<T>(cmd: TauriCommand)`. |
+| 2 | **Leak of internal build number** – exposing the build number to the UI may give an attacker information about the deployed version, aiding fingerprinting attacks. | Low‑impact information disclosure, but useful for targeted exploits. | If the build number is not needed publicly, keep it in a protected context or mask it (`'b?'`). Otherwise, document that disclosure is intentional. |
+| 3 | **No authentication/authorization check** – the hook assumes the backend will only return the build number to authorized contexts. If the Tauri backend does not enforce access control, any renderer process could query it. | Potential leakage of internal metadata to malicious renderer code. | Ensure the Tauri side registers the command with a `guard` that checks the window label or a secure token. This is a backend concern but worth noting. |
+
+---
+
+## 3. PERFORMANCE CONSIDERATIONS  
+
+| # | Observation | Effect | Recommendation |
+|---|-------------|--------|----------------|
+| 1 | The hook makes **one asynchronous call** on mount. This is fine for most apps. | Negligible overhead. | No change needed. |
+|
+
+[2026-05-16 23:11:11] VULNERABILITY:
+**File:** `test/user_cmp_int_ivars.rb` (Ruby)  
+**Repository:** `matz/spinel`  
+**Purpose:** Test a user‑defined `<=>` implementation that compares the integer instance variable `@n` of two `V` objects. The test reproduces a historic bug where the Spinel compiler mistakenly rewrote `@n <=> other.n` into a recursive call to the user‑defined `<=>` method, causing a type error or infinite recursion. The fix adds a primitive‑int compare arm and marks `<=>` as a primitive shared method.
+
+---
+
+## 1️⃣ Diagnosis – What the Code Does
+
+| Line | Behaviour |
+|------|-----------|
+| 1‑13 | Comment describing the bug and the compiler fix. |
+| 15‑19 | Definition of class `V` with a read‑only integer ivar `@n` and a custom `<=>` that forwards to the integer comparison (`@n <=> other.n`). |
+| 21‑23 | Instantiation of three `V` objects (`a`, `b`, `c`). |
+| 25‑27 | Prints the result of three three‑way comparisons, expecting `-1`, `1`, `0`. |
+| 29‑30 | Additional comment about `==` falling back to identity. |
+
+**Intended outcome:** The script should output:
+
+```
+-1
+1
+0
+```
+
+---
+
+## 2️⃣ Root‑Cause Summary (Historical Context)
+
+- **Compiler bug:** When compiling a method that uses `<=>` on integer ivars, Spinel’s code generator treated the expression as a call to the *user* `<=>` method, casting the integer receiver to the internal `sp_V *` type. This produced a recursive call (`V#<=>` → integer `<=>` → `V#<=>` …) → **type error** or **infinite recursion**.
+- **Fix implemented:**  
+  1. `compile_int_method_expr` now has a dedicated arm that emits the native three‑way compare for **int‑vs‑int** (and **int‑vs‑float**).  
+  2. `<=>` is added to `is_primitive_shared_method` so the fallback path in `compile_call_expr` does **not** mistakenly pick the user class method for primitive int receivers.
+
+The test file validates that the fix works.
+
+---
+
+## 3️⃣ Bugs & Edge‑Case Risks (Current Code)
+
+| Category | Issue | Impact | Mitigation |
+|----------|-------|--------|------------|
+| **Logical** | None – the test correctly uses the fixed compiler behavior. | N/A | N/A |
+| **Runtime** | If `other` is not a `V` (e.g., `nil` or an unrelated object), `other.n` raises `NoMethodError`. | Unhandled exception in production use. | Guard against mismatched types (`return nil unless other.respond_to?(:n)`). |
+| **Type Safety** | No explicit type checks on `@n`; if a non‑integer is passed to `V.new`, Ruby will still allow it, and the integer `<=>` will raise a `ArgumentError`. | Unexpected crashes. | Validate `n.is_a?(Integer)` in `initialize`. |
+| **Comparison Contract** | `<=>` returns `nil` when the two objects are incomparable, but the method never returns `nil`. This is fine for this domain but may violate the general `Comparable` contract if `other` is of a different class. | Potential misuse when mixing with `Comparable`. | Document that `V#<=>` expects another `V`. |
+
+> **Action:** Add defensive checks if `V` is to be used outside the test harness.
+
+---
+
+## 4️⃣ Security Vulnerabilities
+
+| Area | Assessment |
+|------|------------|
+| **Code Injection / Eval** | None – the script contains no dynamic code execution. |
+| **Input Validation** | The class does not sanitize the value of `n`; however, because `n` is only stored and compared, there is no direct attack surface. |
+| **Denial‑of‑Service** | A malicious `other` that overrides `n` with an object whose `<=>` implementation is extremely slow could cause a DoS in a tight loop. Unlikely in typical usage. |
+| **Memory Safety** | Ruby’s VM protects against buffer overflows; no native extensions are used. |
+| **Sensitive Data Exposure
+
+[2026-05-16 23:41:52] VULNERABILITY:
+# 📄 TranscriptTextProcessorTests.swift – Deep Technical Analysis  
+
+## Overview
+This document reviews the **unit‑test file** `TranscriptTextProcessorTests.swift` from the `himomohi/AirTranslate` repository.  
+The analysis is organized into five focus areas:
+
+| # | Focus Area | What we cover |
+|---|------------|---------------|
+| 1️⃣ | **Logical Bugs & Edge‑Case Failures** | Missing assertions, incorrect expectations, hidden failure modes. |
+| 2️⃣ | **Security Vulnerabilities** | Injection‑type risks, data‑leak pathways, unsafe string handling. |
+| 3️⃣ | **Performance Concerns** | Potential O(N²) scans, repeated allocations, test‑runtime overhead. |
+| 4️⃣ | **Code‑Quality & Maintainability** | Naming, test isolation, readability, Swift‑specific best practices. |
+| 5️⃣ | **Key Learnings & Actionable Refactors** | Patterns to keep, patterns to replace, concrete patches. |
+
+> **Goal:** Provide **actionable**, step‑by‑step recommendations that can be merged directly into the repository.
+
+---
+
+## 1️⃣ Logical Bugs & Edge‑Case Failures  
+
+| Test | Issue | Why it matters | Fix / Mitigation |
+|------|-------|----------------|------------------|
+| `recentCommittedReplayReturnsOnlyNewTail` | The expectation compares `replay?.committedText` to a **different** string than the `committed` input (commas added). The test implicitly expects the processor to *normalize punctuation* (e.g., add commas). If the implementation does not perform normalization, the test will **fail silently** because the optional chaining (`replay?.committedText`) may be `nil` → `#expect(nil == "...")` yields **false** and stops the suite. | Ambiguous contract: does `incomingTailAfterRecentCommittedReplay` return a *cleaned* version of the committed text or the exact incoming segment? Without a clear spec, future changes can break the test unexpectedly. | 1. Add an explicit comment describing the expected normalization behavior.<br>2. Split the assertion: first verify `replay != nil`, then compare `replay!.committedText` to the expected **normalized** value.<br>3. Add a second test that checks the *raw* committed text is unchanged when normalization is disabled. |
+| `recentReplayDoesNotCrossParagraphBoundary` | The test expects `nil` when the incoming text merges two paragraphs that were originally separated by a blank line. However, the test data contains **no trailing newline** after the first paragraph in `committed`. If the processor trims whitespace before comparison, it may incorrectly treat the two paragraphs as a single block, returning a non‑nil replay. | The contract for “paragraph boundary” is fuzzy (blank line vs. double newline). A future implementation that normalizes whitespace could make the test flaky. | 1. Explicitly include a blank line (`\n\n`) in `committed` to guarantee a paragraph break.<br>2. Document the exact rule: “A replay must not cross a double‑newline (`\n\n`) boundary.” |
+| `currentPartialRevisionAcceptsWordCompletion` | No negative test case. The function `isRevisionOfCurrentPartial` is only exercised with *positive* examples; a regression could cause **false positives** (e.g., any incoming string returns true). | Unit tests should verify both sides of a boolean predicate. | Add a test like:<br>`#expect(!TranscriptTextProcessor.isRevisionOfCurrentPartial(current: "Hello", incoming: "World"))` |
+| `currentPartialRevisionAcceptsJapaneseInternalCorrection` | The three Japanese strings differ by a **single kanji/character** and a **word ordering** change. The test asserts that `preferredPartialText` returns the *most recent* incoming string, but the function’s contract isn’t documented. If the implementation later prefers the *shortest* text, the test will break. | Ambiguity in “preferred” leads to hidden coupling. | Add a doc comment to `preferredPartialText` and a complementary test that ensures the function prefers *later* text when it is a *superset* of the current one. |
+| `volatileJapaneseFragmentCanBeSuperseded` (truncated
+
+[2026-05-17 00:12:41] VULNERABILITY:
+# Deep Analysis of `contracts/test/BoldToken.t.sol`
+
+---
+
+## 1️⃣ Overview  
+
+| Aspect | Summary |
+|--------|---------|
+| **File purpose** | Solidity test contract that checks the behavior of `BoldToken` when an infinite allowance (`UINT256_MAX`) is used and a `transferFrom` is performed. |
+| **Test steps** | 1. Open a Trove for address **A** (minting `initialBalance_A`).<br>2. **A** gives **B** an infinite allowance (`UINT256_MAX`).<br>3. **B** transfers `value` from **A** to **C** via `transferFrom`.<br>4. Verify balances and that the allowance remains infinite. |
+| **Dependencies** | `DevTestSetup.sol` (provides test environment, `openTroveHelper`, `vm.prank`, etc.). Assumes `boldToken` is an ERC‑20‑compatible token with the usual `approve`, `transferFrom`, `balanceOf`, `allowance` functions. |
+
+---
+
+## 2️⃣ Detailed Findings  
+
+### 2.1 BUGS & Logical Errors  
+
+| # | Observation | Impact | Recommendation |
+|---|-------------|--------|----------------|
+| 1 | **Missing `assertTrue` return check for `openTroveHelper`** – The helper likely reverts on failure, but the test does not verify its success. If it silently fails, subsequent asserts may be misleading. | False‑positive test pass. | Add `assertTrue(openTroveHelper(...))` (or rely on `require` inside helper). |
+| 2 | **Hard‑coded `UINT256_MAX` constant** – The test imports `UINT256_MAX` from the global scope (available in Solidity 0.8.24). If the token implements ERC‑20 with a **different** max‑approval behavior (e.g., decreasing allowance on transfer), the test may pass even though the contract is non‑standard. | May mask non‑standard allowance logic. | Explicitly query the token’s `allowance` after `transferFrom` and compare with the original value, not just `UINT256_MAX`. |
+| 3 | **No check that `transferFrom` emits `Transfer` and `Approval` events** – The ERC‑20 spec requires a `Transfer` event; infinite allowance usually does **not** emit an `Approval` event on each `transferFrom`. The test ignores event validation. | Missed verification of spec compliance. | Use `vm.expectEmit` (or `expectEmit` from Forge) to assert the emitted events. |
+| 4 | **Potential race condition with `vm.prank`** – `vm.prank` only changes `msg.sender` for the next call. If `openTroveHelper` internally makes multiple external calls, the caller may not be the intended address. | Unexpected state changes. | Use `vm.startPrank(address)` / `vm.stopPrank()` for multi‑call sequences, or wrap each call individually. |
+| 5 | **No test for `transferFrom` returning `false`** – ERC‑20 `transferFrom` should revert on failure, but some implementations return `false`. The test assumes a boolean return of `true`. | Incompatible token contracts would cause false negatives. | Add a branch testing the `false` case (or use `try/catch`). |
+
+### 2.2 SECURITY VULNERABILITIES  
+
+| # | Observation | Why it matters | Mitigation |
+|---|-------------|----------------|------------|
+| 1 | **Infinite allowance is a known attack surface** – If `BoldToken` does not treat `UINT256_MAX` specially (i.e., does not skip allowance decrement), an attacker with that allowance could accidentally drain the allowance via overflow or underflow when the allowance is decremented. | Could enable a malicious spender to reduce allowance to zero unexpectedly, breaking user expectations. | Ensure the token contract implements the “infinite allowance” pattern: when allowance == `type(uint256).max`, skip the subtraction. Verify this in production code, not only in tests. |
+| 2 | **No re‑entrancy guard in the test** – If `BoldToken` had a `transferFrom` that called an external contract (e.g., via a hook), the test would not detect re‑entrancy. | Potentially hides re‑entrancy bugs. | Add a mock recipient with a fallback that attempts a re‑entrant `transferFrom` and assert that the token either reverts or safely handles it. |
+| 3 | **Potential for address aliasing** – The test uses
+
