@@ -1894,3 +1894,15 @@
 [2026-05-17 21:53:36] Issue: Design discussion: extending `create --characteristic` vs adding richer state-change command
 [2026-05-17 21:53:36] Issue analysis error: Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}
 [2026-05-17 21:53:39] === CYCLE DONE === Next in 1 hour.
+[2026-05-17 22:00:16] GitHub Agent online. Scanning every hour across all languages.
+[2026-05-17 22:00:16] === SCAN CYCLE STARTING ===
+[2026-05-17 22:00:16] Language: go
+[2026-05-17 22:00:17] Repo: Danialsamadi/v2go | Stars: 106
+[2026-05-17 22:00:17] Reading: scanner/scanner_main.go
+[2026-05-17 22:00:18] Analysis error: Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}
+[2026-05-17 22:00:21] Reading: scanner/scanner_test.go
+[2026-05-17 22:00:21] Analysis error: Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}
+[2026-05-17 22:00:24] Reading: main.go
+[2026-05-17 22:00:24] Analysis error: Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}
+[2026-05-17 22:00:28] Open issues to analyze: 0
+[2026-05-17 22:00:28] === CYCLE DONE === Next in 1 hour.
