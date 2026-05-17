@@ -1852,3 +1852,201 @@ Below is a deep‑dive into the migration from five perspectives that matter in 
 | **Extension on `View` with a generic name** | `hideSidebarToggle()` is very specific but placed on all `View`s, polluting the global namespace. | Move the method to a more specific protocol or keep it private to the module. |
 | **Magic string** | Hard‑coded `"com.apple.SwiftUI.navigationSplitView.toggleSidebar"` lacks context. | Define a `static let` constant
 
+[2026-05-17 16:43:41] VULNERABILITY:
+**TL;DR** – The class correctly adds an OWL `FunctionalProperty` annotation for the `_PVUC` (uniqueness constraint) property, but it lacks type checks, proper documentation of side‑effects, and could benefit from defensive programming, unit tests, and a more explicit handling of potential null values.
+
+---
+
+## Detailed Answer
+
+### 1. Overview of the File
+| Element | Description |
+|---------|-------------|
+| **Namespace** | `SMW\Exporter\ResourceBuilders` – part of Semantic MediaWiki’s export subsystem. |
+| **Class** | `UniquenessConstraintPropertyValueResourceBuilder` extends `PropertyValueResourceBuilder`. |
+| **Purpose** | When the property key is `_PVUC` (semantic “uniqueness constraint”), the builder adds an OWL `FunctionalProperty` triple to the exported RDF data. |
+| **Key Methods** | `isResourceBuilderFor(Property $property): bool` – selects this builder.<br>`addResourceValue(ExpData $expData, Property $property, DataItem $dataItem): void` – adds the functional‑property annotation after delegating to the parent implementation. |
+
+### 2. BUGS & Logical Errors
+
+| Bug # | Location | Description | Impact |
+|------|----------|-------------|--------|
+| B1 | `addResourceValue` | Calls `parent::addResourceValue` **before** adding the functional property. If the parent throws an exception (e.g., unsupported `$dataItem` type), the functional‑property triple never gets added, leaving the export incomplete. | Inconsistent export output; downstream consumers may miss the functional‑property hint. |
+| B2 | `isResourceBuilderFor` | Uses strict equality on `$property->getKey()` which returns a string; however, if the property key is stored in a case‑insensitive way (e.g., user‑defined alias), the builder would be bypassed. | Incorrect builder selection for equivalent keys (unlikely but possible in future extensions). |
+| B3 | No null‑check on `$property` or `$dataItem` | The method signatures type‑hint objects, but the caller may pass `null` (PHP 7+ allows `null` unless strict typing is enforced). The code will raise a fatal error (`Call to a member function getKey() on null`). | Runtime fatal error, breaking export for malformed inputs. |
+
+**Mitigation** – Add defensive checks and throw a descriptive `InvalidArgumentException` if arguments are missing or of unexpected type.
+
+### 3. SECURITY VULNERABILITIES
+
+| Vuln # | Vector | Explanation | Severity |
+|--------|--------|-------------|----------|
+| S1 | **Untrusted Data in RDF literals** | `$dataItem` may contain user‑controlled values (e.g., strings). The parent builder ultimately serialises these into RDF literals. If the exporter does not correctly escape special characters, an attacker could inject malformed RDF that could affect downstream parsers. | Medium – depends on downstream parser robustness. |
+| S2 | **Resource URI Construction** | The calls `newExpNsResourceById('rdf', 'type')` and `newExpNsResourceById('owl', 'FunctionalProperty')` are hard‑coded, so no injection risk here. However, if future changes allow dynamic namespace IDs, unsanitised inputs could lead to **URI injection**. | Low (presently safe). |
+| S3 | **Information Leakage** | The builder adds a triple that reveals the functional nature of a property. If the property is meant to be hidden (e.g., internal constraint), exposing it could give attackers insight into the data model. | Low – design‑level, not a classic vulnerability. |
+
+**Recommendations** – Ensure that the exporter sanitises literals (`Escaper` or similar). Document that functional‑property triples are always public.
+
+### 4. PERFORMANCE CONSIDERATIONS
+
+| Issue | Explanation | Cost |
+|-------|-------------|------|
+| P1 | **Repeated namespace lookup** – Every call to `newExpNsResourceById` potentially performs a lookup in a namespace map. For bulk export (thousands of properties), this could add overhead. | Minor but measurable in large exports. |
+| P2 | **Parent call overhead** – `parent::addResourceValue` may perform expensive processing (e.g., datatype conversion). The builder adds only one extra triple, so overhead is dominated by the parent. | Not a direct issue of this class. |
+
+**Optimization** – Cache the `ExpNsResource` objects for `'rdf:type'` and `'owl:FunctionalProperty'` in a private static property or during construction, re
+
+[2026-05-17 17:15:45] VULNERABILITY:
+**TL;DR** – `DataMessages` is a straightforward Eclipse NLS wrapper with no functional logic, so it has virtually no runtime bugs, security issues, or performance concerns. The main points are proper resource‑bundle handling, immutability considerations, and minor style improvements.
+
+---
+
+## Detailed Answer
+
+### 1. BUGS (Logical / Runtime)
+
+| Area | Observation | Impact | Recommendation |
+|------|-------------|--------|----------------|
+| **Resource bundle loading** | `NLS.initializeMessages(BUNDLE_NAME, DataMessages.class);` is called in a static initializer. If the `.properties` file is missing or corrupted, the fields stay `null`. Subsequent UI code that concatenates these strings may throw `NullPointerException`. | Application UI may break at runtime, especially in localized builds. | Add a defensive check after initialization (e.g., log missing keys) or provide fallback default values in the `.properties` file. |
+| **Public mutable fields** | The message fields are `public static String` (non‑final). NLS populates them via reflection, but they remain mutable after class loading. Accidental reassignment could corrupt UI strings. | Hard‑to‑track UI inconsistencies. | Document that fields must be treated as read‑only or make the class final and expose getters that return copies (or `String` is immutable, so just avoid reassignment). |
+| **Missing constructor comment** | The private constructor is empty. While not a bug, it can be confusing to readers. | Minor readability issue. | Add a comment `// Prevent instantiation` (already present) and optionally mark class as `final`. |
+
+### 2. SECURITY VULNS
+
+| Vector | Why It’s Not an Issue | Notes |
+|--------|----------------------|-------|
+| **Injection (SQL, OS, etc.)** | The class only holds UI label strings; no user‑controlled data is processed. | – |
+| **XSS / HTML injection** | Strings are displayed in UI components (SWT/JFace). If a malicious translation file were supplied, it could embed HTML/JS. However DBeaver UI does not render HTML by default. | Ensure UI components escape text when rendering HTML‑capable widgets. |
+| **Authentication / Authorization bypass** | No auth logic present. | – |
+| **Buffer overflow** | Java strings are bounds‑checked; no native code. | – |
+| **Resource bundle tampering** | An attacker who can replace the `.properties` file could alter UI messages, possibly phishing the user. | Keep the bundle on a read‑only classpath location and sign the JAR. |
+
+### 3. PERFORMANCE
+
+| Concern | Detail | Verdict |
+|---------|--------|---------|
+| **Static initializer overhead** | Loading the bundle once at class‑load time. Negligible; executed only once. | Acceptable. |
+| **String allocation** | The fields are `String` objects created once and reused. | Optimal. |
+| **Reflection used by NLS** | `NLS.initializeMessages` uses reflection to set fields, which adds a tiny start‑up cost. | Insignificant for a desktop app. |
+
+### 4. CODE QUALITY (Anti‑patterns & Best Practices)
+
+| Observation | Good practice / Issue | Suggested improvement |
+|-------------|-----------------------|-----------------------|
+| **Class not marked `final`** | Allows subclassing, which is unnecessary for a static utility holder. | Declare `public final class DataMessages`. |
+| **Public mutable fields** | Exposes internal state; contrary to encapsulation. | Keep fields `public static final` *if* they are constants, but NLS requires non‑final. As a compromise, add a comment “Do not modify”. |
+| **Lack of
+
+[2026-05-17 17:46:28] VULNERABILITY:
+**TL;DR**  
+The excerpt is a partial copy of the original *Parsedown* markdown parser, but the truncation introduces a **fatal syntax error** (`foreac` typo) that stops execution, and the surrounding implementation has several **maintainability, security, and performance considerations** that should be addressed when using or extending it in production.
+
+---
+
+## 1. Context & Assumptions  
+
+| Item | Explanation |
+|------|--------------|
+| **Repository** | `abydahana/aksara` – a CMS that bundles a copy of Parsedown (v1.7.4). |
+| **File** | `aksara/Libraries/Parsedown.php` – the core markdown‑to‑HTML engine. |
+| **Snippet** | Shows class definition, public API (`text()`, setters), configuration arrays, and the start of the `lines()` method, but it cuts off mid‑loop (`foreac`). |
+| **Assumptions** | - The original upstream library is unchanged apart from the copy‑paste error. <br>- The surrounding CMS uses `Parsedown::text()` to render user‑generated markdown (e.g., blog posts, comments). <br>- No further modifications are made elsewhere in the repo that would hide the typo. |
+
+---
+
+## 2. Detailed Solution – Issue Identification & Remediation  
+
+### 2.1. Critical Syntax / Runtime Bugs  
+
+| Bug | Location | Impact | Fix |
+|-----|----------|--------|-----|
+| **`foreac` typo** | Inside `protected function lines(array $lines)` – the loop that should be `foreach ($lines as $line) { … }`. | **Fatal parse error** → the whole class cannot be autoloaded, breaking any markdown rendering. | Replace with `foreach ($lines as $line) { … }`. |
+| **Missing `$this->DefinitionData` initialization** | `text()` resets `$this->DefinitionData = [];` but the property is never declared. | PHP raises a *dynamic property* notice (in PHP 8.2+) and may become a *deprecation* error in future versions. | Declare `protected $DefinitionData = [];` at class scope. |
+| **Undefined `$this->breaksEnabled`, `$this->markupEscaped`, `$this->urlsLinked`** | Setters exist, but properties are not always initialized (except `$markupEscaped`). | Same dynamic‑property notice; may affect logic that expects a boolean. | Initialise all three: `protected $breaksEnabled = false; protected $markupEscaped = true; protected $urlsLinked = true;`. |
+| **Potential missing return in `lines()`** | The method is cut off, but in the original library it returns a string. If the truncation left out the final `return $markup;`, callers receive `null`. | Rendering fails silently (empty output). | Ensure the method ends with `return $markup;`. |
+
+### 2.2. Security Vulnerabilities  
+
+| Area | Observation | Risk | Mitigation |
+|------|-------------|------|------------|
+| **HTML markup escaping (`$markupEscaped`)** | The flag defaults to `true`, but callers can disable it via `setMarkupEscaped(false)`. If user‑supplied markdown is rendered with markup escaped off, raw HTML is injected into pages → **XSS**. | High, especially for comment sections. | - Keep `$markupEscaped` forced `true` for any untrusted input. <br>- Enforce a policy in the CMS: never call `setMarkupEscaped(false)` on data from untrusted sources. |
+| **URL auto‑linking (`$urlsLinked`)** | When enabled, Parsedown will turn plain URLs into `<a>` tags. If `$safeMode` is off, any scheme (e.g., `javascript:`) can be linked. | **XSS / phishing** via malicious links. | - Ensure `$safeMode` is **always true** for user content, or whitelist additional safe schemes (`mailto:`, `tel:`) via `$safeLinksWhitelist`. |
+| **`safeMode` handling** | The class stores `$safeMode` but never applies it in the shown code. In the original library, it prevents raw HTML and disallowed protocols. If the copy removed that logic, raw HTML may slip through. | Same XSS risk. | Verify the full library still checks `$this->safeMode` before emitting markup. If missing, re‑introduce the original checks. |
+| **Potential file inclusion via `Reference` blocks** | Parsedown supports link reference definitions (`[ref]: url`). If the CMS later resolves those references by including
+
+[2026-05-17 18:01:54] VULNERABILITY:
+**TL;DR** – The spec is a minimal sanity‑check that the `AvoidPostingVersion` factory builds a valid record; it has no functional bugs, but it is under‑tested, tightly coupled to an unnecessary admin context, and could be expanded for robustness, maintainability, and future‑proofing.
+
+---
+
+## 1. Context & Assumptions
+| Item | Explanation |
+|------|--------------|
+| **Repository** | `e621ng/e621ng` – a Rails‑based image‑board clone. |
+| **File** | `spec/models/avoid_posting_version/factory_spec.rb` – tests the FactoryBot factory for the `AvoidPostingVersion` model. |
+| **Test framework** | RSpec + Rails + FactoryBot. |
+| **Assumed dependencies** | `rails_helper` loads the Rails environment, database cleaning, and `include_context "as admin"` probably sets `current_user` to an admin for authorization‑dependent factories. |
+| **Goal of this spec** | Verify that the factory produces a *valid* and *persisted* instance. |
+| **Scope of analysis** | Logical correctness, security, performance, code quality, and learning points. No need to run the code; we reason from the source. |
+
+---
+
+## 2. Detailed Solution – Findings
+
+### 2.1 Logical / Functional Bugs
+| Area | Observation | Impact |
+|------|-------------|--------|
+| **Factory validity only** | The test only asserts `be_valid` (for `build`) and `be_persisted` (for `create`). It does **not** verify that required attributes are present or that relationships are correctly set. | If the factory silently omits a required column (e.g., `user_id`), the test would still pass because `build` would be invalid *unless* validations exist; but `create` could raise a DB constraint error later. |
+| **Missing negative test** | No test that an *invalid* factory (e.g., missing required fields) fails as expected. | Reduces confidence that the model’s validation logic is exercised. |
+| **Admin context coupling** | `include_context "as admin"` is included, yet the `AvoidPostingVersion` model likely does **not** require admin privileges for creation (it is a plain model). If the context sets up `current_user` or stubs permission checks, it adds unnecessary runtime overhead and hides the fact that the model can be created by any user. | Possible false sense of security; the test may pass only because the context grants permissions that the model would not normally have. |
+| **Database cleanup** | No explicit mention of `DatabaseCleaner` or transactional fixtures, but we assume `rails_helper` handles it. If not, leftover records could affect other specs. | Flaky test suite. |
+
+### 2.2 Security Vulnerabilities
+| Vector | Evaluation |
+|--------|------------|
+| **Injection / XSS** | The spec does not process user input, so no injection risk. |
+| **Authorization bypass** | Using an admin context where it isn’t required could mask missing `belongs_to :user` or `policy` checks in the model. The test does not verify that non‑admin users are prevented from creating an `AvoidPostingVersion` if that’s a business rule. |
+| **Sensitive data leakage** | Factories sometimes populate fields like `api_key` or passwords. If the factory for `AvoidPostingVersion` ever includes such fields, the test would create real records in the test DB – ensure they are not persisted to external services. |
+| **CSRF / Request‑level** | Not applicable (model spec). |
+
+### 2.3 Performance Considerations
+| Concern | Details |
+|---------|---------|
+| **Factory overhead** | `create(:avoid_posting_version)` hits the DB, which is fine for a single test, but if the suite scales to hundreds of factories, each DB hit adds time. |
+| **Redundant context
+
+[2026-05-17 18:32:32] VULNERABILITY:
+**TL;DR**  
+`Open` starts an external command but silently swallows any runtime error, logs the wrong variable, and can be abused for command‑injection if the caller controls `Command`/`Args` – fix the logging, surface the wait error, validate inputs, and consider using `exec.CommandContext` with a timeout.
+
+---
+
+## Context & Assumptions
+| Item | Explanation |
+|------|-------------|
+| **Repository** | `gomuks/gomuks` – a terminal Matrix client. |
+| **File** | `tui/lib/open/open.go` – utility that launches an external program (e.g., a browser, editor, or file viewer). |
+| **Missing symbols** | `Command` and `Args` are package‑level globals defined elsewhere (probably the name of the program to run and default arguments). |
+| **`debug`** | Simple logger (`debug.Printf`). |
+| **Goal of function** | Run `<Command> <Args...> <input>` asynchronously and return an error **only** if the process cannot be started. |
+
+Assume `input` originates from user‑provided data (e.g., a Matrix URL, file path, etc.).  
+
+---
+
+## Detailed Solution (analysis)
+
+### 1. Logical / Runtime Bugs
+| Bug | Location | Impact | Explanation |
+|-----|----------|--------|-------------|
+| **Wrong variable logged on `Wait` failure** | `debug.Printf("Failed to run %s: %v", Command, err)` inside goroutine | Misleading log – the printed `err` is the *start* error (already `nil`), not the actual `waitErr`. | The closure captures `err` from the outer scope; the intended variable is `waitErr`. |
+| **`Open` never reports runtime errors** | Return value is only `err` from `cmd.Start()` | Callers think the command succeeded even if it crashes immediately. | The wait error is logged but discarded; callers cannot react (e.g., fallback to another viewer). |
+| **Potential goroutine leak** | Goroutine started for every successful `Start()` | If the caller never reads the wait result, the goroutine stays alive until the process exits. In long‑running apps with many opens this can accumulate. | Not a crash, but unnecessary resource usage. |
+| **No validation of `input`** | Directly appended to `Args` | Passing empty strings or malicious data can cause the external program to misbehave. | Depends on the external command but generally unsafe. |
+| **No context/timeout** | `exec.Command` used directly | If the launched program hangs, the Go process has no way to cancel it. | Especially problematic for UI tools that may block the UI thread if not truly async. |
+
+### 2. Security Vulnerabilities
+| Issue | Vector | Severity* | Mitigation |
+|-------|--------|-----------|------------|
+| **Command injection** | If `Command` is user‑controlled (e.g., set via configuration) and points to a shell (`sh`, `bash`, `cmd.exe`), `input` becomes an argument to that shell, potentially executing arbitrary code. | High (depends on config) | *Never* allow arbitrary shells. Prefer a fixed binary (e.g., `xdg-open`, `open`, `start`). If a shell is needed, pass `-c` with proper quoting or better, avoid
+
