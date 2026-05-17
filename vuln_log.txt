@@ -936,3 +936,122 @@ Below is a **deep, line‑by‑line audit** covering the five requested categori
 | `@JsonNames("croppedSquareThumbnailRenderer") val musicThumbnailRenderer: MusicThumbnailRenderer?` | **JSON‑key collision** – `croppedSquareThumbnailRenderer` is also a distinct property of the same class. When deserialising a JSON object that contains the key `croppedSquareThumbnailRenderer`, the library (kotlinx‑serialization) will try to map it to **both** `musicThumbnailRenderer` **and** `croppedSquareThumbnailRenderer`. The second one wins, silently discarding the first mapping. | The resulting object may have one field populated while the other stays `null`, breaking any logic that expects both. | 1. Rename one of the properties (e.g., `legacyCroppedSquareThumbnailRenderer`). 2. If the two fields are semantically identical, remove one and keep a single canonical name. 3. Prefer `@SerialName` for a single‑alias mapping instead of `@JsonNames` when there is only one alternate name. |
 | `val musicAnimatedThumbnailRenderer: MusicAnimatedThumbnailRenderer?` (non‑nullable `backupRenderer` inside) | **Deserialization can fail** if the JSON lacks
 
+[2026-05-17 03:04:01] VULNERABILITY:
+## 📄 Overview of the File
+| Path | `test_projects/old_coverage_json/spec/code_spec.rb` |
+|------|---------------------------------------------------|
+| Language | Ruby (RSpec test) |
+| Purpose | Verify that `Code#foo` returns the symbol `:foo` when called with the integer `42`. |
+| Dependencies | `spec_helper` (presumably loads the code under test and configures RSpec). |
+
+```ruby
+# frozen_string_literal: true
+
+require "spec_helper"
+
+RSpec.describe Code do
+  it "#foo returns :foo being passed 42" do
+    expect(subject.foo(42)).to eq :foo
+  end
+end
+```
+
+---
+
+## 1️⃣ BUGS – Logical / Runtime Issues
+
+| Area | Observation | Impact | Recommendation |
+|------|-------------|--------|----------------|
+| **Implicit subject** | `subject` is used without an explicit definition. RSpec will create an implicit `subject { described_class.new }`. If `Code` does not have a zero‑argument initializer, the test will raise a `ArgumentError`. | Test may fail at **instantiation**, not because of `#foo` logic. | Define `subject` explicitly (e.g., `subject { Code.new }`) or use a factory / mock that matches the real initializer. |
+| **Missing `require` for the class** | The file only requires `spec_helper`. If `spec_helper` does not load `code.rb` (or whatever defines `Code`), Ruby will raise a `NameError: uninitialized constant Code`. | Test will error out before any assertions run. | Ensure `spec_helper` loads the production file (e.g., `require_relative '../../lib/code'`) or add a direct `require` in the spec. |
+| **Hard‑coded argument** | The test only checks the case `foo(42)`. If the method behaves differently for other inputs, the test gives no coverage. | May give a **false sense of correctness**; bugs in other branches go unnoticed. | Add parameterized tests (e.g., using `shared_examples` or a loop) to cover a variety of inputs, especially edge cases (`nil`, negative numbers, non‑integers). |
+| **Return value expectation** | The expectation is `eq :foo`. If the method returns a *string* `'foo'` or a *different* symbol (e.g., `:Foo`), the test fails. This is fine if the contract is strict, but the spec description (“returns :foo being passed 42”) could be clearer. | Potential mismatch between documentation and implementation. | Clarify the spec description: `it "returns the symbol :foo when passed the integer 42"` and optionally add a comment explaining why 42 is special. |
+| **Potential Name Collision** | The class name `Code` is extremely generic. If the test suite includes other libraries that also define `Code`, Ruby may load the wrong constant, causing unexpected behavior. | Could lead to **flaky tests** when the load order changes. | Namespace the production class (e.g., `module SimpleCov; class Code; … end; end`) and reference it in the spec (`RSpec.describe SimpleCov::Code`). |
+
+---
+
+## 2️⃣ SECURITY VULNS – Attack Surface
+
+| Area | Observation | Risk | Mitigation |
+|------|-------------|------|------------|
+| **No user‑input handling in test** | The test only passes a literal integer. There is no injection vector here. | **None** for this file. | N/A |
+| **Potential exposure via `spec_helper`** | If `spec_helper` loads code that reads environment variables, files, or network resources, the test runner could inadvertently execute unsafe code. | Low‑to‑moderate, depending on the broader repo. | Review `spec_helper` for side‑effects; keep test environment isolated (e.g., use `ENV['RACK_ENV'] = 'test'`). |
+| **Symbol creation** | `:foo` is a static symbol; no risk of symbol‑table DoS. | None. | N/A |
+| **File‑system access** | The spec does not interact with the file system. | None. | N/A |
+
+
+
+[2026-05-17 03:34:32] VULNERABILITY:
+**TL;DR**  
+The schemas are functionally correct but lack strictness, reuse, and sanitisation, which can lead to silent acceptance of extra fields and potential injection attacks. Refactor to enforce strict objects, centralise common rules, and add content sanitisation.
+
+---
+
+## Detailed Overview  
+
+| Area | Observation | Why it matters |
+|------|-------------|----------------|
+| **Logical bugs / edge cases** | `vine.object({...})` by default **allows unknown keys**. A malicious client could send additional properties (e.g., `isAdmin: true`) that will be silently ignored by validation but may be persisted later. | Unexpected data can cause logic errors, privilege escalation, or data‑corruption downstream. |
+| | In `updateSessionSchema`, `title` is optional **but still trimmed**. If a client sends `{ title: "" }`, the trim produces an empty string and then fails the `minLength(1)` rule, resulting in a validation error instead of a “no‑change” semantics. | May cause unnecessary client‑side failures. |
+| **Security** | The schemas only validate **type/format**, they do **not sanitise** `content` (user‑supplied text) which will later be rendered in a chat UI. This opens XSS if the UI injects raw HTML. | XSS can steal cookies, hijack sessions, or deface the UI. |
+| | No explicit **CSRF/authorization** checks are part of the validator – that’s fine for a pure validation layer, but developers must remember to protect the route elsewhere. | Otherwise a CSRF‑able endpoint could be abused. |
+| **Performance** | `vine.compile()` is called at module load – cheap, but repeated `vine.object({...})` definitions across many files can increase start‑up cost. | Negligible for a single file, but in larger services it adds up. |
+| **Code Quality** | Repeated patterns (`vine.string().trim().optional()`) are duplicated. | Harder to maintain; a change to the rule (e.g., adding `.maxLength`) must be replicated manually. |
+| | No **strict typing** exported (e.g., TypeScript `type CreateSessionPayload = typeof createSessionSchema.infer`). | Consumers lose type safety. |
+| | No JSDoc/comments explaining intent. | Reduces readability for new contributors. |
+| **Key Learnings** | - Always enable strict validation (`.strict()`) when you want a closed schema. <br>- Centralise common field definitions to avoid duplication. <br>- Validation alone isn’t sanitisation; treat user‑generated strings separately. | Improves security, maintainability, and developer ergonomics. |
+
+---
+
+## Step‑by‑Step Action Plan  
+
+1. **Enable Strict Mode**  
+   ```ts
+   const strictObject = (shape: any) => vine.object(shape).strict()
+   ```
+
+2. **Extract Reusable Field Builders**  
+   ```ts
+   const trimmedString = (min: number, max: number, optional = false) => {
+     let schema = vine.string().trim().minLength(min).maxLength(max)
+     return optional ? schema.optional() : schema
+   }
+
+   const optionalTrimmedString = (min: number, max: number) =>
+     trimmedString(min, max, true)
+   ```
+
+3. **Rewrite Schemas Using the Helpers & Strict Mode**  
+   ```ts
+   export const createSessionSchema = vine.compile(
+     strictObject({
+       title: trimmedString(1, 200),
+       model: optionalTrimmedString(0, 200), // adjust max if
+
+[2026-05-17 04:21:32] VULNERABILITY:
+**TL;DR**  
+`uncompress()` is a thin wrapper around zlib’s inflate API. It is generally correct but has a few edge‑case bugs (16‑bit overflow handling, missing `Z_BUF_ERROR` check after inflate, misuse of `Z_FINISH`), a potential denial‑of‑service (DoS) vector, and some outdated coding practices. The fix is to add robust size checks, handle all inflate return codes, and modernise the code.
+
+---
+
+## Detailed Overview  
+
+| Aspect | Summary |
+|--------|---------|
+| **Purpose** | Decompress a memory buffer that was previously compressed with zlib. The caller must know the exact uncompressed size. |
+| **Key Assumptions** | * `dest` points to a buffer of at least `*destLen` bytes. <br>* `sourceLen` fits in a 32‑bit `uInt` on the target platform. <br>* The caller supplies the correct uncompressed length. |
+| **Current Flow** | 1. Initialise a `z_stream`. <br>2. Set input & output pointers and lengths. <br>3. Call `inflateInit`. <br>4. Call `inflate(..., Z_FINISH)`. <br>5. On success, write `stream.total_out` back to `*destLen`. <br>6. Clean up with `inflateEnd`. |
+| **Design Goal** | Provide a single‑call “uncompress” that mirrors the historic `zlib` API. |
+| **Target Environment** | Embedded/retro‑gaming console (Parallel N64) – may run on 16‑bit or 32‑bit CPUs with limited RAM. |
+
+---
+
+## 1. BUGS (Logical & Edge‑Case Errors)
+
+| # | Bug | Explanation | Impact | Fix |
+|---|-----|-------------|--------|-----|
+| 1 | **Incorrect overflow check for 16‑bit platforms** | The code casts `sourceLen` to `uInt` and then back to `uLong` to detect overflow. On a platform where `uInt` is 16‑bit, `sourceLen > 65535` will wrap, the check will fire (return `Z_BUF_ERROR`). However, the same logic is used for `destLen`. If `*destLen` > 65535, the function will reject a perfectly valid request, even though the destination buffer may be large enough. | False negatives on large data (e.g., >64 KB). | Replace with a portable macro: `if (sourceLen > UINT_MAX) return Z_BUF_ERROR;` and similarly for `*destLen`. |
+| 2 | **Missing handling of `Z_BUF_ERROR` from `inflate` when output buffer is too small** | `inflate(..., Z_FINISH)` can return `Z_BUF_ERROR` if the output buffer isn’t large enough, *even* when `stream.avail_in` isn’t exhausted. The code treats any non‑`Z_STREAM_END` as error and returns the raw `inflate` code, which leaks the partially inflated data length. Caller gets no useful size. | Ambiguous error reporting; caller cannot recover or allocate a larger buffer. | After `inflate`, if `err == Z_BUF_ERROR && stream.avail_in != 0` → return `Z_BUF_ERROR`. Optionally expose `stream.total_out` for partial size. |
+| 3 | **`inflate` called with `Z_FINISH` without guaranteeing enough output space** | The API expects the caller to provide a *sufficient* output buffer. If the caller’s size is off by even a single byte, `inflate` will fail with `Z_BUF_ERROR`. The wrapper does not attempt a retry with a larger buffer (which is fine per spec) but does not document this requirement clearly. | Potential DoS if caller mis‑estimates size. | Add a pre‑flight sanity check: compare `*destLen` against the uncompressed size stored in the zlib header (if present) using `inflateGetHeader` or a custom parser. |
+| 4 | **`inflateInit` vs `inflateInit2`** | `inflateInit` uses the default window size (15). If the compressed data was created with a custom window size, decompression may fail. The original `uncompress` wrapper intentionally uses the default, but for robustness a wrapper could expose `inflateInit2` with a `MAX_WBITS` argument. | Rare incompatibility with non‑standard streams
+
