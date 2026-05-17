@@ -1799,3 +1799,80 @@
 [2026-05-17 20:21:01] Issue: README: frame cupertino as dual-consumer (CLI for humans + MCP for AI agents)
 [2026-05-17 20:21:01] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199971, Requested 2006. Please try again in 14m14.064s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-17 20:21:04] === CYCLE DONE === Next in 15 min.
+[2026-05-17 20:36:04] === SCAN CYCLE STARTING ===
+[2026-05-17 20:36:04] Language: solidity
+[2026-05-17 20:36:04] Repo: VenusProtocol/venus-protocol | Stars: 279
+[2026-05-17 20:36:05] Reading: contracts/Utils/Tokenlock.sol
+[2026-05-17 20:36:08] Saved. Vuln: True
+[2026-05-17 20:36:11] Reading: contracts/Tokens/VTokens/VBep20Delegator.sol
+[2026-05-17 20:36:11] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199993, Requested 2453. Please try again in 17m36.672s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 20:36:14] Reading: contracts/Utils/TransientSlot.sol
+[2026-05-17 20:36:15] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199985, Requested 2548. Please try again in 18m14.255999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 20:36:18] Open issues to analyze: 3
+[2026-05-17 20:36:18] Issue: feat(prime): add PrimeV2 and PrimeLeaderboard contracts
+[2026-05-17 20:36:18] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199977, Requested 2034. Please try again in 14m28.752s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 20:36:21] Issue: [REF ONLY] Add BadDebtHelper for atomic bad debt repayment (VIP-604)
+[2026-05-17 20:36:21] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199970, Requested 2007. Please try again in 14m14.064s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 20:36:24] Issue: Hashlock Intro
+[2026-05-17 20:36:24] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199963, Requested 1601. Please try again in 11m15.648s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 20:36:27] === CYCLE DONE === Next in 15 min.
+[2026-05-17 20:51:27] === SCAN CYCLE STARTING ===
+[2026-05-17 20:51:27] Language: java
+[2026-05-17 20:51:28] Repo: GerritCodeReview/gerrit | Stars: 1181
+[2026-05-17 20:51:28] Reading: java/com/google/gerrit/acceptance/ExtensionRegistry.java
+[2026-05-17 20:51:29] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 197869, Requested 2439. Please try again in 2m13.055999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 20:51:32] Reading: java/com/google/gerrit/extensions/api/projects/ParentInput.java
+[2026-05-17 20:51:36] Saved. Vuln: True
+[2026-05-17 20:51:39] Reading: javatests/com/google/gerrit/entities/converter/LabelIdProtoConverterTest.java
+[2026-05-17 20:51:39] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199993, Requested 2304. Please try again in 16m32.304s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 20:51:42] Open issues to analyze: 2
+[2026-05-17 20:51:42] Issue: Chain errors in pack_refs
+[2026-05-17 20:51:42] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199985, Requested 1622. Please try again in 11m34.224s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 20:51:45] Issue: Ithentication by mobile number 
+[2026-05-17 20:51:46] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199978, Requested 1626. Please try again in 11m32.928s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 20:51:49] === CYCLE DONE === Next in 15 min.
+[2026-05-17 21:06:49] === SCAN CYCLE STARTING ===
+[2026-05-17 21:06:49] Language: go
+[2026-05-17 21:06:49] Repo: nooga/let-go | Stars: 417
+[2026-05-17 21:06:49] Reading: pkg/rt/term_pty_other.go
+[2026-05-17 21:06:52] Saved. Vuln: True
+[2026-05-17 21:06:55] Reading: pkg/rt/async.go
+[2026-05-17 21:06:55] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199993, Requested 2810. Please try again in 20m10.896s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 21:06:58] Reading: pkg/vm/nil.go
+[2026-05-17 21:06:59] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199985, Requested 2280. Please try again in 16m18.48s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 21:07:02] Open issues to analyze: 0
+[2026-05-17 21:07:02] === CYCLE DONE === Next in 15 min.
+[2026-05-17 21:22:02] === SCAN CYCLE STARTING ===
+[2026-05-17 21:22:02] Language: rust
+[2026-05-17 21:22:02] Repo: boltffi/boltffi | Stars: 600
+[2026-05-17 21:22:03] Reading: boltffi_verify/src/report/mod.rs
+[2026-05-17 21:22:05] Saved. Vuln: True
+[2026-05-17 21:22:08] Reading: boltffi_cli/src/pack/kmp.rs
+[2026-05-17 21:22:09] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199993, Requested 2485. Please try again in 17m50.496s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 21:22:12] Reading: boltffi_ast/src/contract.rs
+[2026-05-17 21:22:12] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199985, Requested 2420. Please try again in 17m18.96s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 21:22:16] Open issues to analyze: 3
+[2026-05-17 21:22:16] Issue: Scaffold Apple KMP targets
+[2026-05-17 21:22:16] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199977, Requested 1544. Please try again in 10m57.072s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 21:22:19] Issue: Support async streams in KMP
+[2026-05-17 21:22:19] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199970, Requested 1545. Please try again in 10m54.48s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 21:22:22] Issue: Support callbacks in KMP
+[2026-05-17 21:22:22] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199963, Requested 1544. Please try again in 10m51.024s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 21:22:25] === CYCLE DONE === Next in 15 min.
+[2026-05-17 21:37:25] === SCAN CYCLE STARTING ===
+[2026-05-17 21:37:25] Language: java
+[2026-05-17 21:37:25] Repo: spring-cloud/spring-cloud-contract | Stars: 729
+[2026-05-17 21:37:26] Reading: spring-cloud-contract-tools/spring-cloud-contract-maven-plugin/src/test/java/org/springframework/cloud/contract/maven/verifier/ChangeDetectorTests.java
+[2026-05-17 21:37:36] Saved. Vuln: True
+[2026-05-17 21:37:39] Reading: specs/spring-cloud-contract-spec-java/src/main/java/org/springframework/cloud/contract/spec/internal/ResponseBodyMatchers.java
+[2026-05-17 21:37:39] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199993, Requested 2167. Please try again in 15m33.12s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 21:37:42] Reading: specs/spring-cloud-contract-spec-java/src/main/java/org/springframework/cloud/contract/spec/internal/RegexMatchingTypeValue.java
+[2026-05-17 21:37:42] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199985, Requested 2295. Please try again in 16m24.96s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 21:37:46] Open issues to analyze: 3
+[2026-05-17 21:37:46] Issue: Add support for YAML-only mode
+[2026-05-17 21:37:46] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199977, Requested 1764. Please try again in 12m32.112s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 21:37:49] Issue: Avro support
+[2026-05-17 21:37:49] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199970, Requested 1850. Please try again in 13m6.24s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 21:37:52] Issue: Do not log password in ContractRepository's toString() method
+[2026-05-17 21:37:52] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199963, Requested 1636. Please try again in 11m30.768s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 21:37:55] === CYCLE DONE === Next in 15 min.

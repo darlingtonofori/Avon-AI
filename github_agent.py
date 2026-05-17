@@ -109,7 +109,7 @@ Deep analysis:
 Be specific and technical."""
 
         response = client.chat.completions.create(
-            model="openai/gpt-oss-120b",
+            model="llama3-8b-8192",
             messages=[
                 {"role": "system", "content": load_prompt()},
                 {"role": "user", "content": analysis_request}
@@ -138,7 +138,7 @@ def analyze_issue(issue, repo_name):
         body = (issue.get("body", "") or "")[:2000]
 
         response = client.chat.completions.create(
-            model="openai/gpt-oss-120b",
+            model="llama3-8b-8192",
             messages=[
                 {"role": "system", "content": load_prompt()},
                 {"role": "user", "content": f"""Developer problem on GitHub repo: {repo_name}
@@ -208,16 +208,16 @@ def scan_cycle():
             log("Issue solution saved.")
         time.sleep(3)
 
-    log("=== CYCLE DONE === Next in 15 min.")
+    log("=== CYCLE DONE === Next in 1 hour.")
 
 def start_agent():
-    log("GitHub Agent online. Scanning every 15 minutes across all languages.")
+    log("GitHub Agent online. Scanning every hour across all languages.")
     while True:
         try:
             scan_cycle()
         except Exception as e:
             log(f"Cycle error: {e}")
-        time.sleep(900)  # 15 minutes
+        time.sleep(3600)  # 15 minutes
 
 if __name__ == "__main__":
     start_agent()

@@ -2175,3 +2175,208 @@ The `FilterMode` enum is a simple, safe Swift construct with no obvious bugs, se
 | **Lack of documentation** | No doc comments → IDE hover info is empty. | Add a Swift‑doc comment describing each case and its UI meaning. |
 | **No explicit access level** | Defaults to internal; if the enum is part of a public API, mark it `public`. | Add `
 
+[2026-05-17 20:36:08] VULNERABILITY:
+## TL;DR  
+`Tokenlock` is a minimal “emergency‑stop” contract that works, but it has a few **usability, readability, and safety‑margin** issues (uint8 used as a boolean, missing public accessor, typo‑ed event names, and a permissive lock‑state check). The contract is otherwise free of critical security bugs.
+
+---
+
+## Context & Assumptions  
+
+| Item | Detail |
+|------|--------|
+| **Repository / File** | `VenusProtocol/venus-protocol/contracts/Utils/Tokenlock.sol` |
+| **Solidity version** | `^0.5.16` (pre‑0.6, so `bool` is available, but `emit` syntax is required) |
+| **Inherited contract** | `Owned` – assumed to provide an `onlyOwner` modifier and an `owner` state variable. |
+| **Intended purpose** | Simple “freeze” mechanism for contracts that inherit `Tokenlock`. Functions guarded by `validLock` should be disabled when `isLocked == 1`. |
+| **Assumed usage** | Other contracts will `inherit Tokenlock` and apply `validLock` to state‑changing functions. |
+
+---
+
+## Detailed Solution (Analysis)
+
+### 1. Logical Bugs & Edge Cases  
+
+| Issue | Explanation | Impact |
+|-------|-------------|--------|
+| **Non‑boolean lock state** (`uint8 isLocked`) | The variable can hold any value 0‑255, but the code only treats `0` as *unlocked* and any other value as *locked*. If a future developer accidentally sets it to `2`, `validLock` still passes (requires `==0`). Conversely, a malicious contract that can write to storage (e.g., via `delegatecall`) could set it to a non‑0/1 value and bypass the lock. | Low – only possible via storage‑corrupting bugs; still a robustness concern. |
+| **Missing public accessor** | No `view` function to read the lock status. External tools or UI need to read the storage directly via `eth_getStorageAt`, which is inconvenient. | Usability. |
+| **Repeated freeze/unfreeze calls** | Calling `freeze()` when already locked just rewrites `1`. No guard against redundant calls. | Not a bug, but may generate unnecessary events. |
+| **No `emit` on `onlyOwner` failure** | The `Owned` contract likely reverts with a generic message. No direct impact on `Tokenlock`. | None. |
+
+### 2. Security Vulnerabilities  
+
+| Category | Observation | Verdict |
+|----------|-------------|---------|
+| **Authorization** | Only the owner can call `freeze`/`unfreeze` via `onlyOwner`. Assuming `Owned` is correctly implemented, this is safe. | ✅ |
+| **Re‑entrancy** | No external calls in `freeze`/`unfreeze`, thus no re‑entrancy surface. | ✅ |
+| **Integer overflow/underflow** | `uint8` assignment is safe because values are hard‑coded (`0` or `1`). No arithmetic. | ✅ |
+| **State
+
+[2026-05-17 20:51:36] VULNERABILITY:
+**TL;DR**  
+`ParentInput` is a thin data‑transfer object extending `InputWithCommitMessage`; it has no functional bugs, but its public mutable field `parent` can cause misuse, lacks validation, and may lead to ambiguous API behavior. Adding validation, immutability, and documentation will improve safety, clarity, and maintainability.
+
+---
+
+## 1. Context & Assumptions  
+
+| Item | Description |
+|------|-------------|
+| **Repository** | `gerrit` (Gerrit Code Review) – a large, production‑grade code review system. |
+| **File** | `java/com/google/gerrit/extensions/api/projects/ParentInput.java` |
+| **Class purpose** | Represents the input payload for REST endpoints that set a project’s *parent* (the parent project from which configuration is inherited). It also inherits a commit‑message field from `InputWithCommitMessage`. |
+| **Assumptions** | * The class is used only as a request body for REST APIs (e.g., `PUT /projects/{project}/parent`). <br>* The surrounding framework (Gerrit’s REST API layer) performs JSON ↔ POJO mapping via Jackson/Gson. <br>* No additional business logic resides inside this class. |
+
+---
+
+## 2. Detailed Analysis  
+
+### 2.1 Bugs / Logical Errors  
+
+| Area | Observation | Potential Impact |
+|------|-------------|------------------|
+| **Missing validation** | The `parent` field is a plain `String` with no constraints (e.g., non‑null, format, existence of the referenced project). | If a client sends an empty string or malformed project name, downstream services may throw `IllegalArgumentException`, `NullPointerException`, or silently accept an invalid parent, breaking inheritance logic. |
+| **Mutable public field** | `@DefaultInput public String parent;` is mutable and publicly accessible. | Clients (or future developers) can change the value after construction, potentially causing race conditions if the object is reused across threads (unlikely but possible in test harnesses). |
+| **No `@JsonProperty` / visibility control** | Relying on default Jackson visibility may be fine, but explicit annotation improves forward compatibility. | Changes in Jackson configuration could cause the field to be ignored, leading to API breakage. |
+| **Lack of `toString`, `equals`, `hashCode`** | Not required for a simple DTO, but useful for logging/debugging. | Debug logs may print the default `Object.toString()`, which is unhelpful. |
+
+### 2.2 Security Vulnerabilities  
+
+| Vector | Analysis |
+|--------|----------|
+| **Injection** | The field is just a string that later gets used to look up a project. If the downstream code concatenates it into shell commands or SQL without sanitization, injection could occur. The DTO itself does **not** perform sanitization, so the responsibility lies elsewhere. |
+| **Authorization bypass** | If the API does not re‑validate the caller’s permission on the target parent project, a malicious client could set a parent they do not have access to. This is not a flaw of `ParentInput` per se, but the lack of validation here makes it easier for downstream code to miss a check. |
+| **Cross‑Site Scripting (XSS)** | If the parent name is ever reflected back in a web UI without HTML‑escaping, an attacker could embed script tags. Again, not directly in this DTO, but the DTO should enforce a safe character set (e.g., alphanumerics, hyphens). |
+| **CSRF** | Not applicable to this POJO; handled at the API layer. |
+
+### 2.3 Performance  
+
+* The class has **no logic**, so there are no runtime performance concerns.  
+* However, the use of a mutable public field may trigger **Jackson’s reflection** path for both getter and field, which is marginally slower than using a private field with explicit getters/setters. The impact is negligible in typical API calls.
+
+### 2.4 Code Quality & Best‑Practice Assessment  
+
+| Issue | Why it matters | Recommendation |
+|-------|----------------|----------------|
+| **Public mutable field** | Breaks encapsulation, makes future refactoring harder. | Change to `private String parent;` with public getter/setter (or Lombok `@Data`). |
+| **Missing documentation** | API users cannot discover required format/constraints. | Add Javadoc on the field, e.g., “Fully‑qualified project name of the parent; must exist and be visible to the caller
+
+[2026-05-17 21:06:52] VULNERABILITY:
+## TL;DR
+The file provides a stub `openPtyPair` for non‑Linux platforms that always fails with an error, but it has a few minor issues (unused placeholder constant, future‑dated SPDX year, generic error type, and potential nil‑pointer handling) and no real security or performance concerns. The biggest “bug” is the risk that callers assume non‑nil `*os.File` values and panic. Fixes: use a sentinel error, add a comment about nil handling, drop the unused constant or make it truly unused, and correct the SPDX year.
+
+---
+
+## 1. Context & Assumptions
+| Item | Detail |
+|------|--------|
+| **Repository** | `nooga/let-go` |
+| **File** | `pkg/rt/term_pty_other.go` |
+| **Target OS** | All non‑Linux, non‑JS builds (e.g., Windows, macOS, BSD). |
+| **Purpose** | Provide a compile‑time stub for `openPtyPair` when PTY support isn’t available. |
+| **Assumed callers** | Functions in `term.go` that expect a PTY pair on Linux; they must handle the error case on other OSes. |
+| **Build tags** | `//go:build !linux && !js` (go1.17+ syntax). |
+
+---
+
+## 2. Detailed Analysis
+
+### 2.1 Logical Bugs / Edge‑Case Issues
+| # | Issue | Explanation | Impact |
+|---|-------|-------------|--------|
+| 1 | **Returning nil file handles** – `openPtyPair` returns `nil, nil, ""` on error. If any caller dereferences the `*os.File` before checking the error, a panic occurs. | Many Go APIs return a non‑nil handle only on success, but a careless caller might do `pty, tty, _, _ := openPtyPair(); pty.Write(...)` assuming non‑nil. | Runtime panic on non‑Linux platforms. |
+| 2 | **Generic error value** – Uses `fmt.Errorf("open-pty is only supported on Linux")`. This makes it impossible for callers to program‑matically detect the “unsupported OS” case (e.g., via `errors.Is`). | No sentinel value / wrapped error for `Is`/`As`. | Harder to write clean error handling. |
+| 3 | **Unused placeholder constant** – `tiocswinsz` is defined but never referenced in this file (or any non‑Linux code). The comment says “unused; placeholder so term.go compiles”. | Compiles, but the constant pollutes the package namespace and can trigger `go vet`/`staticcheck` warnings. | Minor code‑quality noise. |
+| 4 | **Future SPDX year** – Header says `Copyright (c) 2026`. The repository is being examined in 2026‑05‑17, but the year may be a typo or placeholder. | SPDX license identifier is still valid, but the year mismatch could cause confusion in downstream compliance scans. | Low‑impact documentation issue. |
+
+### 2.2 Security Vulnerabilities
+| # | Issue | Why it’s not a problem here |
+|---|-------|-----------------------------|
+| 1 | **No user‑controlled input** – The function never touches external data. | No injection surface. |
+| 2 | **No file descriptors opened** – Returns nil, so there is nothing to leak or misuse. | No resource exposure. |
+| 3 | **Error message disclosure** – The error plainly states the limitation. | No sensitive info is revealed. |
+> **Conclusion:** No security‑relevant flaws
+
+[2026-05-17 21:22:05] VULNERABILITY:
+**TL;DR**  
+The `mod.rs` file is a thin façade that re‑exports `format::{OutputFormat, Reporter}` and `result::VerificationResult`; it is correct but could be hardened with documentation, explicit visibility control, and a small lint‑based sanity check to avoid dead code or name‑collision issues.
+
+---
+
+## 1. Context & Assumptions  
+
+| Item | Explanation |
+|------|-------------|
+| **Repository** | `boltffi/boltffi` – a Rust library dealing with FFI verification. |
+| **File** | `boltffi_verify/src/report/mod.rs` – the public entry‑point for the `report` module. |
+| **Surrounding code** | Not provided – we assume `format.rs` defines `OutputFormat` and `Reporter`, while `result.rs` defines `VerificationResult`. |
+| **Build environment** | Standard `cargo` toolchain, `edition = "2021"` (or later). |
+| **Goal** | Identify logical bugs, security vulnerabilities, performance problems, and code‑quality issues, and provide concrete, actionable recommendations. |
+
+---
+
+## 2. Detailed Solution  
+
+### 2.1 What the file does  
+
+```rust
+mod format;
+mod result;
+
+pub use format::{OutputFormat, Reporter};
+pub use result::VerificationResult;
+```
+
+* Declares two *private* sub‑modules (`format`, `result`).  
+* Re‑exports three symbols, making them part of the public API of `report`.  
+
+This pattern is idiomatic Rust for a *public façade* – it hides internal module paths while presenting a clean API surface.
+
+### 2.2 Potential Issues  
+
+| Category | Issue | Why it matters | Evidence |
+|----------|-------|----------------|----------|
+| **Logical / API correctness** | **Accidental name clash** – If another crate imports `boltffi_verify::report::*` and also defines a type named `Reporter`, the re‑export may cause ambiguous imports. | Users may get “multiple `Reporter` in scope” errors, leading to compile‑time friction. | The file itself does not guard against it. |
+| **Visibility leakage** | **`mod format;` and `mod result;` are *private* by default, but any `pub(crate)` items inside those modules are still visible to the crate.** If the intention is to keep *everything* private except the three re‑exports, we should audit those modules. | Unintended public items may become part of the crate’s external API via `pub(crate)` or `pub(super)`. | Not visible from this snippet, but worth checking. |
+| **Dead code / unused imports** | If either `format.rs` or `result.rs` contains items that are never used (including the re‑exported ones), the compiler will warn (or error with `#![deny(warnings)]`). | Wastes compile time, may hide real problems. | Standard Rust behaviour. |
+| **Documentation** | No module‑level doc comment (`//!`). | Users of the crate (including IDE auto‑completion) receive no guidance about what `report` provides. | Lint `missing_docs` would flag this. |
+| **Error handling** | The façade does not surface any error types; if `VerificationResult` contains error variants that should be `pub(crate)` only, they are currently exposed. | Over‑exposing internal error details can be a security or stability concern. | Depends on the design of `VerificationResult`. |
+| **Feature gating** | No `#[cfg(...)]` attributes. If the `format` module pulls in heavy optional dependencies (e.g., `serde_json` for a JSON reporter), the crate forces them on all users. | Increases binary size and compile time for consumers that don’t need those features. | Not visible here but a typical pattern. |
+| **Security** | The file itself contains no runtime code, thus no injection, auth bypass, XSS, etc. | – | – |
+| **Performance** | No runtime code, so zero overhead. | –
+
+[2026-05-17 21:37:36] VULNERABILITY:
+**TL;DR** – The test is a thin happy‑path check that may hide `null`‑pointer or edge‑case bugs in `ChangeDetector.inputFilesChangeDetected`; add defensive checks, richer test data (temporary files, null/empty goals, previous state), and improve test readability and safety.
+
+---
+
+## 1. Context & Assumptions  
+
+| Item | Explanation |
+|------|--------------|
+| **Project** | `spring-cloud-contract` – a Spring Cloud library that generates contract tests. |
+| **File under review** | `ChangeDetectorTests.java` – unit test for the `ChangeDetector` utility used by the Maven verifier plugin. |
+| **Method being exercised** | `ChangeDetector.inputFilesChangeDetected(File projectRoot, Object previousState, MavenSession session)`. We don’t have the implementation here, but the test expects a **`true`** result when the Maven session contains the **`clean`** goal. |
+| **Assumptions** | * `ChangeDetector` should treat a `clean` goal as “input files changed”. <br>* The method should be tolerant of `null` for `previousState`. <br>* The test runs on any OS that supports `.` as a directory reference. |
+
+---
+
+## 2. Detailed Solution – Code‑level Findings  
+
+### 2.1 Logical / Functional Bugs  
+
+| Observation | Why it matters | Recommended fix |
+|-------------|----------------|-----------------|
+| **`null` is passed for `previousState`** without any comment. If `ChangeDetector` dereferences it, a `NullPointerException` will be thrown in production (or in other tests). | The test only passes because the current implementation may ignore the argument, but future changes could break it. | Add a **null‑guard** in `ChangeDetector.inputFilesChangeDetected` (`Objects.requireNonNullElse(previousState, EMPTY_STATE)`) and document the contract. |
+| **Only one scenario (clean + install) is covered**. No verification for: <br>• No `clean` goal (e.g., `verify`). <br>• Empty goals list. <br>• `session` being `null`. | Edge‑cases can cause false negatives/positives or NPEs. | Add parameterised tests covering these permutations. |
+| **`new File(".")` uses the *working directory* of the test runner**, which may differ between IDE, CI, and Maven runs (e.g., when tests are executed from a sub‑module). | Could cause flaky results if the detector inspects the file system. | Use `java.nio.file.Files.createTempDirectory` (or JUnit 5’s `@TempDir`) to obtain a reliable, isolated directory. |
+| **`Arrays.asList("clean", "install")` produces a mutable list, but `MavenSession.getGoals()` may return an **unmodifiable** list in real Maven.** If `ChangeDetector` tries to modify the list, an `UnsupportedOperationException` will be thrown. | The test hides a potential bug where the production code mutates the list. | Ensure the detector treats the list as read‑only (`Collection.unmodifiableList`) or copy it (`new ArrayList<>(session.getGoals())`). |
+| **No verification of the *false* branch** – the test never checks that non‑clean goals return `false`. | Guarantees only one side of the boolean contract. | Add a complementary test (`should_return_false_when_no_clean_goal`). |
+
+### 2.2 Security Vulnerabilities  
+
+| Area | Verdict |
+|------|----------|
+| **Input‑File Path Handling** | The test uses a static `.` path; if `ChangeDetector` later normalises or resolves symlinks, an attacker could influence the detector by crafting a path with `..` or symbolic links. No immediate vulnerability in the test
+
