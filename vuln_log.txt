@@ -878,3 +878,61 @@ The analysis is organized into five focus areas:
 | 2 | **No re‑entrancy guard in the test** – If `BoldToken` had a `transferFrom` that called an external contract (e.g., via a hook), the test would not detect re‑entrancy. | Potentially hides re‑entrancy bugs. | Add a mock recipient with a fallback that attempts a re‑entrant `transferFrom` and assert that the token either reverts or safely handles it. |
 | 3 | **Potential for address aliasing** – The test uses
 
+[2026-05-17 01:45:44] VULNERABILITY:
+Below is a line‑by‑line forensic review of **src/gui/ClientGateLevelView.cpp** (Qt‑based widget that draws the input‑peak / gain‑reduction history of a `ClientGate`).  
+I have grouped the findings into the five categories you asked for, added concrete code‑level recommendations, and included short “why‑this‑matters” notes so you can act on them immediately.
+
+---
+
+## 1️⃣ BUGS / Logical Errors & Edge‑Cases  
+
+| Line / Area | Problem | Why it matters | Fix (minimal) |
+|-------------|---------|----------------|---------------|
+| **Constructor** `m_history.assign(kHistoryCount, Sample{kBottomDb, 0.0f});` | `m_writeIdx` is never initialized. The first call to `tick()` writes to an indeterminate index → **undefined behaviour** (possible out‑of‑bounds write, crash, or silent corruption). | The history buffer must start at a known position. | Add `m_writeIdx = 0;` in the ctor (or member‑initializer list). |
+| **dbToY** `const float t = (db - kBottomDb) / (kTopDb - kBottomDb);` | If `kTopDb == kBottomDb` (e.g. a typo in the constants) the denominator is **zero**, yielding `inf` or a division‑by‑zero exception on some platforms. | The function would return NaN/inf and the painter would receive an invalid coordinate, possibly crashing Qt. | Add an assertion or guard: `if (kTopDb <= kBottomDb) return 0;` (or static_assert if they are compile‑time constants). |
+| **tick** `s.inputDb = std::clamp(m_gate->inputPeakDb(), kBottomDb, kTopDb);` | No sanity check for **NaN** or **±∞** returned from the gate. `std::clamp(NaN, …)` returns **NaN**, which propagates to `dbToY` → invalid Y‑coordinate. | A rogue gate implementation (or a floating‑point overflow) would corrupt the entire plot. | After the clamp, add `if (!std::isfinite(s.inputDb)) s.inputDb = kBottomDb;` (same for `s.grDb`). |
+| **paintEvent** – Loop over `kTicks` (grid lines) and later (not shown) over `m_history`. | The code does **not** check whether the widget
+
+[2026-05-17 02:17:08] VULNERABILITY:
+## Overview  
+
+`ParameterTypeMatcher` is a small helper that wraps a **stateful** `java.util.regex.Matcher` together with a `ParameterType<?>`.  
+Its job is to:
+
+* Scan a piece of text (`text`) for the next match of the parameter‑type’s regex.  
+* Ensure the match is surrounded by “word‑boundary” characters (whitespace, punctuation or symbol).  
+* Provide ordering logic (`Comparable`) that the Cucumber engine uses to decide which match wins when several parameter types overlap.
+
+Below is a **deep dive** into the implementation, focusing on the five requested dimensions.
+
+---
+
+## 1️⃣ BUGS – Logical / Runtime Edge Cases  
+
+| Location | Problem | Why it matters | Suggested fix / mitigation |
+|----------|---------|----------------|----------------------------|
+| `isWhitespaceOrPunctuationOrSymbol(char c)` | Uses `Pattern.matches("[\\p{Z}\\p{P}\\p{S}]", …)` which **creates a new `Pattern` and a new `String` on every call**. The method is called for **every character adjacent to a match** (potentially many thousands of times). | Performance hit, but also **possible `StackOverflowError`** on extremely long texts if the JVM’s internal pattern cache overflows. | Pre‑compile the pattern once (static final) **or** use `Character.getType(c)` to check Unicode categories directly. |
+| `advanceToAndFind(int newMatchPos)` – loop | The loop continues while `matcher.find()` returns a match, but **does not adjust the region after a match that fails the word‑boundary test**. The region stays fixed (`newMatchPos → text.length()`), so the next iteration will simply call `find()` again which will start **right after the previous match** (as `Matcher` does automatically). This works, but if the regex can match an **empty string** (`group().isEmpty()`), `continue` will be hit repeatedly. In Java a zero‑length match advances the search by **one code‑point**, but the extra `continue` may cause **unnecessary iterations**. | In pathological cases (e.g., regex `.*?`) you waste cycles scanning the same location repeatedly. | Guard against empty‑string patterns early (e.g., reject them when the `ParameterType` is built) or add `if (group().isEmpty()) { matcher.region(matcher.end()+1, text.length()); continue; }` to guarantee progress. |
+| `groupHasLeftWordBoundary()` / `groupHasRightWordBoundary()` | Only checks the **character immediately before/after** the match. For Unicode **surrogate pairs** (code points > U+FFFF) or combining
+
+[2026-05-17 02:32:30] VULNERABILITY:
+## TL;DR  
+| Area | Verdict | Quick‑Fix / Recommendation |
+|------|----------|----------------------------|
+| **Logic / Runtime bugs** | ❗ Ambiguous JSON mapping, unsafe `lastOrNull()` usage, mandatory `backupRenderer` may break deserialization | Rename/merge fields, add defensive getters, make `backupRenderer` optional or give a default |
+| **Security** | ⚠️ No direct code injection, but **untrusted JSON** can cause DoS or malformed URLs that later get used in HTTP requests / UI | Validate/size‑limit incoming JSON, sanitize URLs before using them outside the model |
+| **Performance** | ✅ Acceptable for typical thumbnail lists; only minor O(n) traversal on `lastOrNull()` | If lists become large, cache the “best” thumbnail or expose the index to pick directly |
+| **Code quality** | ⚠️ Naming conflict, missing documentation, no `toString`/`equals` customisation, no null‑safety helpers | Refactor names, add KDoc, implement safe accessor, consider `@SerialName` instead of `@JsonNames` |
+| **Key learnings** | ✅ `@JsonNames` is handy for backward‑compatibility, but **never reuse the same JSON key for two properties**. Use sealed classes or separate DTOs for versioned payloads. | – |
+
+Below is a **deep, line‑by‑line audit** covering the five requested categories.
+
+---
+
+## 1️⃣ BUGS – Logical / Runtime Errors & Edge‑Case Failures
+
+| Line / Construct | Issue | Why it matters | Suggested fix |
+|------------------|-------|----------------|---------------|
+| `@JsonNames("croppedSquareThumbnailRenderer") val musicThumbnailRenderer: MusicThumbnailRenderer?` | **JSON‑key collision** – `croppedSquareThumbnailRenderer` is also a distinct property of the same class. When deserialising a JSON object that contains the key `croppedSquareThumbnailRenderer`, the library (kotlinx‑serialization) will try to map it to **both** `musicThumbnailRenderer` **and** `croppedSquareThumbnailRenderer`. The second one wins, silently discarding the first mapping. | The resulting object may have one field populated while the other stays `null`, breaking any logic that expects both. | 1. Rename one of the properties (e.g., `legacyCroppedSquareThumbnailRenderer`). 2. If the two fields are semantically identical, remove one and keep a single canonical name. 3. Prefer `@SerialName` for a single‑alias mapping instead of `@JsonNames` when there is only one alternate name. |
+| `val musicAnimatedThumbnailRenderer: MusicAnimatedThumbnailRenderer?` (non‑nullable `backupRenderer` inside) | **Deserialization can fail** if the JSON lacks
+
