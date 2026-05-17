@@ -1055,3 +1055,107 @@ The schemas are functionally correct but lack strictness, reuse, and sanitisatio
 | 3 | **`inflate` called with `Z_FINISH` without guaranteeing enough output space** | The API expects the caller to provide a *sufficient* output buffer. If the caller’s size is off by even a single byte, `inflate` will fail with `Z_BUF_ERROR`. The wrapper does not attempt a retry with a larger buffer (which is fine per spec) but does not document this requirement clearly. | Potential DoS if caller mis‑estimates size. | Add a pre‑flight sanity check: compare `*destLen` against the uncompressed size stored in the zlib header (if present) using `inflateGetHeader` or a custom parser. |
 | 4 | **`inflateInit` vs `inflateInit2`** | `inflateInit` uses the default window size (15). If the compressed data was created with a custom window size, decompression may fail. The original `uncompress` wrapper intentionally uses the default, but for robustness a wrapper could expose `inflateInit2` with a `MAX_WBITS` argument. | Rare incompatibility with non‑standard streams
 
+[2026-05-17 04:53:57] VULNERABILITY:
+**TL;DR**  
+The current `ComputeScore.compute` is logically correct for the reference implementation, but it can produce *NaN* for negative scores with fractional exponents and can under‑flow to 0 for many small contributions. Replace the direct product with a log‑sum approach, add validation for illegal inputs, and tighten the type layout for readability.
+
+---
+
+## Detailed Overview  
+
+| Aspect | Current Behaviour | Concern |
+|--------|-------------------|---------|
+| **Mathematical correctness** | Implements `base^exponent` per match, using `Double.ulpOfOne` as EPSILON when `score == 0 && weight != nil`. Mirrors the JavaScript version. | ✅ Correct for non‑negative scores. |
+| **Negative scores** | `pow(‑0.5, 0.3)` → `nan`. The algorithm does not guard against a negative `score`. | ❗️ May propagate `nan` and break the whole ranking. |
+| **Weight = 0** | Exponent becomes `0`; `pow(base,0) = 1`. This is mathematically fine, but the original Fuse.js never supplies a zero weight. | ⚠️ Acceptable, but worth documenting. |
+| **Floating‑point under‑flow** | Multiplying many numbers `< 1` (e.g., `0.01^0.5` repeated) quickly drives `totalScore` to `0`. The downstream code expects a non‑zero probability‑like score. | ❗️ Loss of precision, especially for large result sets. |
+| **Performance** | O(n) loop with `pow` per iteration – fine for typical Fuse match lists (≤ ~10 items). | ✅ No bottleneck. |
+| **Security** | No external string handling, no I/O – no injection, XSS, CSRF, etc. | ✅ No issues. |
+| **Code quality** | • `enum ComputeScore` is used only as a namespace (common in Swift but a `struct` would be clearer).<br>• `MatchInput` is nested inside the enum – fine, but public API may benefit from a top‑level type.<br>• No documentation of edge‑cases (negative scores, overflow). | ⚠️ Minor readability improvements. |
+
+**Key learning:** When a product of many probabilities (or < 1 values) is required, computing the sum of logarithms (`logScore = Σ exponent * log(base)`) and then exponentiating once (`exp(logScore)`) is numerically stable and avoids under‑flow while preserving exactness for the same mathematical definition.
+
+---
+
+## Step‑by‑Step Action Plan  
+
+1. **Create a dedicated namespace type** (`struct ComputeScore`).  
+2. **Add input validation**: reject negative `score` (or clamp to 0) and ensure `norm` & `weight` are non‑negative. Throw a descriptive error.  
+3. **Rewrite the aggregation using logarithms** to prevent under‑flow:  
+   * `logTotal = Σ exponent * log(base)`  
+   * `totalScore = exp(logTotal)`  
+4. **Keep the EPSILON substitution** (`
+
+[2026-05-17 05:09:23] VULNERABILITY:
+**TL;DR**  
+`Plain_Transformer` is a minimal, pass‑through implementation that returns the input unchanged. It has no functional bugs, security flaws, or performance concerns, but it lacks modern PHP best‑practices (type‑hints, strict typing, documentation, test coverage).
+
+---
+
+## Detailed Overview  
+
+| Aspect | Findings |
+|--------|----------|
+| **Purpose** | Implements `Transformer_Base` to resolve widget props without alteration. |
+| **Logic** | `transform( $value, Props_Resolver_Context $context )` simply returns `$value`. |
+| **Scope** | Used by the Atomic Widgets system of Elementor to handle “plain” values (strings, numbers, arrays, objects) that require no conversion. |
+| **Assumptions** | The caller guarantees `$value` is a type the widget can handle; the transformer does not need to validate or sanitize it. |
+| **Dependencies** | - `Props_Resolver_Context` (unused in this concrete class).<br>- `Transformer_Base` (provides the contract). |
+| **Environment** | WordPress plugin, loaded under `ABSPATH` guard; runs on any PHP version supported by Elementor (≥ 7.4). |
+
+### 1. Bugs (Logical / Runtime)
+
+| Issue | Explanation | Impact |
+|-------|-------------|--------|
+| None detected | The method performs a direct return; no branches, no external calls. | N/A |
+
+### 2. Security Vulnerabilities  
+
+| Issue | Explanation | Impact |
+|-------|-------------|--------|
+| No input sanitization | The transformer does **not** sanitize `$value`. If the caller passes user‑controlled data that later gets echoed without escaping, XSS can occur, but that is **outside** the transformer’s responsibility. | Dependent on downstream usage. |
+| Context parameter unused | Potential future misuse if a developer assumes `$context` is validated here. | Low – documentation can mitigate. |
+
+### 3. Performance  
+
+| Observation | Reason |
+|-------------|--------|
+| O(1) time & memory | Simple return statement; no loops or allocations. |
+| No I/O or heavy computation | No database, file, or network calls. |
+| Negligible CPU/memory footprint | Ideal for high‑frequency calls. |
+
+### 4. Code Quality  
+
+| Anti‑pattern / Issue | Recommendation |
+|----------------------|----------------|
+| Missing **strict typing** (`declare(strict_types=1);`) | Add at the top of the file. |
+| No **type hints** on `$value` or return type | Use `mixed` (PHP 8.0+) or a more specific union type if possible. |
+| Unused `$context` argument | Document that it is intentionally unused (`/** @unused */`). |
+| No **docblock** for `transform` method | Add PHPDoc explaining purpose, parameters, and return type. |
+| No **unit test** for pass‑through behavior | Add a PHPUnit test covering typical and edge inputs. |
+| No **visibility** for class members (none exist) – fine. | N/A |
+| No **final** keyword – could be final to prevent extension if not intended. | Consider `final class Plain_Transformer`. |
+
+### 5. Key Learnings  
+
+* **Pass‑through transformers** are useful as a default/no‑op implementation in a strategy pattern, allowing the resolver to treat all props uniformly without special‑casing.  
+* Even trivial classes benefit from **type declarations**, **strict typing**, and **PHPDoc** to aid static analysis tools (PHPStan, Psalm).  
+* **Unused parameters** should be explicitly marked to silence IDE warnings and signal intent.  
+* Adding **unit tests** for edge cases (e.g., `null`, large arrays, objects) ensures future modifications don’t accidentally alter the no‑op contract.  
+
+---
+
+## Step‑by‑Step Action Plan  
+
+1. **Enable strict typing**  
+   ```php
+   <?php
+   declare(strict_types=1);
+   ```
+2. **Add PHPDoc to class and method**  
+   ```php
+   /**
+    * Transformer that returns the supplied value unchanged.
+    *
+    * @since 3.13.0
+
