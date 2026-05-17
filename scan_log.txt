@@ -1876,3 +1876,21 @@
 [2026-05-17 21:37:52] Issue: Do not log password in ContractRepository's toString() method
 [2026-05-17 21:37:52] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199963, Requested 1636. Please try again in 11m30.768s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-17 21:37:55] === CYCLE DONE === Next in 15 min.
+[2026-05-17 21:53:18] GitHub Agent online. Scanning every hour across all languages.
+[2026-05-17 21:53:18] === SCAN CYCLE STARTING ===
+[2026-05-17 21:53:18] Language: swift
+[2026-05-17 21:53:19] Repo: omarshahine/HomeClaw | Stars: 122
+[2026-05-17 21:53:19] Reading: Sources/homeclaw-cli/Commands/GetSceneCommand.swift
+[2026-05-17 21:53:20] Analysis error: Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}
+[2026-05-17 21:53:23] Reading: Tests/homeclaw-cliTests/FormatDurationTests.swift
+[2026-05-17 21:53:23] Analysis error: Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}
+[2026-05-17 21:53:26] Reading: Sources/homeclaw-cli/Commands/DeleteSceneCommand.swift
+[2026-05-17 21:53:26] Analysis error: Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}
+[2026-05-17 21:53:30] Open issues to analyze: 3
+[2026-05-17 21:53:30] Issue: TestFlight beta invite request
+[2026-05-17 21:53:30] Issue analysis error: Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}
+[2026-05-17 21:53:33] Issue: App Store public submission checklist (post build 145)
+[2026-05-17 21:53:33] Issue analysis error: Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}
+[2026-05-17 21:53:36] Issue: Design discussion: extending `create --characteristic` vs adding richer state-change command
+[2026-05-17 21:53:36] Issue analysis error: Error code: 400 - {'error': {'message': 'The model `llama3-8b-8192` has been decommissioned and is no longer supported. Please refer to https://console.groq.com/docs/deprecations for a recommendation on which model to use instead.', 'type': 'invalid_request_error', 'code': 'model_decommissioned'}}
+[2026-05-17 21:53:39] === CYCLE DONE === Next in 1 hour.

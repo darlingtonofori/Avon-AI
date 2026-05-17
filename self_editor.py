@@ -75,7 +75,7 @@ def analyze_and_edit(filename, code):
     prompt = load_prompt()
     try:
         response = client.chat.completions.create(
-            model="openai/gpt-oss-120b",
+            model="llama3-8b-8192",
             messages=[
                 {"role": "system", "content": prompt},
                 {"role": "user", "content": f"""You are Avon AI analyzing and improving your own source code.
@@ -144,6 +144,13 @@ def self_edit_cycle():
         time.sleep(3)
 
     if edits_made:
+        # Restart server so new code actually runs
+        import sys
+        log(f"Restarting server to apply self-edits: {edits_made}")
+        git_push_all(reason)
+        time.sleep(2)
+        os.execv(sys.executable, [sys.executable] + sys.argv)
+        return
         reason = f"self-improved: {', '.join(edits_made)}"
         git_push_all(reason)
         log(f"Self-edit cycle complete. Edited: {edits_made}")
