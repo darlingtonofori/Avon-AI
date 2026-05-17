@@ -1598,3 +1598,93 @@ The `OpenAIAPIUsageSnapshot` model is well‑structured but lacks defensive codi
 - **Documentation**: Public structs should be documented with `///` comments for maintainability.
 - **Naming**: `LineItemBreakdown` and `ModelBreakdown` could be
 
+[2026-05-17 12:52:07] VULNERABILITY:
+**TL;DR**  
+`FilePreviewMagnifyingPDFView` is a thin wrapper around `PDFView` that forwards gestures to optional closures; the implementation is mostly correct, but there are a few subtle logical quirks (focus handling, scroll‑wheel flow, missing super calls when closures are set) and minor style/maintainability issues that can be tightened.
+
+---
+
+## Key Points
+- **Logic / Edge‑Cases**
+  - `mouseDown` forces first‑responder status **before** calling `super`, which may break default focus‑change behaviour in some contexts.
+  - `scrollWheel` invokes `onScroll?()` **only** when the zoom‑modifier isn’t present; if both zoom‑modifier handling and generic scrolling are needed, they won’t both fire.
+  - When a custom closure is supplied (`onMagnify`, `onRotate`, `onSwipe`, `onSmartMagnify`), the default `super` implementation is **skipped** – intentional but worth documenting.
+- **Security**
+  - No direct injection or privileged‑operation risks in this file. All event data is passed unchanged to user‑provided closures; any vulnerability would stem from those closures, not from this wrapper.
+- **Performance**
+  - Overridden methods are lightweight; the only non‑trivial call is `FilePreviewInteraction.hasZoomModifier(event)`. Ensure that method is O(1) and does not perform heavy UI work.
+- **Code Quality**
+  - Use of `if let onX { … }` is concise but can be confusing for readers unfamiliar with Swift 5.7+ pattern‑matching syntax.
+  - Repeated “else { super.xxx }” pattern could be abstracted.
+  - No documentation/comments on the purpose of each closure or the expected event‑modifier semantics.
+  - No unit‑test scaffolding – event handling is a perfect candidate for UI tests.
+- **Key Learnings**
+  - Wrapping system views with optional callbacks is an elegant way to inject custom behaviour while preserving default functionality when callbacks are absent.
+  - Always be explicit about *when* you deliberately suppress `super` calls; otherwise future maintainers might assume the default behaviour still occurs.
+  - Managing first‑responder status inside `mouseDown` can be useful but may have side‑effects; consider doing it in `becomeFirstResponder` only.
+
+---
+
+## Detailed Explanation
+
+### 1. Focus Management
+```swift
+override var acceptsFirstResponder: Bool { true }
+
+override func becomeFirstResponder() -> Bool { … }
+override func resignFirstResponder() -> Bool { … }
+
+override func mouseDown(with event: NSEvent) {
+    window?.makeFirstResponder(self)
+    super.mouseDown(with: event)
+}
+```
+- `accept
+
+[2026-05-17 13:38:21] VULNERABILITY:
+**TL;DR** – The instrumented test is functionally correct but overly simplistic; there are no security or performance concerns, but you can improve robustness, readability, and future‑proofing by adding explicit messages, avoiding hard‑coded package strings, handling potential API changes, and expanding test coverage.
+
+---
+
+## Key Points
+- **Logical Bugs:** None that cause crashes; test asserts the app’s package name correctly.
+- **Security Vulnerabilities:** No injection points, auth bypass, XSS, CSRF, or native‑code risks in this snippet.
+- **Performance:** Negligible – only a single call to `InstrumentationRegistry`.
+- **Code‑Quality Issues**
+  - Hard‑coded package name couples test to manifest; will break on refactor.
+  - Uses deprecated `InstrumentationRegistry` pattern for newer AndroidX testing (prefer `ApplicationProvider`).
+  - No custom assertion message → debugging failures is harder.
+  - Lacks documentation on why this test exists (beyond boilerplate comment).
+- **Key Learnings**
+  - Keep test data (e.g., expected package name) in a single source of truth.
+  - Prefer the newer AndroidX testing APIs for better compatibility.
+  - Even trivial tests should include helpful messages for faster failure diagnostics.
+
+---
+
+## Detailed Explanation
+
+### 1. Bugs & Logical Errors
+| Area | Observation | Impact |
+|------|-------------|--------|
+| **Hard‑coded package name** | `assertEquals("com.ai.assistance.shower", appContext.packageName)` | If the app’s `applicationId` changes (e.g., flavors, CI builds), the test will fail even though the app works. |
+| **Nullability** | `InstrumentationRegistry.getInstrumentation().targetContext` is non‑null in normal execution, but the API returns a nullable type in Kotlin (`Context?`). The code assumes non‑null without safe‑call or `!!`. | In rare mis‑configuration (e.g., test runner not initialized), a `NullPointerException` could be thrown. |
+| **No custom message** | `assertEquals` called without a failure message. | When the assertion fails, the output only shows “expected … but was …”, making it harder to locate the failing test in large suites. |
+
+### 2. Security Vulnerabilities
+- The test runs **inside the app’s own process** and never processes external input, so there are no injection surfaces.
+- No network, file, or IPC interactions; thus no XSS, CSRF, privilege escalation, or buffer‑overflow concerns.
+
+### 3. Performance
+- Execution time is dominated by the Android instrumentation startup; the test body itself performs a single getter and string comparison – essentially **O(1)**.
+- No loops, heavy I/O, or allocations that could affect CI throughput.
+
+### 4. Code‑Quality & Anti‑Patterns
+| Issue | Why it matters | Suggested fix |
+|-------|----------------|--------------|
+| **Hard‑coded string** | Tightly couples test to manifest; refactors break it. | Pull the expected package from `BuildConfig.APPLICATION_ID` or a constant. |
+| **Deprecated API usage** | `InstrumentationRegistry` works but newer `ApplicationProvider.getApplicationContext()` is the recommended approach (more stable across test runners). | Replace with `val appContext = ApplicationProvider.getApplicationContext<Context>()`. |
+| **Missing explicit test purpose** | The default comment is generic and adds no value. | Add a Javadoc‑style comment describing why verifying the package name is useful (e.g., sanity check for flavors). |
+| **Lack of descriptive assertion** | Debugging failures is slower. | `assertEquals("Package name mismatch", BuildConfig.APPLICATION_ID, appContext.packageName)`. |
+| **Unused imports** | The file imports `org.junit.Assert.*` which is used, but if you switch to `Truth` or `Hamcrest`, you may clean up. | Consider using `Truth.assertThat(appContext.packageName).isEqualTo(BuildConfig.APPLICATION_ID
+
