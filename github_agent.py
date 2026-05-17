@@ -109,7 +109,7 @@ Deep analysis:
 Be specific and technical."""
 
         response = client.chat.completions.create(
-            model="llama3-8b-8192",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": load_prompt()},
                 {"role": "user", "content": analysis_request}
@@ -138,7 +138,7 @@ def analyze_issue(issue, repo_name):
         body = (issue.get("body", "") or "")[:2000]
 
         response = client.chat.completions.create(
-            model="llama3-8b-8192",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": load_prompt()},
                 {"role": "user", "content": f"""Developer problem on GitHub repo: {repo_name}

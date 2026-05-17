@@ -79,7 +79,7 @@ Write an improved system prompt that fixes weaknesses. Make it more capable, dir
 
     try:
         response = client.chat.completions.create(
-            model="openai/gpt-oss-120b",
+            model="llama-3.3-70b-versatile",
             messages=[{"role": "user", "content": evolution_prompt}],
             max_tokens=800
         )
