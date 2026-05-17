@@ -2380,3 +2380,60 @@ This pattern is idiomatic Rust for a *public façade* – it hides internal modu
 |------|----------|
 | **Input‑File Path Handling** | The test uses a static `.` path; if `ChangeDetector` later normalises or resolves symlinks, an attacker could influence the detector by crafting a path with `..` or symbolic links. No immediate vulnerability in the test
 
+[2026-05-17 22:42:50] VULNERABILITY:
+**TL;DR** 
+The provided Ruby script is a Homebrew formula for installing Rapid-MLX, an AI inference library for Apple Silicon. The script handles dependencies, installation, and configuration. This analysis covers bugs, security vulnerabilities, performance issues, code quality, and key learnings.
+
+### Bugs: Logical Errors, Edge Cases, Runtime Issues
+
+1. **Hardcoded version**: The script hardcodes the version of Rapid-MLX (0.6.52) and Python (3.12). This may lead to issues when newer versions are released.
+2. **Unnecessary rebuild**: The script rebuilds the Rust extensions (pydantic_core and rpds-py) from source on every install, which can be time-consuming. Consider caching the built extensions.
+3. **Error handling**: The script does not handle errors well. For example, if the `system` calls fail, the script will continue executing, potentially leading to unexpected behavior.
+4. **Path manipulation**: The script uses `File.expand_path` to expand the `~` in the `shadows` array. However, this may not work as expected if the `HOME` environment variable is not set.
+
+### Security Vulnerabilities
+
+1. **Insecure dependencies**: The script uses `pip` to install dependencies, which may lead to security issues if the dependencies are not up-to-date or have known vulnerabilities.
+2. **Arbitrary code execution**: The script uses `system` calls to execute arbitrary commands, which can lead to code injection attacks if the input is not sanitized.
+3. **Path traversal**: The script uses user-controlled input (`~/.local/bin/rapid-mlx` and `~/.local/bin/vllm-mlx`) to construct file paths, which can lead to path traversal attacks.
+4. **Information disclosure**: The script logs sensitive information (e.g., file paths) to the console, which can be a security risk.
+
+### Performance
+
+1. **Rebuilding Rust extensions**: Rebuilding the Rust extensions from source on every install can be time-consuming (approximately 1 minute).
+2. **Multiple `system` calls**: The script uses multiple `system` calls, which can lead to performance issues due to the overhead of creating new processes.
+3. **File system operations**: The script performs multiple file system operations (e.g., creating symlinks, writing files), which can lead to performance issues if the file system is slow.
+
+### Code Quality
+
+1. **Complexity**: The script has a high cyclomatic complexity due to the multiple conditional statements and nested blocks.
+2. **Magic numbers**: The script uses magic numbers (e.g., `0.6.52`, `3.12`) without explanation, which can make the code harder to understand and maintain.
+3. **Variable naming**: Some variable names (e.g., `p`, `cmd`) are not descriptive, which can make the code harder to understand.
+4. **Comments**: The script has few comments, which can make it harder for others to understand the code.
+
+### Key Learnings
+
+1. **Use version constraints**: Instead of hardcoding versions, use version constraints (e.g., `>= 0.6.52`) to ensure the script works with newer versions.
+2. **Cache build artifacts**: Cache build artifacts (e.g., the built Rust extensions) to avoid rebuilding them on every install.
+3. **Handle errors properly**: Use error handling mechanisms (e.g., `rescue` blocks) to handle errors and unexpected behavior.
+4. **Sanitize user input**: Sanitize user-controlled input to prevent security vulnerabilities (e.g., path traversal attacks).
+5. **Log sensitive information securely**: Log sensitive information securely (e.g., using a secure logging mechanism) to prevent information disclosure.
+
+Here's an example of how the script can be refactored to address some of the issues mentioned above:
+```ruby
+class RapidMlx < Formula
+  desc "AI inference for Apple Silicon — drop-in OpenAI API, 2-4x faster than Ollama"
+  homepage "https://github.com/raullenchai/Rapid-MLX"
+  url "https://files.pythonhosted.org/packages/fe/b4/10780ee9f58d03b2e118b6ae7132b4f1b66dbf20481d09165e6d6756fdb7/rapid_mlx-0.6.52.tar.gz"
+  sha256 "e0bfeb31b9fddf76dc82eefe63322388fe91fb852568052adb2c6b03615d1a21"
+  license "Apache-2.0"
+  head "https://github.com/raullenchai/Rapid-MLX.git", branch: "main"
+
+  depends_on :macos
+  depends_on arch: :arm64
+  depends_on "python@3.12"
+  depends_on "rust" => :build
+
+  def install
+   
+
