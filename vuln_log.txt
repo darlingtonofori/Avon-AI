@@ -1159,3 +1159,109 @@ The current `ComputeScore.compute` is logically correct for the reference implem
     *
     * @since 3.13.0
 
+[2026-05-17 06:56:29] VULNERABILITY:
+**TL;DR**  
+The `CustomParticle` class works but is fragile: it hard‑codes a lifetime, lacks null‑checks on the sprite, and uses magic numbers and missing documentation. No security risks are present, but there are minor performance and quality improvements that can be made.
+
+---
+
+## Detailed Overview  
+
+| Aspect | Observation | Impact |
+|--------|--------------|--------|
+| **Functionality** | Extends `SingleQuadParticle`, sets `lifetime = 40`, forces `Layer.TRANSLUCENT`. | Works for basic particles but the hard‑coded lifetime may be unsuitable for many use‑cases. |
+| **Logical Bugs / Edge Cases** | No validation that `sprite` is non‑null. If a `null` sprite is passed, `SingleQuadParticle` will throw a `NullPointerException` during rendering. | Crashes at runtime, especially when particles are generated from data‑driven sources (e.g., JSON config). |
+| **Security Vulnerabilities** | The class does not interact with external inputs (files, network, user data). No injection points, authentication, or UI rendering are performed. | **None** – safe from typical security concerns. |
+| **Performance** | Constructor simply forwards arguments; the only state change is `lifetime`. No loops or heavy allocations. | Negligible impact. However, creating many `CustomParticle` instances with a fixed 40‑tick lifetime can lead to a high GC load if the particle system spawns thousands per second. |
+| **Code Quality** | • Magic number `40`.<br>• No Javadoc for public constructors.<br>• No `@Nullable`/`@Nonnull` annotations on parameters (Minecraft codebase uses them heavily).<br>• Class not declared `final` (unintended subclassing).<br>• No explicit `@Override` on `getLayer` (present, good). | Reduces readability, maintainability, and makes future extension error‑prone. |
+| **Key Learnings** | • Always validate external objects (e.g., `TextureAtlasSprite`).<br>• Prefer constants over magic numbers.<br>• Document public API (constructors).<br>• Use annotations (`@Nullable`, `@Nonnull`) to aid static analysis.<br>• Expose configurability when a value may need tweaking. | Improves robustness and developer experience. |
+
+---
+
+## Step‑by‑Step Action Plan  
+
+1. **Introduce a configurable lifetime constant**  
+   ```java
+   private static final int DEFAULT_LIFETIME = 40;
+   ```
+2. **Add null‑check for `sprite`** – throw an informative `IllegalArgumentException` if `null`.  
+3. **Add Javadoc to both constructors** explaining parameters and the default lifetime.  
+4. **Mark the class as `final`** unless you intentionally want subclassing.  
+5. **Add `@Nonnull` annotations to parameters** (or `@Nullable` where appropriate) to align with the rest of the codebase.  
+6. **Provide an overloaded constructor that accepts a custom lifetime** for flexibility.  
+7. **Add a unit test** that verifies a `null` sprite triggers the expected exception and that the lifetime is set correctly.  
+8. **Optional: Cache the `Layer` value** if `getLayer` is called frequently (micro‑optimisation).  
+
+---
+
+## Code / Configuration Blocks  
+
+### Revised `CustomParticle.java`
+
+```java
+package cn.ussshenzhou.madparticle.p
+
+[2026-05-17 08:13:29] VULNERABILITY:
+**TL;DR**  
+The `translate/lang/ve.py` module is functionally correct but suffers from several *PEP‑8* violations, missing type hints, and a lack of tests. No security or performance problems are present. Refactor the class name, add explicit UTF‑8 handling, type annotations, and unit‑tests to make the module robust and maintainable.
+
+---
+
+## Detailed Overview  
+
+| Aspect | Observation | Impact |
+|--------|-------------|--------|
+| **Logic / Runtime** | The module only defines a subclass of `common.Common` with a `specialchars` attribute. No methods are overridden, so there are no runtime errors. | ✅ No logical bugs. |
+| **Security** | No user‑controlled input, file I/O, or external calls. The class merely holds static data. | ✅ No injection, XSS, CSRF, or other vulnerabilities. |
+| **Performance** | The module loads a tiny constant string. No loops or heavy computations. | ✅ No performance concerns. |
+| **Code Quality** | • Class name `ve` is *lower‑case* (PEP‑8 requires `CapWords`). <br>• No module‑level `__all__` – makes wildcard imports ambiguous. <br>• No explicit UTF‑8 encoding header (important for Python 2 legacy). <br>• No type hints or docstring for the attribute. <br>• `specialchars` is a single string with spaces – callers may expect an iterable of characters. | ❌ Reduces readability, static‑analysis friendliness, and future extensibility. |
+| **Maintainability** | The file contains no tests, making regression detection impossible. | ❌ Increases risk of silent breakage if upstream `common.Common` changes. |
+| **Key Learnings** | • Even “data‑only” modules benefit from PEP‑8 compliance and explicit typing. <br>• Providing a small, focused test suite prevents accidental regressions. <br>• Using immutable containers (`tuple`) for constant collections protects against accidental mutation. | 📚 Helpful patterns for future language‑module implementations. |
+
+---
+
+## Step‑by‑Step Action Plan  
+
+1. **Add an encoding declaration (for legacy Python 2 compatibility).**  
+2. **Rename the class to `Ve`** (CapWords) and export it via `__all__`.  
+3. **Convert `specialchars` to an immutable tuple** and add a precise type hint.  
+4. **Add a detailed class docstring** that documents the purpose of `specialchars`.  
+5. **Introduce type hints for the whole module** (`from __future__ import annotations`).  
+6. **Create a minimal unit‑test file** (`tests/test_ve.py`) that validates:  
+   - The class can be instantiated.  
+   - `specialchars` contains the expected Unicode characters.  
+   - The attribute is immutable (attempting to modify raises `AttributeError`).  
+7. **Run the test suite and enforce style with `flake8`/`pylint`.**  
+8. **Commit the changes and tag a new version** (e.g., `v2.1.0`).  
+
+---
+
+## Code / Configuration Blocks  
+
+### 1. Refactored `translate/lang/ve.py`
+
+```python
+# -*- coding: utf-8 -*-
+"""
+Venda language support for *translate*.
+
+See also:
+    https://en.wikipedia.org/wiki/Venda_language
+"""
+
+from __future__ import annotations
+
+from translate.lang import common
+
+__all__: list[str] = ["Ve"]
+
+
+class Ve(common.Common):
+    """
+    Representation of the Venda language.
+
+    Attributes
+    ----------
+    specialchars: tuple[str, ...]
+        A
+
