@@ -1404,3 +1404,197 @@ Below is a **full, step‑by‑step audit** covering each requested area, follow
 | 4 | `makeWindow(session:)` creates a **new** `NSHostingView` **every** time it’s called, and `open(session:)` also creates a new `NSHostingView` *before* `configure`. This leads to **two** hosting view assignments: one in `makeWindow` (unused) and one in `open`. | Redundant view creation; the first assignment is wasted, and the second may cause a brief flicker. | Remove the extra `panel.contentView = NSHostingView...` from `makeWindow`. Build the view once in `open`. |
 | 5 | `close()` simply calls `window?.close()` and then `window = nil`. The `NSWindowDelegate` `windowWillClose(_:)` also sets `window = nil`. This is fine, but if `close()` is called *while* the window is already closing (e.g., user clicks the close button), `windowWillClose` will fire after `close()` and attempt to set `window = nil` again – harmless but redundant. | Not a crash, but unnecessary delegate work. | Consider calling `window?.orderOut(nil)` instead
 
+[2026-05-17 10:46:30] VULNERABILITY:
+**TL;DR**  
+The shown `main.rs` defines a Clap‑based CLI but contains several latent bugs, security gaps, and quality issues (unused imports, missing validation, unchecked user input, theme handling, etc.). Fixes include validating flags, handling the `theme`/`ascii_only` options, sanitising URLs, adding proper error handling, and writing tests.
+
+---
+
+## Key Points
+- **Logical / Runtime Bugs**
+  - Unused imports (`engine`, `tui`, `Arc`, theme‑related structs) → dead code.
+  - `theme` argument accepted but never parsed/validated → potential panic later.
+  - `ascii_only` flag never consulted → UI may emit Unicode unexpectedly.
+  - No validation of user‑supplied paths (`output`, `file`) → may cause runtime `std::io::Error`.
+  - No default handling for sub‑command options (e.g., `yes` flag not propagated).
+
+- **Security Vulnerabilities**
+  - Directly passing `url` strings to downstream download logic without sanitisation could enable **command injection** if the engine spawns external tools (e.g., `yt-dlp`).
+  - No validation of file system paths → **path traversal** when `output` points outside allowed directories.
+  - Missing **rate‑limiting / input size checks** on `DownloadMultiple` file could be abused for DoS.
+
+- **Performance Concerns**
+  - `DownloadMultiple` reads a whole text file synchronously; large files will block the thread.
+  - `Arc` imported but not used → missed opportunity for sharing heavy resources (e.g., `PlatformRegistry`) across async tasks.
+
+- **Code Quality / Anti‑Patterns**
+  - Mixed comment styles (`// NEW:`) left in production code → clutter.
+  - Long `enum Commands` without `#[allow(clippy::enum_variant_names)]` – each variant repeats the command name.
+  - Lack of documentation comments for public structs/enums (affects `rustdoc`).
+  - Use of `String` for flags that could be `Option<PathBuf>` (better ergonomics + automatic validation).
+  - `#[command(long_about = None)]` is unnecessary; omit to let Clap infer.
+  - Re‑exported formatter functions are imported but never used in this snippet – likely dead code.
+
+- **Key Learnings / Patterns**
+  - **Clap v4** provides built‑in validation (`value_parser`) and `arg_enum` for enumerated options (ideal for `theme`).
+  - Centralising *common* CLI flags (verbose, theme, ascii) in a struct that implements `From<&Cli>` makes downstream code cleaner.
+  - Using `PathBuf` for file system arguments gives you OS‑native path handling and automatic `std::fs` compatibility.
+  - When exposing a *download* feature, always sanitise/validate URLs before handing them to external binaries.
+
+---
+
+## Detailed Explanation
+
+### 1. Logical / Runtime Bugs
+| Area | Issue | Why it matters |
+|------|-------|----------------|
+| Unused imports (`engine`, `tui`, `Arc`) | Compiles but wastes compile time and can hide real bugs. | In CI, `cargo clippy` will flag dead code; future contributors may be confused about purpose. |
+| `theme` argument never parsed | The CLI accepts `"brutalist"
+
+[2026-05-17 11:01:52] VULNERABILITY:
+**TL;DR** – The migration works but lacks a foreign‑key constraint, proper `t.references` usage, a check‑constraint for the enum‐style `source`, and may create an unnecessary index on a low‑cardinality column.
+
+---
+
+## Key Points
+- **Missing foreign key**: `user_id` isn’t declared as a reference; orphaned imports are possible.
+- **Enum handling**: `source` is an integer with a default but no DB‑level validation of allowed values.
+- **Indexing**: Index on `source` may be wasteful if the column has few distinct values (e.g., only a few import sources).
+- **Rails conventions**: Use `t.references` to automatically add the column, index, and foreign key.
+- **Potential data‑integrity bugs**: No `null: false` on `source`; default `0` could be interpreted as “unknown” unintentionally.
+- **No explicit `ON DELETE` behavior**: Deleting a user could leave dangling imports.
+
+---
+
+## Detailed Explanation
+### 1. Logical / Data‑Integrity Issues
+| Issue | Why it matters | Example impact |
+|-------|----------------|----------------|
+| **No foreign key** | The DB won’t enforce that `user_id` points to an existing `users.id`. | Deleting a user leaves orphaned `imports` rows → broken UI, inaccurate reporting. |
+| **`source` not constrained** | The column is meant to act as an enum (e.g., `0 = manual, 1 = csv, 2 = api`). Without a check‑constraint, any integer can be stored. | A typo in code could write `99`, later causing `NoMethodError` when mapping to enum values. |
+| **`source` nullable** | `null` is allowed, but the default is `0`. Inserting a row with `source: nil` will store `NULL`, breaking the assumption that every import has a source. | Reports that count imports per source will miss rows with `NULL`. |
+| **Index on low‑cardinality column** | If `source` only has a handful of distinct values, the index adds write‑time overhead and consumes space without benefiting most queries. | Bulk import of thousands of rows could be noticeably slower. |
+
+### 2. Security Considerations
+- **Direct security impact is minimal**: migrations themselves are not exposed to end‑users.  
+- **Indirect risk**: Missing foreign keys can be exploited via data‑integrity attacks (e.g., creating imports that reference non‑existent users to cause permission‑check bypasses if the app assumes the association exists).
+
+### 3. Performance Observations
+- Adding an index on `source` will increase insert/update latency and storage size.  
+- If you frequently query `imports` by `user_id` **and** `source` together, a *composite* index (`[user_id, source]`) would be more efficient than two separate indexes.
+
+### 4. Code‑Quality / Rails‑Best‑Practice Issues
+- Use `t.references :user, null: false, foreign_key: true` instead of manually adding the column and later an index.  
+- Define the enum in the model (`enum source: { manual: 0, csv: 1, api: 2 }`) **and** add a DB check constraint for safety.  
+- Keep migrations idempotent and self‑documenting: add comments describing the purpose of each column.
+
+---
+
+## Actionable Steps / Code
+
+### 1. Rewrite the migration (or create a new one if the table already exists)
+
+```ruby
+# frozen_string_literal: true
+
+class CreateImports < ActiveRecord::Migration[7.1]
+  # Enumerated values for source – adjust as needed
+  SOURCE_VALUES = { manual: 0, csv: 1, api: 2 }.freeze
+
+  def change
+
+[2026-05-17 11:18:20] VULNERABILITY:
+**TL;DR**  
+The current DB module works but suffers from thread‑unsafe globals, missing commits/transactions, poor error handling, potential SQL‑injection points, and a half‑finished `ShopOrderTable` definition – fix by encapsulating connection/cursor, using context‑managers, parameterised queries, proper schema finalisation, and adding logging/validation.
+
+---
+
+## Key Points
+- **Thread safety**: `db_connection` and `cursor` are shared globals; the lock only wraps the *creation* statements, not later queries.  
+- **Transaction handling**: No explicit `commit()` after `CREATE TABLE` or other DML; changes may be lost if the process crashes.  
+- **Error handling**: `try/except` only around the whole block; specific DB errors are swallowed, making debugging hard.  
+- **SQL injection risk**: The module (not shown) likely builds queries with string interpolation; the schema itself is safe but later usage may be vulnerable.  
+- **Schema issues**: `ShopOrderTable` definition is truncated (missing closing `)` and `)` for `CREATE TABLE`); also `productprice` stored as `TEXT` instead of numeric.  
+- **Naming & redundancy**: `user_id` vs `admin_id` duplicated in separate tables; could be unified with a role column.  
+- **Performance**: Opening a single connection for the whole application can become a bottleneck under high concurrency; SQLite’s write‑lock serialises writes.  
+- **Code quality**: Global mutable state, missing docstrings for methods, no type hints, no unit tests, and `logging.basicConfig` called at import time (pollutes user applications).  
+
+---
+
+## Detailed Explanation
+
+### 1. Thread‑Safety & Concurrency
+- **Problem**: `sqlite3.connect(..., check_same_thread=False)` disables SQLite’s default safety check, allowing the same connection to be used across threads. The provided `db_lock` only protects the *initial* table‑creation block. Any later CRUD operation that re‑uses the global `cursor` can interleave, causing `sqlite3.ProgrammingError: Recursive use of cursors not allowed` or data corruption.
+- **Why it matters**: In a Telegram bot handling many users concurrently, multiple handler threads will invoke DB operations simultaneously.
+
+### 2. Transaction & Commit Management
+- **Problem**: `cursor.execute` is called without a surrounding transaction. SQLite runs in autocommit mode **only** when you call `connection.commit()`. The current code never commits, so tables may not be persisted if the interpreter exits unexpectedly.
+- **Solution**: Use `with connection:` context manager or explicit `connection.commit()` after schema creation and after each write operation.
+
+### 3. Error Handling & Logging
+- **Problem**: The broad `except` catches any exception, logs nothing, and silently fails, making debugging impossible.  
+- **Solution**: Catch specific `sqlite3.Error` exceptions, log `exc_info=True`, and optionally re‑raise or return a clear error object.
+
+### 4. SQL Injection Surface
+- **Observation**: The shown code only creates tables, which is safe. However the surrounding repo likely builds queries like `f"SELECT * FROM ShopUserTable WHERE user_id={user_id}"`. If `user_id` is ever derived from user‑supplied text (e.g., Telegram username), that opens injection.  
+- **Mitigation**: Always use parameterised statements: `cursor.execute("SELECT * FROM ShopUserTable WHERE user_id=?", (user_id,))`.
+
+### 5. Schema Inconsistencies
+| Table | Issue |
+|-------|-------|
+| `ShopUserTable` / `ShopAdminTable` | Duplicate columns (`username`, `wallet`) – could be merged. |
+| `ShopProductTable` | `productprice INTEGER DEFAULT 0` is fine, but `productquantity` default 0 may hide out‑of‑stock; consider `CHECK(productquantity >= 0)`. |
+| `ShopOrderTable` | Definition is incomplete (missing closing `)`), `productprice TEXT` should be `INTEGER`/`REAL`, `paidmethod` default `'NO'` is ambiguous, `ordernumber INTEGER UNIQUE NOT
+
+[2026-05-17 12:04:46] VULNERABILITY:
+**TL;DR**  
+The `OpenAIAPIUsageSnapshot` model is well‑structured but lacks defensive coding (e.g., missing `Decodable` error handling, no validation of numeric fields, potential date‑parsing pitfalls) and could be made more efficient and safer with custom `CodingKeys`, `init(from:)` validation, and value‑type refinements.
+
+---
+
+## Key Points
+- **Logical/Runtime Bugs**
+  - No safeguards against malformed JSON (e.g., negative token counts, missing fields).
+  - `Date` decoding relies on default `ISO8601` formatter; mismatched formats will throw.
+  - `Equatable` conformance on structs with `Double` may suffer from floating‑point precision issues.
+- **Security Considerations**
+  - No direct injection vectors in this pure‑data model, but exposing raw `costUSD` values could be a privacy leak if logged insecurely.
+  - If the structs are later persisted or sent over the network, ensure TLS and proper authentication.
+- **Performance**
+  - The default `Codable` synthesis works, but large arrays (`lineItems`, `models`) could cause high memory usage during decode/encode.
+  - `Identifiable` `id` computed properties are cheap, but repeated string allocations for `day`/`name` could be avoided with `let id = day` stored.
+- **Code Quality**
+  - Repeated boilerplate `init` methods can be replaced by memberwise initializer (Swift provides it automatically for `public` structs).
+  - Use of `public` on every member makes the API surface wide; consider `internal` where possible.
+  - Missing documentation comments (`///`) for public API.
+- **Key Learnings**
+  - When modelling API usage data, prefer strongly‑typed value objects (e.g., `TokenCount`, `USD`) to prevent unit errors.
+  - Validate external data at the boundary (Decodable) rather than trusting the model.
+  - Keep `Codable` implementations lightweight; custom `CodingKeys` can map API field names directly and avoid unnecessary nesting.
+
+---
+
+## Detailed Explanation
+
+### 1. Logical / Runtime Bugs
+| Area | Issue | Why it matters |
+|------|-------|----------------|
+| JSON Decoding | Default `Codable` synthesis will throw a generic error if any field is missing or type‑mismatched. No context is provided to caller. | In production, a single malformed bucket could crash the whole snapshot parsing. |
+| Date handling | `startTime`/`endTime` are `Date`. If the upstream API changes its date format, decoding fails. | Silent failures can lead to missing data and downstream UI bugs. |
+| Negative numbers | No guard against negative token counts or costs. | Could corrupt analytics (e.g., negative totals) and break UI charts. |
+| Double equality | `Equatable` on structs with `Double` (`costUSD`) can give false negatives due to floating‑point rounding. | Equality checks may misbehave in caching or diffing logic. |
+
+### 2. Security Vulnerabilities
+- **Data Leakage**: `costUSD` is a monetary value; if logs are sent to an unauthenticated analytics endpoint, you risk exposing billing data.
+- **Future misuse**: If any of the `String` fields (`day`, `name`) are later interpolated into UI without sanitization, there could be a UI injection risk (e.g., SwiftUI Text rendering malicious Unicode). Not a current issue but worth noting.
+
+### 3. Performance
+- **Memory**: Each bucket holds two arrays; decoding a month of daily data could allocate many temporary arrays. Consider streaming decode (`JSONDecoder().decode([OpenAIAPIUsageSnapshot.DailyBucket].self, from:)`) if data size grows.
+- **Computed `id`**: `id` recomputed each access; trivial but could be avoided by storing `let id: String` if you need to conform to `Identifiable` for SwiftUI lists.
+
+### 4. Code Quality & Maintainability
+- **Redundant initializers**: Swift automatically generates a memberwise initializer for structs; explicit `public init` is unnecessary unless you need custom logic.
+- **Visibility**: Everything is `public`. If the module is an internal library, limit exposure to reduce API surface.
+- **Documentation**: Public structs should be documented with `///` comments for maintainability.
+- **Naming**: `LineItemBreakdown` and `ModelBreakdown` could be
+
