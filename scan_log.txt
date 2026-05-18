@@ -2143,3 +2143,37 @@
 [2026-05-18 19:29:50] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99761, Requested 1543. Please try again in 18m46.656s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-18 19:29:53] Open issues to analyze: 0
 [2026-05-18 19:29:53] === CYCLE DONE === Next in 1 hour.
+[2026-05-18 20:29:53] === SCAN CYCLE STARTING ===
+[2026-05-18 20:29:53] Language: kotlin
+[2026-05-18 20:29:54] Repo: element-hq/element-x-android | Stars: 2154
+[2026-05-18 20:29:55] Reading: features/startchat/impl/src/main/kotlin/io/element/android/features/startchat/impl/userlist/UserListStateProvider.kt
+[2026-05-18 20:29:58] Saved. Vuln: True
+[2026-05-18 20:30:01] Reading: libraries/designsystem/src/main/kotlin/io/element/android/libraries/designsystem/components/tooltip/TooltipBox.kt
+[2026-05-18 20:30:01] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99023, Requested 1604. Please try again in 9m1.728s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 20:30:04] Reading: features/messages/impl/src/main/kotlin/io/element/android/features/messages/impl/timeline/model/event/TimelineItemVoiceContent.kt
+[2026-05-18 20:30:05] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99019, Requested 1568. Please try again in 8m27.168s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 20:30:08] Open issues to analyze: 3
+[2026-05-18 20:30:08] Issue: Enable MTE
+[2026-05-18 20:30:08] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99015, Requested 1281. Please try again in 4m15.744s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 20:30:11] Issue: Remove LiveLocationSharing feature flag
+[2026-05-18 20:30:11] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99011, Requested 1470. Please try again in 6m55.584s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 20:30:14] Issue: Develop alpha
+[2026-05-18 20:30:14] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99008, Requested 1466. Please try again in 6m49.536s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 20:30:17] === CYCLE DONE === Next in 1 hour.
+[2026-05-18 21:30:17] === SCAN CYCLE STARTING ===
+[2026-05-18 21:30:17] Language: python
+[2026-05-18 21:30:18] Repo: openwrt/asu | Stars: 439
+[2026-05-18 21:30:18] Reading: tests/test_build_inject.py
+[2026-05-18 21:30:22] Saved. Vuln: True
+[2026-05-18 21:30:25] Reading: asu/util.py
+[2026-05-18 21:30:25] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98346, Requested 2005. Please try again in 5m3.264s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 21:30:28] Reading: tests/test_build.py
+[2026-05-18 21:31:03] Saved. Vuln: True
+[2026-05-18 21:31:07] Open issues to analyze: 3
+[2026-05-18 21:31:07] Issue: build(deps): Bump urllib3 from 2.6.3 to 2.7.0
+[2026-05-18 21:31:07] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99997, Requested 1595. Please try again in 22m55.488s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 21:31:10] Issue: wget error 8 on packages that exist on CDN (25.12.2 -> 25.12.3, ramips/mt7621/asus_4g-ax56)
+[2026-05-18 21:31:10] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99993, Requested 1693. Please try again in 24m16.704s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 21:31:13] Issue: build(deps): Bump python-multipart from 0.0.26 to 0.0.27
+[2026-05-18 21:31:13] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99989, Requested 1700. Please try again in 24m19.295999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 21:31:16] === CYCLE DONE === Next in 1 hour.
