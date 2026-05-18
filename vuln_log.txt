@@ -3173,3 +3173,112 @@ export const removeBodyClass = (className: string): void => {
  */
 export const toggleBodyClass = (className: string): void
 
+[2026-05-18 12:26:24] VULNERABILITY:
+### 1. BUGS
+
+*   **Logical Error:** The `variantIndex` is generated randomly but not validated. If the `VARIANTS_COUNT` is changed in the future, it might lead to an out-of-bounds error. Consider adding validation for the generated index.
+
+*   **Edge Case:** The `remainingSkipButtonDelay` is not checked for negative values. Although it's initialized with a positive value and decremented, it's still a good practice to add a check for negative values to prevent unexpected behavior.
+
+*   **Runtime Issue:** The `interval` function is not cancelled when the component is destroyed. Although the `takeUntilDestroyed` operator is used, it's still a good practice to explicitly cancel the subscription in the `ngOnDestroy` lifecycle hook.
+
+*   **Potential Issue:** The `changeDetectorRef.markForCheck()` is called inside the `tap` operator. This can lead to performance issues if the component is complex and has a large number of bindings. Consider using `markForCheck` only when necessary.
+
+### 2. SECURITY VULNS
+
+*   **XSS:** The `data` injected through the `MAT_DIALOG_DATA` token is not sanitized. If the data contains user-inputted content, it can lead to XSS vulnerabilities. Consider using a library like `DOMPurify` to sanitize the data.
+
+*   **Insecure Handling:** The `dialogRef` is publicly exposed, which can be a security risk if the component is used in a non-trusted environment. Consider making it private and providing a public method to close the dialog.
+
+### 3. PERFORMANCE
+
+*   **Bottleneck:** The `interval` function is used to decrement the `remainingSkipButtonDelay` every second. This can lead to performance issues if the component is instantiated multiple times. Consider using a more efficient approach, such as using a `setTimeout` function or a scheduling library like `rxjs timers`.
+
+*   **Inefficient Pattern:** The `take` operator is used to limit the number of emissions from the `interval` function. However, the `take` operator will unsubscribe from the observable after the specified number of emissions, which can lead to memory leaks if not handled properly. Consider using a more efficient approach, such as using a `Subject` or `BehaviorSubject` to manage the subscription.
+
+### 4. CODE QUALITY
+
+*   **Anti-Pattern:** The `constructor` is used to perform initialization logic. Although it's not an anti-pattern per se, it's a good practice to keep the constructor as simple as possible and perform initialization logic in the `ngOnInit` lifecycle hook.
+
+*   **Bad Practice:** The `interval` function is used directly in the component. It's a good practice to encapsulate such functionality in a service or a utility function to improve reusability and testability.
+
+*   **Magic Number:** The `VARIANTS_COUNT` and `SKIP_BUTTON_DELAY_IN_SECONDS` constants are defined as magic numbers. Although they are named, it's still a good practice to define them in a separate constants file to improve maintainability.
+
+### 5. KEY LEARNINGS
+
+*   **Pattern:** The use of `CUSTOM_ELEMENTS_SCHEMA` to allow the use of custom elements in the component template. This is a good practice when working with third-party libraries that provide custom elements.
+
+*   **Pattern:** The use of `takeUntilDestroyed` to unsubscribe from observables when the component is destroyed. This is a good practice to prevent memory leaks and improve performance.
+
+*   **Pattern:** The use of `ChangeDetectionStrategy.OnPush` to improve performance by reducing the number of change detection cycles. This is a good practice when working with complex components that have a large number of bindings.
+
+Here is the code with some improvements:
+```typescript
+import { publicRoutes } from '@ghostfolio/common/routes/routes';
+import { GfMembershipCardComponent } from '@ghostfolio/ui/membership-card';
+import { GfPremiumIndicatorComponent } from '@ghostfolio/ui/premium-indicator';
+
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  DestroyRef,
+  Inject,
+  OnInit,
+  OnDestroy
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatButtonModule } from '@angular/material/button';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef
+} from '@angular/material/dialog';
+import { RouterModule } from '@angular/router';
+import { IonIcon } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { arrowForwardOutline, checkmarkCircleOutline } from 'ionicons/icons';
+import ms from 'ms';
+import { interval, Subject } from 'rxjs';
+import { take, tap } from 'rxjs/operators';
+
+import { SubscriptionInterstitialDialogParams } from './interfaces/interfaces';
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'd-flex flex
+
+[2026-05-18 13:26:53] VULNERABILITY:
+### Deep Analysis of `XHProfServiceProvider.php`
+
+#### 1. BUGS: Logical errors, edge cases, runtime issues
+
+*   **Potential bug in the `bootForConsole` method:** In the `bootForConsole` method, when checking if a migration file exists, it's done by checking if a file contains a certain string in its filename. This could lead to false positives if a migration file is created manually or by another package with a similar filename. A more robust approach would be to check the contents of the migration files to ensure the correct migrations are being checked.
+*   **Possible timing issue when creating migrations:** The code checks for existing migration files before publishing new ones. If multiple instances of the command are run concurrently, it's possible for multiple migrations with the same name to be created. To mitigate this, consider using a lock mechanism or a more robust naming strategy for migrations.
+*   **Missing error handling when publishing files:** The `publishes` method might throw exceptions if the target directory does not exist or if there's a permission issue. Consider adding try-catch blocks to handle these potential errors.
+
+#### 2. SECURITY VULNS: Injection, auth bypass, insecure handling, XSS, CSRF, buffer overflow
+
+*   **No user input is processed in this file:** Since this is a service provider and not a controller or a request handler, it does not process user input directly. Therefore, common security vulnerabilities related to user input (like SQL injection or XSS) are not applicable here.
+*   **File system interactions are secure:** The code uses Laravel's `File` facade to interact with the file system. This facade is designed to handle file system operations securely.
+
+#### 3. PERFORMANCE: Bottlenecks, inefficient patterns
+
+*   **Scanning migration directory:** The code scans the migration directory to check if certain migrations exist. This operation could potentially be slow if there are many migrations. Consider using a database query to check for migration existence instead, as Laravel's migration system stores executed migrations in the database.
+*   **Using `collect` and `contains` for migration checks:** While this pattern is readable, it might be less efficient than using a simple loop to iterate over the migration files, especially for large numbers of files. However, the impact is likely minimal unless the number of migrations is extremely high.
+
+#### 4. CODE QUALITY: Anti-patterns, bad practices
+
+*   **Magic strings:** Some strings (like file paths and names) are hardcoded. Consider defining them as constants at the top of the class or even in a separate configuration file to improve maintainability.
+*   **Magic numbers:** The timestamp used for naming migration files (`time()`) is a magic number. Consider defining it as a named constant to improve readability.
+*   **Naming:** Some variable names, like `$migrations` and `$kernel`, could be more descriptive. This is a minor point but could improve code readability.
+*   **Length of methods:** The `bootForConsole` method is somewhat long and complex. Consider breaking it down into smaller, more focused methods to improve readability and maintainability.
+
+#### 5. KEY LEARNINGS: Patterns worth remembering for future coding
+
+*   **Using the `publishes` method for publishing configuration files and migrations:** This is a good way to share configuration files and migrations with users of a Laravel package.
+*   **Checking for existing migrations before publishing new ones:** This prevents duplicate migrations from being created, which can lead to errors during the migration process.
+*   **Using Laravel's facades (like `File` and `Str`) for file system operations and string manipulation:** These facades provide convenient and secure ways to perform common operations.
+*   **Using a service provider for setup and configuration tasks:** This is the correct place to handle tasks like publishing files and setting up middleware, as it's where Laravel expects such tasks to be handled.
+
