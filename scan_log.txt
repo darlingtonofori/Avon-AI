@@ -1916,3 +1916,37 @@
 [2026-05-17 22:42:53] Issue: rapid-mlx preserve rpath
 [2026-05-17 22:42:55] Issue solution saved.
 [2026-05-17 22:42:58] === CYCLE DONE === Next in 1 hour.
+[2026-05-17 23:42:58] === SCAN CYCLE STARTING ===
+[2026-05-17 23:42:58] Language: kotlin
+[2026-05-17 23:42:59] Repo: JetBrains/kotlin-wrappers | Stars: 1575
+[2026-05-17 23:43:00] Reading: kotlin-node/src/webMain/generated/node/http2/constants/HTTP2_HEADER_CACHE_CONTROL.kt
+[2026-05-17 23:43:04] Saved. Vuln: True
+[2026-05-17 23:43:07] Reading: kotlin-electron/src/webMain/generated/electron/renderer/TextureInfo.kt
+[2026-05-17 23:43:10] Saved. Vuln: True
+[2026-05-17 23:43:13] Reading: kotlin-mui-base/src/jsMain/generated/mui/base/useTab.types.kt
+[2026-05-17 23:43:16] Saved. Vuln: True
+[2026-05-17 23:43:19] Open issues to analyze: 3
+[2026-05-17 23:43:19] Issue: Seskar not producing TypeScript unions
+[2026-05-17 23:43:19] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99236, Requested 1232. Please try again in 6m44.352s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 23:43:22] Issue: feat: enhance test example to use dependency injection, useEffect, and scope.launch()
+[2026-05-17 23:43:22] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99233, Requested 1253. Please try again in 6m59.904s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 23:43:25] Issue: mui.materials is missing exports needed for target.set("es2015")
+[2026-05-17 23:43:25] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99229, Requested 1536. Please try again in 11m0.959999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-17 23:43:28] === CYCLE DONE === Next in 1 hour.
+[2026-05-18 00:43:28] === SCAN CYCLE STARTING ===
+[2026-05-18 00:43:28] Language: solidity
+[2026-05-18 00:43:29] Repo: lifinance/contracts | Stars: 202
+[2026-05-18 00:43:29] Reading: src/Facets/SquidFacet.sol
+[2026-05-18 00:43:33] Saved. Vuln: True
+[2026-05-18 00:43:36] Reading: archive/src/Facets/DeBridgeFacet.sol
+[2026-05-18 00:43:52] Saved. Vuln: True
+[2026-05-18 00:43:55] Reading: archive/src/Interfaces/ISynapseRouter.sol
+[2026-05-18 00:43:56] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99997, Requested 1901. Please try again in 27m19.872s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 00:43:59] Open issues to analyze: 3
+[2026-05-18 00:43:59] Issue: feat(whitelist): add Fly support on Etherlink
+[2026-05-18 00:43:59] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99993, Requested 1266. Please try again in 18m7.776s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 00:44:02] Issue: chore(skills): simplify state + assignee resolution in start-linear-ticket
+[2026-05-18 00:44:02] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99989, Requested 1245. Please try again in 17m46.175999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 00:44:05] Issue: chore(claude): sync pr-ready-gate from local
+[2026-05-18 00:44:05] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99986, Requested 1006. Please try again in 14m17.088s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 00:44:08] === CYCLE DONE === Next in 1 hour.
