@@ -1967,3 +1967,21 @@
 [2026-05-18 01:44:32] Issue: Add safer Flutter HTTPS setup guidance for Rockxy CA trust
 [2026-05-18 01:44:32] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99686, Requested 1210. Please try again in 12m54.143999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-18 01:44:35] === CYCLE DONE === Next in 1 hour.
+[2026-05-18 09:24:42] GitHub Agent online. Scanning every hour across all languages.
+[2026-05-18 09:24:42] === SCAN CYCLE STARTING ===
+[2026-05-18 09:24:42] Language: java
+[2026-05-18 09:24:43] Repo: OpenOLAT/OpenOLAT | Stars: 421
+[2026-05-18 09:24:45] Reading: src/main/java/org/olat/modules/todo/ui/ToDoTaskDetailsController.java
+[2026-05-18 09:24:49] Saved. Vuln: True
+[2026-05-18 09:24:52] Reading: src/main/java/org/olat/core/commons/services/lock/pessimistic/PLockImpl.java
+[2026-05-18 09:24:55] Saved. Vuln: True
+[2026-05-18 09:24:58] Reading: src/main/java/org/olat/modules/project/site/ProjectsSite.java
+[2026-05-18 09:25:00] Saved. Vuln: True
+[2026-05-18 09:25:04] Open issues to analyze: 3
+[2026-05-18 09:25:04] Issue: OutOfMemoryError: insufficient memory when opening OpenOlat in IntelliJ IDEA
+[2026-05-18 09:25:05] Issue solution saved.
+[2026-05-18 09:25:08] Issue: Customize the string displayed as sender
+[2026-05-18 09:25:10] Issue solution saved.
+[2026-05-18 09:25:13] Issue: Can't import new language
+[2026-05-18 09:25:15] Issue solution saved.
+[2026-05-18 09:25:18] === CYCLE DONE === Next in 1 hour.
