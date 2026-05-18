@@ -1985,3 +1985,37 @@
 [2026-05-18 09:25:13] Issue: Can't import new language
 [2026-05-18 09:25:15] Issue solution saved.
 [2026-05-18 09:25:18] === CYCLE DONE === Next in 1 hour.
+[2026-05-18 10:25:18] === SCAN CYCLE STARTING ===
+[2026-05-18 10:25:18] Language: php
+[2026-05-18 10:25:19] Repo: guzzle/guzzle | Stars: 23449
+[2026-05-18 10:25:19] Reading: src/Exception/GuzzleException.php
+[2026-05-18 10:25:22] Saved. Vuln: True
+[2026-05-18 10:25:25] Reading: tests/PoolTest.php
+[2026-05-18 10:25:29] Saved. Vuln: True
+[2026-05-18 10:25:32] Reading: tests/bootstrap-phpstan.php
+[2026-05-18 10:25:36] Saved. Vuln: True
+[2026-05-18 10:25:39] Open issues to analyze: 3
+[2026-05-18 10:25:39] Issue: [8.0] Harden FileCookieJar against unserialize file writes
+[2026-05-18 10:25:42] Issue solution saved.
+[2026-05-18 10:25:45] Issue: chore: Update github action 'actions/setup-node' to version 6
+[2026-05-18 10:25:47] Issue solution saved.
+[2026-05-18 10:25:50] Issue: Add support for curl_share_init and curl_share_init_persistent
+[2026-05-18 10:25:50] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99402, Requested 1434. Please try again in 12m2.304s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 10:25:53] === CYCLE DONE === Next in 1 hour.
+[2026-05-18 11:25:53] === SCAN CYCLE STARTING ===
+[2026-05-18 11:25:53] Language: typescript
+[2026-05-18 11:25:53] Repo: cowprotocol/cowswap | Stars: 185
+[2026-05-18 11:25:54] Reading: apps/cowswap-frontend/src/modules/ordersTable/hooks/usePricesDifference.ts
+[2026-05-18 11:25:58] Saved. Vuln: True
+[2026-05-18 11:26:01] Reading: libs/common-utils/src/toggleBodyClass.ts
+[2026-05-18 11:26:04] Saved. Vuln: True
+[2026-05-18 11:26:07] Reading: libs/common-hooks/src/useAvailableTargetChains.ts
+[2026-05-18 11:26:07] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99997, Requested 1539. Please try again in 22m7.104s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 11:26:11] Open issues to analyze: 3
+[2026-05-18 11:26:11] Issue: fix: add Brave Wallet to WATCH_ASSET_SUPPORED_WALLETS (Fixes #6727)
+[2026-05-18 11:26:11] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99992, Requested 1137. Please try again in 16m15.456s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 11:26:14] Issue: feat: allow same buy/sell token on Hooks tab (Fixes #6856)
+[2026-05-18 11:26:14] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99989, Requested 1300. Please try again in 18m33.696s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 11:26:17] Issue: fix: use query-param format for Safe transaction URLs (Fixes #6898)
+[2026-05-18 11:26:17] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99985, Requested 1500. Please try again in 21m23.04s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 11:26:20] === CYCLE DONE === Next in 1 hour.
