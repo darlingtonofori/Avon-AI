@@ -1950,3 +1950,20 @@
 [2026-05-18 00:44:05] Issue: chore(claude): sync pr-ready-gate from local
 [2026-05-18 00:44:05] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99986, Requested 1006. Please try again in 14m17.088s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-18 00:44:08] === CYCLE DONE === Next in 1 hour.
+[2026-05-18 01:44:08] === SCAN CYCLE STARTING ===
+[2026-05-18 01:44:08] Language: swift
+[2026-05-18 01:44:09] Repo: RockxyApp/Rockxy | Stars: 414
+[2026-05-18 01:44:09] Reading: Rockxy/Views/Main/RockxyWindowPlacement.swift
+[2026-05-18 01:44:13] Saved. Vuln: True
+[2026-05-18 01:44:16] Reading: Rockxy/Models/UI/InspectorTab.swift
+[2026-05-18 01:44:19] Saved. Vuln: True
+[2026-05-18 01:44:22] Reading: RockxyTests/Core/Utilities/BodyDecoderTests.swift
+[2026-05-18 01:44:22] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99697, Requested 1937. Please try again in 23m31.776s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 01:44:26] Open issues to analyze: 3
+[2026-05-18 01:44:26] Issue: Improve contributor onboarding and local tooling guidance
+[2026-05-18 01:44:26] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99693, Requested 1081. Please try again in 11m8.736s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 01:44:29] Issue: Explore gRPC and Protocol Buffers debugging workflows
+[2026-05-18 01:44:29] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99689, Requested 1078. Please try again in 11m2.688s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 01:44:32] Issue: Add safer Flutter HTTPS setup guidance for Rockxy CA trust
+[2026-05-18 01:44:32] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99686, Requested 1210. Please try again in 12m54.143999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-18 01:44:35] === CYCLE DONE === Next in 1 hour.

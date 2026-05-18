@@ -2613,3 +2613,110 @@ The code provided is simple and adheres to Kotlin's conventions. However, a few 
 
 In summary, the DeBridgeFacet contract appears to follow best practices for security, performance, and code quality. However, there are some potential issues that require further investigation, such as the use of `refundExcessNative` and the potential for reentrancy vulnerabilities. Additionally, the contract could benefit from improved code readability and maintainability through the use of concise and descriptive variable names, function names, and comments.
 
+[2026-05-18 01:44:13] VULNERABILITY:
+### Deep Analysis of Rockxy Window Placement Code
+
+#### 1. BUGS: Logical errors, edge cases, runtime issues
+
+* **Potential Race Condition**: In `RockxyAuxiliaryWindowCenteringView`, the `centerIfReady` function is called from both `viewDidMoveToWindow` and `updateNSView`. If `viewDidMoveToWindow` is called after `updateNSView` before the main dispatch queue can execute, `centerIfReady` will be called twice. While the `didCenter` flag prevents duplicate centering, it's still possible for the `window` property to be `nil` in the first call to `centerIfReady`, causing unexpected behavior.
+* **Nil Coalescing**: In `RockxyAuxiliaryWindowCenteringView`, the `centerIfReady` function checks for `window` being `nil`. However, it doesn't handle cases where `window` is not `nil` but its `center` property is not available (e.g., `window` is a custom view that doesn't have a `center` property).
+* **NSView Life Cycle**: The `viewDidMoveToWindow` method is not guaranteed to be called when a view is added to a window. If this method is not called, `centerIfReady` will never be executed.
+* **Shared Instance**: `RockxyWorkspaceWindowManager` is a shared instance. If multiple instances of `RockxyAuxiliaryWindowCenteringView` are created, they will all share the same `RockxyWorkspaceWindowManager` instance. This could lead to unexpected behavior if `RockxyWorkspaceWindowManager` is not designed to be thread-safe.
+
+#### 2. SECURITY VULNS: Injection, auth bypass, insecure handling, XSS, CSRF, buffer overflow
+
+* **No obvious security vulnerabilities**: The provided code does not seem to have any obvious security vulnerabilities such as injection, auth bypass, or insecure handling. However, without the full codebase, it's impossible to say for certain.
+* **Potential for XSS or CSRF**: If `RockxyWorkspaceWindowManager` uses user-input data to center the window, there could be potential for XSS or CSRF attacks. However, this is highly speculative without more context.
+* **Use of `@MainActor`**: The `@MainActor` attribute ensures that `RockxyAuxiliaryWindowCenteringView` is only accessed from the main thread. This helps prevent concurrency-related issues, which could potentially be exploited for security vulnerabilities.
+
+#### 3. PERFORMANCE: Bottlenecks, inefficient patterns
+
+* **Unnecessary Use of `DispatchQueue.main.async`**: In `centerIfReady`, the `RockxyWorkspaceWindowManager` call is wrapped in `DispatchQueue.main.async`. This could potentially introduce a bottleneck if `RockxyWorkspaceWindowManager` is not designed to be asynchronous. However, without more context, it's impossible to say for certain.
+* **Creation of a New `NSView` for Every `View`**: The `centerOverRockxyMainWindowOnAppear` modifier creates a new `RockxyAuxiliaryWindowCenteringView` for every `View` it's applied to. This could potentially lead to performance issues if the modifier is applied to many views.
+
+#### 4. CODE QUALITY: Anti-patterns, bad practices
+
+* **Use of a Private `NSViewRepresentable`**: The `RockxyAuxiliaryWindowCenteringAccessor` is a private `NSViewRepresentable`. While this is not technically an anti-pattern, it's unusual to create a private `NSViewRepresentable` inside a SwiftUI `View` extension.
+* **Use of a Shared Instance**: The use of a shared instance for `RockxyWorkspaceWindowManager` is not necessarily a bad practice, but it could lead to tight coupling between different parts of the codebase.
+* **Lack of Documentation**: The provided code lacks documentation. While this is not an anti-pattern per se, it makes it more difficult for other developers to understand how the code is intended to work.
+
+#### 5. KEY LEARNINGS: Patterns worth remembering for future coding
+
+* **Using `@MainActor` to Ensure Thread Safety**: The use of `@MainActor` to ensure that `RockxyAuxiliaryWindowCenteringView` is only accessed from the main thread is a good practice to remember for future coding.
+* **Using `NSViewRepresentable` to Integrate `NSView` with SwiftUI**: The use of `NSViewRepresentable` to integrate `NSView` with SwiftUI is a useful pattern to remember.
+* **Using a Background `NSView` to Perform Background Tasks**: The use of a background `NSView` to perform background tasks is a useful pattern to remember. However, it's essential to ensure that the background tasks are properly synchronized to avoid concurrency-related issues.
+* **Using a Shared Instance with Caution**: While shared instances can be useful, they should be used with caution to avoid tight coupling between different parts of the codebase.
+
+[2026-05-18 01:44:19] VULNERABILITY:
+### Deep Analysis of `InspectorTab` Enum
+
+#### 1. BUGS: Logical errors, edge cases, runtime issues
+
+*   The `displayName` property is a computed property that relies on a `switch` statement to return a localized string for each enum case. However, this implementation does not account for potential localization or internationalization (i18n) issues. If the application needs to support multiple languages, the `displayName` should be defined using a localization mechanism, such as NSLocalizedString in Swift.
+*   The enum does not handle any potential runtime errors that might occur when accessing or manipulating the `displayName` property. For example, if the `displayName` is used to update a UI component and the component is deallocated or updated on a different thread, it could lead to runtime errors.
+*   There are no explicit checks or guards for potential edge cases, such as an unknown or unexpected enum value. This could potentially lead to runtime errors or unexpected behavior if the enum is extended or modified in the future.
+
+#### 2. SECURITY VULNS: Injection, auth bypass, insecure handling, XSS, CSRF, buffer overflow
+
+*   The `displayName` property is a computed property that returns a string based on the enum value. Since this string is not user-input or external data, there is no risk of injection attacks or XSS.
+*   The enum itself does not handle any sensitive data or authentication logic, so there is no risk of authentication bypass or insecure handling of sensitive data.
+*   The enum is not prone to buffer overflow attacks since it does not involve any direct memory access or buffer manipulation.
+
+#### 3. PERFORMANCE: Bottlenecks, inefficient patterns
+
+*   The `displayName` property is a computed property that uses a `switch` statement to return a string. While this is a straightforward and efficient approach for a small set of enum values, it may become inefficient if the enum is extended with a large number of values. In such cases, using a dictionary-based approach to map enum values to their display names might be more efficient.
+*   The enum does not involve any complex computations or algorithmic logic, so there are no obvious performance bottlenecks in the current implementation.
+
+#### 4. CODE QUALITY: Anti-patterns, bad practices
+
+*   The enum cases are not explicitly ordered, which could lead to inconsistency in the order of cases when iterating over the enum. To avoid this, consider adding an explicit order using the `CaseIterable` protocol.
+*   The `displayName` property is not localized, as mentioned earlier. It is a good practice to use localization mechanisms to support multiple languages and regions.
+*   The code does not include any documentation or comments to explain the purpose or behavior of the enum. While the code is relatively straightforward, comments can still be useful to provide context and clarify any non-obvious aspects of the implementation.
+
+#### 5. KEY LEARNINGS: Patterns worth remembering for future coding
+
+*   Using the `CaseIterable` protocol to define an enum that can be iterated over is a useful pattern to keep in mind.
+*   Implementing a localized `displayName` property is essential for applications that need to support multiple languages or regions.
+*   Considering potential edge cases and runtime errors when implementing computed properties or other logic can help prevent issues and improve overall code quality.
+
+To address the issues mentioned above, you can modify the `InspectorTab` enum as follows:
+
+```swift
+import Foundation
+
+/// Tabs available in the combined request/response inspector panel.
+/// Protocol-specific tabs (WebSocket, GraphQL, Certificates) are shown conditionally
+/// based on the selected transaction's type.
+enum InspectorTab: String, CaseIterable {
+    case headers
+    case body
+    case cookies
+    case timing
+    case raw
+    case certificates
+    case websocket
+    case graphql
+
+    // MARK: Internal
+
+    var displayName: String {
+        // Use a dictionary-based approach for efficient lookup
+        let displayNames: [InspectorTab: String] = [
+            .headers: NSLocalizedString("Headers", comment: ""),
+            .body: NSLocalizedString("Body", comment: ""),
+            .cookies: NSLocalizedString("Cookies", comment: ""),
+            .timing: NSLocalizedString("Timing", comment: ""),
+            .raw: NSLocalizedString("Raw", comment: ""),
+            .certificates: NSLocalizedString("Certs", comment: ""),
+            .websocket: NSLocalizedString("WebSocket", comment: ""),
+            .graphql: NSLocalizedString("GraphQL", comment: "")
+        ]
+        
+        // Use the NSLocalizedString approach for localization
+        return displayNames[self] ?? ""
+    }
+}
+```
+
+This updated implementation uses a dictionary-based approach for efficient lookup and localization using `NSLocalizedString`. However, the best approach depends on your specific requirements and the larger context of your application.
+
