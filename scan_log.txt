@@ -2332,3 +2332,31 @@
 [2026-05-19 05:42:33] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99993, Requested 1478. Please try again in 21m10.944s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-19 05:42:36] Open issues to analyze: 0
 [2026-05-19 05:42:36] === CYCLE DONE === Next in 1 hour.
+[2026-05-19 06:42:36] === SCAN CYCLE STARTING ===
+[2026-05-19 06:42:36] Language: c
+[2026-05-19 06:42:37] Repo: aliyun/coolbpf | Stars: 290
+[2026-05-19 06:42:37] Reading: tools/examples/kprobe/kprobe.bpf.c
+[2026-05-19 06:42:41] Saved. Vuln: True
+[2026-05-19 06:42:44] Reading: src/security/security.bpf.c
+[2026-05-19 06:42:44] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98211, Requested 2139. Please try again in 5m2.4s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 06:42:47] Reading: src/net.c
+[2026-05-19 06:42:48] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98207, Requested 2157. Please try again in 5m14.496s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 06:42:51] Open issues to analyze: 3
+[2026-05-19 06:42:51] Issue: error: unknown target triple 'bpf', please use -triple or -arch
+[2026-05-19 06:42:53] Issue solution saved.
+[2026-05-19 06:42:56] Issue: fix(): Update surfServer.py to fix deadlock caused by  buffer is full
+[2026-05-19 06:42:56] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99997, Requested 911. Please try again in 13m4.512s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 06:42:59] Issue: Cannot execute python hello.py
+[2026-05-19 06:42:59] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99993, Requested 1589. Please try again in 22m46.848s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 06:43:02] === CYCLE DONE === Next in 1 hour.
+[2026-05-19 07:43:02] === SCAN CYCLE STARTING ===
+[2026-05-19 07:43:02] Language: javascript
+[2026-05-19 07:43:03] Repo: miroslavpejic85/mirotalksfu | Stars: 2981
+[2026-05-19 07:43:03] Reading: public/js/Rules.js
+[2026-05-19 07:43:06] Saved. Vuln: True
+[2026-05-19 07:43:09] Reading: public/js/Login.js
+[2026-05-19 07:43:09] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98527, Requested 1907. Please try again in 6m14.976s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 07:43:12] Reading: public/js/WakeLock.js
+[2026-05-19 07:43:13] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98523, Requested 1770. Please try again in 4m13.152s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 07:43:16] Open issues to analyze: 0
+[2026-05-19 07:43:16] === CYCLE DONE === Next in 1 hour.
