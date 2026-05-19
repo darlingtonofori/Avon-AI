@@ -2394,3 +2394,37 @@
 [2026-05-19 09:44:03] Issue: fixing pr-1038 - Add Service type and service annotation to the helm chart
 [2026-05-19 09:44:03] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99342, Requested 1218. Please try again in 8m3.84s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-19 09:44:06] === CYCLE DONE === Next in 1 hour.
+[2026-05-19 10:44:06] === SCAN CYCLE STARTING ===
+[2026-05-19 10:44:06] Language: java
+[2026-05-19 10:44:07] Repo: OpenOLAT/OpenOLAT | Stars: 421
+[2026-05-19 10:44:09] Reading: src/main/java/org/olat/modules/selectus/ui/rejection/PositionMailSortDelegate.java
+[2026-05-19 10:44:13] Saved. Vuln: True
+[2026-05-19 10:44:16] Reading: src/main/java/org/olat/modules/catalog/filter/TaxonomyLevelChildrenHandler.java
+[2026-05-19 10:44:16] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98581, Requested 1942. Please try again in 7m31.872s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 10:44:19] Reading: src/main/java/org/olat/modules/curriculum/manager/CurriculumImportHandler.java
+[2026-05-19 10:44:20] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98577, Requested 1950. Please try again in 7m35.328s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 10:44:23] Open issues to analyze: 3
+[2026-05-19 10:44:23] Issue: OutOfMemoryError: insufficient memory when opening OpenOlat in IntelliJ IDEA
+[2026-05-19 10:44:29] Issue solution saved.
+[2026-05-19 10:44:32] Issue: Customize the string displayed as sender
+[2026-05-19 10:44:32] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99545, Requested 1236. Please try again in 11m14.784s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 10:44:35] Issue: Can't import new language
+[2026-05-19 10:44:35] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99541, Requested 1029. Please try again in 8m12.48s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 10:44:38] === CYCLE DONE === Next in 1 hour.
+[2026-05-19 11:44:38] === SCAN CYCLE STARTING ===
+[2026-05-19 11:44:38] Language: typescript
+[2026-05-19 11:44:39] Repo: SAP/spartacus | Stars: 779
+[2026-05-19 11:44:40] Reading: projects/storefrontlib/shared/services/file/csv/import-csv.service.spec.ts
+[2026-05-19 11:44:43] Saved. Vuln: True
+[2026-05-19 11:44:46] Reading: feature-libs/asm/core/services/asm-state-persistence.service.ts
+[2026-05-19 11:44:47] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98447, Requested 1974. Please try again in 6m3.744s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 11:44:50] Reading: feature-libs/user/profile/components/reset-password/reset-password-component.service.spec.ts
+[2026-05-19 11:44:50] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98443, Requested 1889. Please try again in 4m46.848s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 11:44:53] Open issues to analyze: 3
+[2026-05-19 11:44:53] Issue: feat: updatePaymentTransaction global functions
+[2026-05-19 11:44:56] Issue solution saved.
+[2026-05-19 11:44:59] Issue: chore: [dry test] move 5 libraries from /projects folder to /core-libs (CXSPA-12194)
+[2026-05-19 11:44:59] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99997, Requested 1020. Please try again in 14m38.688s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 11:45:02] Issue: feat: backmerge release 221121.11.x
+[2026-05-19 11:45:02] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99993, Requested 1011. Please try again in 14m27.456s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 11:45:05] === CYCLE DONE === Next in 1 hour.
