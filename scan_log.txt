@@ -2268,3 +2268,21 @@
 [2026-05-19 03:25:56] Issue: [Feature] 搜索渠道希望能原生支持Tavily和EXA
 [2026-05-19 03:25:56] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99986, Requested 1137. Please try again in 16m10.272s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-19 03:25:59] === CYCLE DONE === Next in 1 hour.
+[2026-05-19 04:14:58] GitHub Agent online. Scanning every hour across all languages.
+[2026-05-19 04:14:58] === SCAN CYCLE STARTING ===
+[2026-05-19 04:14:58] Language: python
+[2026-05-19 04:14:59] Repo: xarray-contrib/xarray-spatial | Stars: 944
+[2026-05-19 04:14:59] Reading: xrspatial/geotiff/tests/test_dask_planar_multiband.py
+[2026-05-19 04:15:03] Saved. Vuln: True
+[2026-05-19 04:15:06] Reading: xrspatial/geotiff/tests/test_gpu_writer_overview_inplace_1948.py
+[2026-05-19 04:15:06] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99721, Requested 2030. Please try again in 25m12.864s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 04:15:09] Reading: xrspatial/geotiff/tests/test_golden_corpus_fsspec_1930.py
+[2026-05-19 04:15:09] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99717, Requested 2063. Please try again in 25m37.92s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 04:15:13] Open issues to analyze: 3
+[2026-05-19 04:15:13] Issue: GeoTIFF writers need shared post-layout shape validator
+[2026-05-19 04:15:13] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99713, Requested 1523. Please try again in 17m47.904s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 04:15:16] Issue: Bug: attrs['masked_nodata'] reports True when masking was disabled
+[2026-05-19 04:15:16] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99709, Requested 1570. Please try again in 18m25.056s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 04:15:19] Issue: Add natural neighbor (Voronoi-based) interpolation
+[2026-05-19 04:15:19] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99706, Requested 1263. Please try again in 13m57.216s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 04:15:22] === CYCLE DONE === Next in 1 hour.
