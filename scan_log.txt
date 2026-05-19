@@ -2360,3 +2360,37 @@
 [2026-05-19 07:43:13] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98523, Requested 1770. Please try again in 4m13.152s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-19 07:43:16] Open issues to analyze: 0
 [2026-05-19 07:43:16] === CYCLE DONE === Next in 1 hour.
+[2026-05-19 08:43:16] === SCAN CYCLE STARTING ===
+[2026-05-19 08:43:16] Language: rust
+[2026-05-19 08:43:17] Repo: agentclientprotocol/agent-client-protocol | Stars: 3142
+[2026-05-19 08:43:17] Reading: src/v2/plan.rs
+[2026-05-19 08:43:21] Saved. Vuln: True
+[2026-05-19 08:43:24] Reading: src/rpc.rs
+[2026-05-19 08:43:27] Saved. Vuln: True
+[2026-05-19 08:43:30] Reading: src/v2/tool_call.rs
+[2026-05-19 08:43:30] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99997, Requested 1848. Please try again in 26m34.08s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 08:43:34] Open issues to analyze: 3
+[2026-05-19 08:43:34] Issue: Designate @agentclientprotocol/sdk schema as source of truth (or auto-sync spec docs from it)
+[2026-05-19 08:43:34] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99993, Requested 1485. Please try again in 21m16.992s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 08:43:37] Issue: chore(deps-dev): bump ansi-regex from 5.0.1 to 6.2.2
+[2026-05-19 08:43:37] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99989, Requested 1728. Please try again in 24m43.488s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 08:43:40] Issue: Document the snake_case discriminator vs camelCase field naming convention
+[2026-05-19 08:43:40] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99986, Requested 1458. Please try again in 20m47.616s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 08:43:43] === CYCLE DONE === Next in 1 hour.
+[2026-05-19 09:43:43] === SCAN CYCLE STARTING ===
+[2026-05-19 09:43:43] Language: c
+[2026-05-19 09:43:44] Repo: axoflow/axosyslog | Stars: 110
+[2026-05-19 09:43:44] Reading: modules/csvparser/csvparser.c
+[2026-05-19 09:43:47] Saved. Vuln: True
+[2026-05-19 09:43:50] Reading: modules/system-source/system-source.c
+[2026-05-19 09:43:51] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99357, Requested 1976. Please try again in 19m11.712s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 09:43:54] Reading: modules/java/native/java-parser.c
+[2026-05-19 09:43:54] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99353, Requested 1669. Please try again in 14m43.008s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 09:43:57] Open issues to analyze: 3
+[2026-05-19 09:43:57] Issue: Logmsg memory allocation fix
+[2026-05-19 09:43:57] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99349, Requested 1219. Please try again in 8m10.752s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 09:44:00] Issue: `arrow-flight()` destination
+[2026-05-19 09:44:00] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99345, Requested 1287. Please try again in 9m6.048s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 09:44:03] Issue: fixing pr-1038 - Add Service type and service annotation to the helm chart
+[2026-05-19 09:44:03] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99342, Requested 1218. Please try again in 8m3.84s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 09:44:06] === CYCLE DONE === Next in 1 hour.
