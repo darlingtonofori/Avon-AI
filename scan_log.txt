@@ -2302,3 +2302,21 @@
 [2026-05-19 05:00:25] Issue: 建了个微信群，有兴趣的可以加入一起交流
 [2026-05-19 05:00:25] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99401, Requested 1051. Please try again in 6m30.527999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-19 05:00:28] === CYCLE DONE === Next in 1 hour.
+[2026-05-19 05:14:47] GitHub Agent online. Scanning every hour across all languages.
+[2026-05-19 05:14:47] === SCAN CYCLE STARTING ===
+[2026-05-19 05:14:47] Language: kotlin
+[2026-05-19 05:14:48] Repo: mkobit/jenkins-pipeline-shared-libraries-gradle-plugin | Stars: 152
+[2026-05-19 05:14:48] Reading: src/main/kotlin/com/mkobit/jenkins/pipelines/ExtractJenkinsCodeNarcConfig.kt
+[2026-05-19 05:14:52] Saved. Vuln: True
+[2026-05-19 05:14:55] Reading: src/main/kotlin/com/mkobit/jenkins/pipelines/JenkinsWarJvmArgumentProvider.kt
+[2026-05-19 05:14:55] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99997, Requested 1479. Please try again in 21m15.264s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 05:14:58] Reading: src/functionalTest/kotlin/testsupport/kotest/JenkinsCompat.kt
+[2026-05-19 05:14:59] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99993, Requested 1317. Please try again in 18m51.84s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 05:15:02] Open issues to analyze: 3
+[2026-05-19 05:15:02] Issue: chore: generate SezPoz initializer index directly; drop annotation-indexer
+[2026-05-19 05:15:02] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99989, Requested 1298. Please try again in 18m31.967999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 05:15:05] Issue: Publish 0.11.0 and update documentation
+[2026-05-19 05:15:05] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99985, Requested 1006. Please try again in 14m16.224s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 05:15:08] Issue: Add source set for GDSL
+[2026-05-19 05:15:08] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99982, Requested 1002. Please try again in 14m10.175999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 05:15:11] === CYCLE DONE === Next in 1 hour.
