@@ -3903,3 +3903,155 @@ pub(in crate::reducer) fn start_terminal_operation_from_invocation(
 *   The use of concrete exception classes (like `UnsupportedScorerStoreURIException`) to handle specific error cases is a good practice for improving code readability and maintainability.
 
 
+[2026-05-19 02:25:11] VULNERABILITY:
+### 1. BUGS: Logical errors, edge cases, runtime issues
+
+After analyzing the provided code snippet from `EsqlBaseParserBaseVisitor.java`, here are some potential issues:
+
+*   **Inconsistent Return Types**: The `visitChildren(ctx)` method returns a value of type `T`, but it's not clear what this value represents or how it's being used. This inconsistency could lead to issues if the return type is not properly handled by the caller.
+*   **Missing NullPointerException Handling**: The code does not check for `null` values in the `ctx` parameter, which could lead to `NullPointerException` if `ctx` is `null`.
+*   **Inadequate Handling of Subtree Nodes**: The `visitChildren(ctx)` method visits all child nodes, but it does not provide a way to handle individual nodes differently. This could be a limitation if the parser needs to process certain nodes differently.
+*   **Lack of Synchronization**: The code does not appear to have any synchronization mechanisms in place, which could lead to concurrency issues if the parser is being used in a multi-threaded environment.
+
+### 2. SECURITY VULNS: Injection, auth bypass, insecure handling, XSS, CSRF, buffer overflow
+
+Based on the provided code snippet, the following security vulnerabilities are potential concerns:
+
+*   **Insecure Parsing**: The code uses ANTLR to parse ESQL statements, but it does not appear to have any built-in sanitization or validation mechanisms. This could make it vulnerable to injection attacks if the input is not properly sanitized.
+*   **Potential for SQL Injection**: While the code is parsing ESQL statements, it does not appear to have any mechanisms to prevent SQL injection attacks. This could be a significant vulnerability if the parser is being used to execute queries on a database.
+*   **Missing Authentication and Authorization Checks**: The code does not appear to have any built-in authentication or authorization checks, which could make it vulnerable to unauthorized access or privilege escalation attacks.
+
+### 3. PERFORMANCE: Bottlenecks, inefficient patterns
+
+The following performance concerns were identified:
+
+*   **Excessive Use of `visitChildren(ctx)`**: The code calls `visitChildren(ctx)` for each visit method, which could be inefficient if the parser tree is large. This could lead to performance bottlenecks if the parser is being used to parse large ESQL statements.
+*   **Lack of Caching**: The code does not appear to have any caching mechanisms in place, which could lead to performance issues if the parser is being used to parse the same ESQL statements repeatedly.
+*   **Inefficient Tree Traversal**: The code uses a recursive approach to traverse the parser tree, which could lead to performance issues if the tree is very large.
+
+### 4. CODE QUALITY: Anti-patterns, bad practices
+
+The following code quality concerns were identified:
+
+*   **Overuse of ANTLR-Generated Code**: The code appears to be heavily reliant on ANTLR-generated code, which could make it difficult to maintain or modify.
+*   **Lack of Comments and Documentation**: The code does not appear to have any comments or documentation, which could make it difficult for other developers to understand how it works.
+*   **Insufficient Error Handling**: The code does not appear to have any built-in error handling mechanisms, which could make it difficult to diagnose and resolve issues.
+
+### 5. KEY LEARNINGS: Patterns worth remembering for future coding
+
+Here are some key takeaways from this code analysis:
+
+*   **Properly Handle Parse Tree Nodes**: When working with parse trees, it's essential to handle each node correctly, taking into account its type and any child nodes it may have.
+*   **Implement Sanitization and Validation**: When parsing input, it's crucial to implement sanitization and validation mechanisms to prevent security vulnerabilities like injection attacks.
+*   **Optimize Parser Performance**: Parser performance can be critical in applications that require parsing large inputs. Optimizing the parser by reducing unnecessary recursive calls and utilizing caching can significantly improve performance.
+*   **Use Comments and Documentation**: Using comments and documentation is essential for maintaining code readability and ensuring that other developers can understand how the code works.
+*   **Implement Error Handling Mechanisms**: Implementing error handling mechanisms can help diagnose and resolve issues more efficiently.
+
+Here's an example of how you could refactor the `visitChildren(ctx)` method to handle nodes differently:
+
+```java
+@Override
+public T visitChildren(ParseTree ctx) {
+    List<T> results = new ArrayList<>();
+    for (int i = 0; i < ctx.getChildCount(); i++) {
+        ParseTree child = ctx.getChild(i);
+        results.add(visit(child));
+    }
+    // Aggregate the results
+    T aggregatedResult = aggregateResults(results);
+    return aggregatedResult;
+}
+
+private T aggregateResults(List<T> results) {
+    // Implement logic to aggregate the results
+    // For example:
+    return results.stream().reduce((a, b) -> combine(a, b)).orElse(null);
+}
+
+private
+
+[2026-05-19 03:25:37] VULNERABILITY:
+### Deep Analysis of `hermes-http-adapter.service.test.ts`
+
+#### 1. BUGS: Logical errors, edge cases, runtime issues
+- **In `afterEach` hook**: The `closeHandlers` array is being used to store functions that should be called after each test to clean up resources. However, this array is being mutated (elements are being popped from it) in the course of the test, which could potentially lead to issues if tests start running concurrently. A more robust approach would be to create a new array for each test, or ensure that tests do not run concurrently if they modify a shared resource.
+
+- **Unhandled Promise Rejections**: In `afterEach`, if any of the `close` functions throw an error, it is caught and logged by Vitest, but it would be better to handle it explicitly to ensure test integrity.
+
+- **Potential Race Condition in `sendAndCollect`**: If multiple tests are running concurrently, and they are all using the `sendAndCollect` function to interact with `endpoint` and `envelope`, there could be a race condition where events from one test interfere with the results of another. This could potentially be mitigated by using a separate endpoint for each test or synchronizing access to `sendAndCollect`.
+
+- **No Error Handling in `startMockHermesServer` and `startAdapterServer`**: These functions are `await`ed but their error cases are not explicitly handled. This could lead to unexpected behavior if these functions fail.
+
+#### 2. SECURITY VULNS: Injection, auth bypass, insecure handling, XSS, CSRF, buffer overflow
+- **Missing Input Validation**: In `createEnvelope`, the input parameters (e.g., `sessionId`, `content`, `options`) are not validated. This could potentially lead to injection vulnerabilities if these values are directly used in a way that affects the execution of the system (e.g., in a database query, in generating URLs).
+
+- **XSS Potential in Hermes Requests**: If the body or headers of requests to Hermes contain user-input data, there's a risk of XSS (Cross-Site Scripting) if this data is not properly sanitized.
+
+- **Lack of Authentication in Hermes Interaction**: It appears that interactions with the Hermes server do not involve authentication. This could be a significant vulnerability if the Hermes server should only be accessible by authorized entities.
+
+- **CSRF Considerations**: If this adapter is used in a context where a user's browser interacts with the Hermes server directly, there may be a risk of CSRF (Cross-Site Request Forgery) attacks if appropriate countermeasures (like tokens or same-origin policy adherence) are not in place.
+
+#### 3. PERFORMANCE: Bottlenecks, inefficient patterns
+- **Sequential Execution in Tests**: Tests are executed sequentially, which could slow down the test suite. If possible, parallelizing test execution could significantly improve performance.
+
+- **Repeated Setup in Tests**: Each test sets up a new Hermes server and adapter. While necessary for isolation, this setup process could be expensive. Consider optimizing the setup process or reusing the setup across relevant tests if the tests are independent.
+
+- **No Limits on `closeHandlers` Array**: If tests consistently add to this array without bounds, it could grow indefinitely, leading to performance issues or OOM errors.
+
+#### 4. CODE QUALITY: Anti-patterns, bad practices
+- **Magic Strings**: There are several magic strings (e.g., `/ncp/agent`, `x-hermes-session-id`) scattered through the code. It would be better to extract these into named constants to improve readability and maintainability.
+
+- **Missing Type Annotations**: While the code is mostly annotated with types, there are places where types could be more specific or are missing (e.g., the return type of `startMockHermesServer` and `startAdapterServer`). Adding these types can help catch errors at compile-time.
+
+- **Overly Complex Test Setup**: The test setup involves a lot of moving parts (setting up Hermes, setting up the adapter, creating an endpoint). Consider simplifying the setup process or breaking it out into separate functions or classes to improve readability.
+
+#### 5. KEY LEARNINGS: Patterns worth remembering for future coding
+- **Use of `afterEach` for Cleanup**: The practice of using `afterEach` to clean up resources after each test is good for ensuring that tests do not interfere with each other.
+
+- **Asynchronous Test Setup**: The tests demonstrate how to handle asynchronous setup and teardown gracefully, which is crucial for tests that involve network interactions or other external resources.
+
+- **Mocking External Services**: The use of a mock Hermes server (`startMockHermesServer`) is a good practice for isolating tests and making them more reliable and efficient.
+
+- **Isolation of Concerns**: Tests are focused on specific aspects of the behavior of the `HermesHttpAdapterServer`, which makes them easier to maintain and understand.
+
+[2026-05-19 03:25:43] VULNERABILITY:
+### Deep Analysis of `NpmRuntimeLauncher` Class
+
+#### 1. BUGS: Logical Errors, Edge Cases, Runtime Issues
+
+*   **Missing Error Handling in `spawnSync` Call**: In the `run` method, the `spawnSync` call does not handle potential errors. This could lead to the application crashing if an error occurs. It is recommended to add a try-catch block around the `spawnSync` call to handle any potential errors.
+*   **Potential Null Pointer Exception**: In the `resolveRuntimeScriptPath` method, the `launcherVersion` variable is used to call the `getPackageVersion` method. However, if `launcherVersion` is null or undefined, a null pointer exception will be thrown. It is recommended to add a null check for `launcherVersion` before calling `getPackageVersion`.
+*   **Undefined `argv`**: In the `run` method, the `argv` property of the `options` object is not checked for null or undefined. If `argv` is null or undefined, the application will throw an error. It is recommended to add a null check for `argv` before using it.
+*   **Missing Path Validation**: In the `resolveRuntimeScriptPath` method, the `runtimeScriptPath` is resolved using the `resolvePackagedAppEntrypoint` method. However, the method does not validate if the resolved path exists or is a valid executable. It is recommended to add path validation to ensure that the resolved path exists and is a valid executable.
+
+#### 2. SECURITY VULNS: Injection, Auth Bypass, Insecure Handling, XSS, CSRF, Buffer Overflow
+
+*   **Command Injection Vulnerability**: In the `run` method, the `spawnSync` call executes a command using `process.execPath` and the `runtimeScriptPath` resolved from the `resolveRuntimeScriptPath` method. However, the `runtimeScriptPath` is not sanitized or validated, which makes it vulnerable to command injection attacks. It is recommended to sanitize and validate the `runtimeScriptPath` to prevent command injection attacks.
+*   **Environment Variable Injection**: In the `run` method, the `env` object passed to the `spawnSync` call includes the `NEXTCLAW_RUNTIME_BUNDLE_CHILD` environment variable. However, this environment variable is not sanitized or validated, which makes it vulnerable to environment variable injection attacks. It is recommended to sanitize and validate the `NEXTCLAW_RUNTIME_BUNDLE_CHILD` environment variable to prevent environment variable injection attacks.
+
+#### 3. PERFORMANCE: Bottlenecks, Inefficient Patterns
+
+*   **Synchronous Execution**: In the `run` method, the `spawnSync` call is used to execute the command synchronously. However, synchronous execution can block the event loop and impact performance. It is recommended to use asynchronous execution using `spawn` instead of `spawnSync` to improve performance.
+*   **Repeated File System Access**: In the `resolveRuntimeScriptPath` method, the `resolvePackagedAppEntrypoint` method is called multiple times. However, this method accesses the file system, which can be inefficient if called repeatedly. It is recommended to cache the result of the `resolvePackagedAppEntrypoint` method to reduce repeated file system access.
+
+#### 4. CODE QUALITY: Anti-Patterns, Bad Practices
+
+*   **God Object**: The `NpmRuntimeLauncher` class has a high level of complexity and is responsible for multiple tasks, including resolving the runtime script path, executing the command, and handling errors. This makes it a god object, which can be difficult to maintain and test. It is recommended to break down the `NpmRuntimeLauncher` class into smaller, more focused classes to improve maintainability and testability.
+*   **Magic Strings**: The `NpmRuntimeLauncher` class uses magic strings, such as `NEXTCLAW_RUNTIME_BUNDLE_CHILD`, which can make the code difficult to understand and maintain. It is recommended to define constants for these magic strings to improve code readability and maintainability.
+
+#### 5. KEY LEARNINGS: Patterns Worth Remembering for Future Coding
+
+*   **Dependency Injection**: The `NpmRuntimeLauncher` class uses dependency injection to inject the `options` object, which makes the code more modular and testable.
+*   **Error Handling**: The `NpmRuntimeLauncher` class demonstrates the importance of error handling, including catching and logging errors to prevent application crashes.
+*   **Path Validation**: The `NpmRuntimeLauncher` class highlights the importance of path validation to ensure that resolved paths exist and are valid executables.
+
+Example of improved code:
+
+```typescript
+import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { dirname, resolve } from "node:path";
+import { createExternalCommandEnv } from "@nextclaw/core";
+import { NpmRuntimeBundleLayoutStore } from "./npm-runtime-bundle-layout.store.js";
+import { N
+

@@ -2234,3 +2234,37 @@
 [2026-05-19 01:24:40] Issue: Fix judge fallback on event-based traces grading itself
 [2026-05-19 01:25:00] Issue solution saved.
 [2026-05-19 01:25:03] === CYCLE DONE === Next in 1 hour.
+[2026-05-19 02:25:03] === SCAN CYCLE STARTING ===
+[2026-05-19 02:25:03] Language: java
+[2026-05-19 02:25:03] Repo: elastic/elasticsearch | Stars: 76727
+[2026-05-19 02:25:06] Reading: x-pack/plugin/esql/src/main/java/org/elasticsearch/xpack/esql/parser/EsqlBaseParserBaseVisitor.java
+[2026-05-19 02:25:11] Saved. Vuln: True
+[2026-05-19 02:25:14] Reading: x-pack/plugin/core/src/main/java/org/elasticsearch/xpack/core/ml/job/config/DefaultDetectorDescription.java
+[2026-05-19 02:25:14] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98856, Requested 1913. Please try again in 11m4.416s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 02:25:17] Reading: x-pack/plugin/inference/src/main/java/org/elasticsearch/xpack/inference/InferenceLicenceCheck.java
+[2026-05-19 02:25:17] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98852, Requested 1594. Please try again in 6m25.344s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 02:25:22] Open issues to analyze: 3
+[2026-05-19 02:25:22] Issue: [CI] CsvFormatSpecIT test {csv-spec:csv-union-by-name.multiFileUnionByNameRecipeWithPruning [LOCAL]} failing
+[2026-05-19 02:25:22] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98847, Requested 1675. Please try again in 7m31.008s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 02:25:25] Issue: ESQL CSV: prefix-XOR boundary scanner, opt-in via flag
+[2026-05-19 02:25:25] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98843, Requested 1472. Please try again in 4m32.16s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 02:25:28] Issue: [CI] MixedClusterClientYamlTestSuiteIT test {p0=index/100_field_name_length_limit/Test field name length limit array synthetic source} failing
+[2026-05-19 02:25:28] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98839, Requested 1700. Please try again in 7m45.696s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 02:25:31] === CYCLE DONE === Next in 1 hour.
+[2026-05-19 03:25:31] === SCAN CYCLE STARTING ===
+[2026-05-19 03:25:31] Language: typescript
+[2026-05-19 03:25:32] Repo: Peiiii/nextclaw | Stars: 215
+[2026-05-19 03:25:33] Reading: packages/nextclaw-ncp-runtime-adapter-hermes-http/src/hermes-http-adapter.service.test.ts
+[2026-05-19 03:25:37] Saved. Vuln: True
+[2026-05-19 03:25:40] Reading: packages/nextclaw-service/src/launcher/npm-runtime-launcher.service.ts
+[2026-05-19 03:25:43] Saved. Vuln: True
+[2026-05-19 03:25:46] Reading: packages/ncp-packages/nextclaw-ncp-toolkit/src/agent/agent-backend/agent-backend-session-realtime.service.ts
+[2026-05-19 03:25:46] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99997, Requested 1980. Please try again in 28m28.128s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 03:25:50] Open issues to analyze: 3
+[2026-05-19 03:25:50] Issue: [Feature] UI技能集成增强
+[2026-05-19 03:25:50] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99993, Requested 1124. Please try again in 16m5.088s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 03:25:53] Issue: [Feature] 诚邀您加入 GitWatt 开源首发社区
+[2026-05-19 03:25:53] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99989, Requested 1163. Please try again in 16m35.328s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 03:25:56] Issue: [Feature] 搜索渠道希望能原生支持Tavily和EXA
+[2026-05-19 03:25:56] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99986, Requested 1137. Please try again in 16m10.272s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 03:25:59] === CYCLE DONE === Next in 1 hour.
