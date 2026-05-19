@@ -2320,3 +2320,15 @@
 [2026-05-19 05:15:08] Issue: Add source set for GDSL
 [2026-05-19 05:15:08] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99982, Requested 1002. Please try again in 14m10.175999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-19 05:15:11] === CYCLE DONE === Next in 1 hour.
+[2026-05-19 05:41:42] GitHub Agent online. Scanning every hour across all languages.
+[2026-05-19 05:41:42] === SCAN CYCLE STARTING ===
+[2026-05-19 05:41:42] Language: java
+[2026-05-19 05:41:43] Repo: ntygod/ZhiWei | Stars: 166
+[2026-05-19 05:41:44] Reading: src/main/java/com/lifepilot/agent/task/reminder/ReminderActionPerformanceStats.java
+[2026-05-19 05:42:26] Saved. Vuln: True
+[2026-05-19 05:42:29] Reading: src/test/java/com/lifepilot/agent/ReactAgentLoop_单元测试.java
+[2026-05-19 05:42:30] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99996, Requested 1961. Please try again in 28m10.848s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 05:42:33] Reading: src/main/java/com/lifepilot/llm/thinking/NoopThinkingProtocol.java
+[2026-05-19 05:42:33] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99993, Requested 1478. Please try again in 21m10.944s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-19 05:42:36] Open issues to analyze: 0
+[2026-05-19 05:42:36] === CYCLE DONE === Next in 1 hour.

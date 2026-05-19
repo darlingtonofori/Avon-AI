@@ -4215,3 +4215,74 @@ abstract class ExtractJenkinsCodeNarcConfig : DefaultTask() {
     } catch (e: IOException) {
       logger.error("Error extracting
 
+[2026-05-19 05:42:26] VULNERABILITY:
+### Deep Analysis of `ReminderActionPerformanceStats` Class
+
+#### 1. BUGS: Logical errors, edge cases, runtime issues
+
+*   The `ReminderActionPerformanceStats` constructor does not perform any validation on the `candidateType` and `action` parameters. This could lead to `NullPointerExceptions` if these fields are accessed later in the code.
+*   The `rewardMean()` method returns a fixed value of 0.5f if `sentCount` is less than or equal to 0. However, this might not be the intended behavior, as it could be better to throw an exception or return a specific value indicating an invalid state.
+*   The `merge()` method does not check if the `other` object has the same `candidateType` and `action` as the current object. This could lead to inconsistencies if the merged object is used later in the code.
+*   The `confidence()` method returns a value clamped between 0.0f and 1.0f, but it does not handle the case where `sentCount` is less than or equal to 0. This could lead to an incorrect confidence value.
+
+#### 2. SECURITY VULNS: Injection, auth bypass, insecure handling, XSS, CSRF, buffer overflow
+
+*   The `ReminderActionPerformanceStats` class does not appear to have any direct security vulnerabilities, as it does not handle user input or interact with external systems.
+*   However, it is worth noting that the `candidateType` and `action` fields are of type `String` and `ReminderAction`, respectively. If these fields are set to arbitrary values, it could potentially lead to security issues if the `ReminderAction` class is not properly validated.
+
+#### 3. PERFORMANCE: Bottlenecks, inefficient patterns
+
+*   The `merge()` method creates a new `ReminderActionPerformanceStats` object every time it is called. This could lead to performance issues if the method is called frequently, especially if the objects are large.
+*   The `rewardMean()` method performs several floating-point operations, which could be slow if the method is called frequently.
+*   The `confidence()` method performs a simple division operation, which should be relatively fast.
+
+#### 4. CODE QUALITY: Anti-patterns, bad practices
+
+*   The `ReminderActionPerformanceStats` class uses a canonical constructor, which is a good practice. However, it does not provide a no-arg constructor, which could make it difficult to use the class in certain situations.
+*   The class does not override the `equals()` and `hashCode()` methods, which could lead to issues if the objects are used in collections or other contexts where equality is important.
+*   The `merge()` method modifies the state of the object indirectly by creating a new object. This could be confusing and lead to bugs if the method is not used carefully.
+*   The class does not provide any documentation for its methods or fields, which could make it difficult for other developers to understand how to use the class.
+
+#### 5. KEY LEARNINGS: Patterns worth remembering for future coding
+
+*   Using a canonical constructor can help simplify the code and reduce the number of constructors that need to be maintained.
+*   Providing a no-arg constructor can make the class more flexible and easier to use in certain situations.
+*   Overriding the `equals()` and `hashCode()` methods can help ensure that objects are treated correctly in collections and other contexts.
+*   Using immutable objects can help simplify the code and reduce the risk of bugs.
+*   Providing documentation for methods and fields can help other developers understand how to use the class and reduce the risk of bugs.
+
+Here are some potential improvements to the code:
+
+```java
+// Add validation to the constructor
+public ReminderActionPerformanceStats(
+    String candidateType,
+    ReminderAction action,
+    int sentCount,
+    int actedCount,
+    int snoozedCount,
+    int dismissedCount,
+    int notRelevantCount,
+    int readOnlyCount
+) {
+    if (candidateType == null || action == null) {
+        throw new NullPointerException("candidateType and action cannot be null");
+    }
+    this.candidateType = candidateType;
+    this.action = action;
+    this.sentCount = Math.max(0, sentCount);
+    this.actedCount = Math.max(0, actedCount);
+    this.snoozedCount = Math.max(0, snoozedCount);
+    this.dismissedCount = Math.max(0, dismissedCount);
+    this.notRelevantCount = Math.max(0, notRelevantCount);
+    this.readOnlyCount = Math.max(0, readOnlyCount);
+}
+
+// Throw an exception if sentCount is less than or equal to 0
+public float rewardMean() {
+    if (sentCount <= 0) {
+        throw new IllegalStateException("sentCount must be greater than 0");
+    }
+    float reward = actedCount * 1.0f
+            + snoozedCount * 0
+
