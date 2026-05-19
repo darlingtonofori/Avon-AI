@@ -4599,3 +4599,73 @@ function getButtonCached(buttonName) {
 *   **Named Constants**: Use named constants instead of magic strings to improve code readability and maintainability.
 *   **Proper Subscription Handling**: Always unsubscribe from subscriptions to prevent memory leaks or performance issues.
 
+[2026-05-19 12:45:09] VULNERABILITY:
+### Deep Analysis of `updateSkillFile.test.ts`
+
+#### 1. BUGS: Logical errors, edge cases, runtime issues
+
+* **Path manipulation:** The `makeTmpDir` function creates a temporary directory with a prefix of `"typeui-sh-test-"`. However, there is no guarantee that the generated directory name will be unique. If multiple tests are run concurrently, it's possible for two tests to generate the same directory name, leading to interference between tests. Consider using a more robust method to generate unique directory names, such as using a UUID library.
+* **File system errors:** The `upsertManagedSkillFile` function does not handle file system errors well. For example, if the `root` directory does not exist, the function will throw an error. Consider adding more robust error handling to handle such scenarios.
+* **Content replacement:** In the `upsertManagedSkillFile` function, the replacement of the managed section is done using string manipulation. This could lead to issues if the content contains special characters or if the replacement logic is not robust. Consider using a more robust method, such as using a parsing library to parse the Markdown content.
+
+#### 2. SECURITY VULNS: Injection, auth bypass, insecure handling, XSS, CSRF, buffer overflow
+
+* **Path traversal:** The `upsertManagedSkillFile` function takes a `rel` parameter, which is used to construct the absolute path of the file to be written. If an attacker can manipulate the `rel` parameter to include a path traversal sequence (e.g., `../../../etc/passwd`), they could potentially write to arbitrary locations on the file system. Consider validating the `rel` parameter to prevent such attacks.
+* **Data injection:** The `upsertManagedSkillFile` function writes the provided content to a file. If an attacker can manipulate the content to include malicious data (e.g., JavaScript code), they could potentially inject malicious code into the system. Consider sanitizing the content to prevent such attacks.
+
+#### 3. PERFORMANCE: Bottlenecks, inefficient patterns
+
+* **File system operations:** The `upsertManagedSkillFile` function performs multiple file system operations, including creating a directory, writing a file, and reading a file. These operations can be expensive and may impact performance. Consider using more efficient file system operations, such as using a single operation to create the directory and write the file.
+* **String manipulation:** The `upsertManagedSkillFile` function uses string manipulation to replace the managed section. This can be an expensive operation, especially for large files. Consider using more efficient methods, such as using a parsing library to parse the Markdown content.
+
+#### 4. CODE QUALITY: Anti-patterns, bad practices
+
+* **Magic numbers:** The `upsertManagedSkillFile` function uses magic numbers, such as the number of lines to read from the file. Consider defining these numbers as constants to improve code readability.
+* **Tight coupling:** The `upsertManagedSkillFile` function is tightly coupled to the `writeMarkdownFile` function. Consider decoupling these functions to improve code modularity.
+* **Code duplication:** The `upsertManagedSkillFile` function has duplicated code for handling files with and without front matter. Consider extracting this code into a separate function to improve code reuse.
+
+#### 5. KEY LEARNINGS: Patterns worth remembering for future coding
+
+* **Using UUIDs for unique identifiers:** Consider using UUIDs to generate unique identifiers for temporary directories and files to prevent interference between tests.
+* **Robust error handling:** Consider adding robust error handling to handle file system errors and other potential issues.
+* **Using parsing libraries:** Consider using parsing libraries to parse Markdown content and improve the robustness of the `upsertManagedSkillFile` function.
+* **Validating user input:** Consider validating user input, such as the `rel` parameter, to prevent security vulnerabilities like path traversal attacks.
+* **Sanitizing user input:** Consider sanitizing user input, such as the content to be written, to prevent security vulnerabilities like data injection attacks.
+
+[2026-05-19 13:45:24] VULNERABILITY:
+### Deep Analysis of yolo11/yolo11_obb.cpp
+
+#### 1. BUGS: Logical errors, edge cases, runtime issues
+
+1. **Memory Leak**: In the `deserialize_engine` function, if `createInferRuntime` or `deserializeCudaEngine` fails, the `serialized_engine` memory will not be freed, leading to a memory leak.
+2. **Assert Statements**: The code uses `assert` statements to handle errors, which can lead to a crash in a production environment. Instead, consider using error handling mechanisms like exceptions or error codes.
+3. **File Stream Operations**: The code does not check if the file stream operations (e.g., `file.seekg`, `file.tellg`, `file.read`) are successful, which can lead to unexpected behavior or crashes.
+4. **Null Pointer Dereferences**: The code does not check if the `engine_name` string is empty before using it to open a file, which can lead to a null pointer dereference.
+5. **Buffer Overflow**: The code uses `std::ofstream` and `std::ifstream` to read and write files, but does not check if the file size exceeds the maximum allowed size, which can lead to a buffer overflow.
+
+#### 2. SECURITY VULNS: Injection, auth bypass, insecure handling, XSS, CSRF, buffer overflow
+
+1. **Path Traversal**: The code uses user-provided strings (`wts_name`, `engine_name`) to construct file paths, which can lead to path traversal vulnerabilities if not properly sanitized.
+2. **Buffer Overflow**: The code uses `std::ifstream` and `std::ofstream` to read and write files, but does not check if the file size exceeds the maximum allowed size, which can lead to a buffer overflow.
+3. **Unvalidated Input**: The code does not validate user-provided input (e.g., `wts_name`, `engine_name`) before using it, which can lead to security vulnerabilities.
+
+#### 3. PERFORMANCE: Bottlenecks, inefficient patterns
+
+1. **Sequential File Operations**: The code uses sequential file operations (e.g., `std::ofstream`, `std::ifstream`) which can lead to performance bottlenecks for large files.
+2. **Memory Allocation**: The code uses `new` and `delete` to manage memory, which can lead to performance issues due to memory fragmentation and deallocation overhead.
+3. **CUDA Memory Allocation**: The code uses `cudaMalloc` to allocate memory on the GPU, but does not check if the allocation is successful, which can lead to performance issues or crashes.
+
+#### 4. CODE QUALITY: Anti-patterns, bad practices
+
+1. **Magic Numbers**: The code uses magic numbers (e.g., `3`, `kBatchSize`, `kObbInputH`, `kObbInputW`) which can lead to readability and maintainability issues.
+2. **Global Variables**: The code uses global variables (e.g., `gLogger`) which can lead to namespace pollution and make the code harder to understand and maintain.
+3. **Code Duplication**: The code has duplicated logic (e.g., file stream operations) which can lead to maintenance issues and errors.
+
+#### 5. KEY LEARNINGS: Patterns worth remembering for future coding
+
+1. **Use Smart Pointers**: Instead of using raw pointers and `new`/`delete`, consider using smart pointers (e.g., `std::unique_ptr`, `std::shared_ptr`) to manage memory.
+2. **Error Handling**: Use error handling mechanisms (e.g., exceptions, error codes) instead of `assert` statements to handle errors and exceptions.
+3. **Input Validation**: Always validate user-provided input before using it to prevent security vulnerabilities and errors.
+4. **File Stream Operations**: Use file stream operations (e.g., `std::ifstream`, `std::ofstream`) with caution and check for errors to prevent unexpected behavior or crashes.
+5. **CUDA Memory Management**: Use CUDA memory management functions (e.g., `cudaMalloc`, `cudaFree`) with caution and check for errors to prevent performance issues or crashes.
+
