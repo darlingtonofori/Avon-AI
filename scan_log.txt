@@ -2782,3 +2782,24 @@
 [2026-05-20 09:53:36] Issue: refactor: enhance git command execution robustness in add_new_entry.py
 [2026-05-20 09:53:36] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99985, Requested 1165. Please try again in 16m33.6s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-20 09:53:39] === CYCLE DONE === Next in 1 hour.
+[2026-05-20 10:53:39] === SCAN CYCLE STARTING ===
+[2026-05-20 10:53:39] Language: typescript
+[2026-05-20 10:53:40] Repo: Comfy-Org/ComfyUI_frontend | Stars: 1804
+[2026-05-20 10:53:48] Reading: apps/desktop-ui/src/composables/bottomPanelTabs/useTerminal.ts
+[2026-05-20 10:53:51] Saved. Vuln: True
+[2026-05-20 10:53:54] Reading: apps/desktop-ui/src/main.ts
+[2026-05-20 10:53:55] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99997, Requested 1586. Please try again in 22m47.712s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 10:53:58] Reading: browser_tests/tests/templateFitView.spec.ts
+[2026-05-20 10:53:58] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99993, Requested 1723. Please try again in 24m42.624s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 10:54:02] Open issues to analyze: 3
+[2026-05-20 10:54:02] Issue: refactor(assets): remove isCloud guards in widget composables (FE-731)
+[2026-05-20 10:54:02] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99988, Requested 1491. Please try again in 21m17.856s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 10:54:05] Issue: feat(api): send workflow_id via opaque metadata dict on queuePrompt (FE-745)
+[2026-05-20 10:54:05] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99985, Requested 1508. Please try again in 21m29.952s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 10:54:08] Issue: lint: enable oxlint func-style rule and convert function expressions
+[2026-05-20 10:54:08] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99981, Requested 1487. Please try again in 21m8.352s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 10:54:11] === CYCLE DONE === Next in 1 hour.
+[2026-05-20 11:54:11] === SCAN CYCLE STARTING ===
+[2026-05-20 11:54:11] Language: go
+[2026-05-20 11:54:12] Repo: tingly-dev/tingly-box | Stars: 282
+[2026-05-20 11:54:12] Reading: internal/server/oauth_helper.go

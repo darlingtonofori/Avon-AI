@@ -5684,3 +5684,42 @@ contract ContractTest is Test {
     address private constant WBNB_ADDRESS = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
     address private constant BUSD_ADDRESS = 0xe9e7CEA3DedcA5984780Bafc599
 
+[2026-05-20 10:53:51] VULNERABILITY:
+### Deep Analysis of `useTerminal` Composable
+
+#### 1. Bugs: Logical Errors, Edge Cases, Runtime Issues
+
+*   **Potential Null Pointer Exception**: In the `onMounted` hook, the code checks if `element.value` exists before calling `terminal.open(element.value)`. However, it doesn't handle the case where `element.value` is not an `HTMLElement`. This might lead to a runtime error if `element.value` is not an `HTMLElement`. To fix this, you should add a type check to ensure that `element.value` is an `HTMLElement` before calling `terminal.open(element.value)`.
+
+*   **NaN (Not a Number) Values**: The `ensureValidRows` and `ensureValidCols` functions are used to estimate the terminal size when the proposed dimensions are `NaN`. However, these functions use the `clientHeight` and `clientWidth` properties of the `root.value` element, which might also be `NaN` if the element is not yet rendered or is hidden. To fix this, you should add a check to ensure that `clientHeight` and `clientWidth` are not `NaN` before dividing them by a constant.
+
+*   **ResizeObserver Disconnect**: In the `onUnmounted` hook, the code disconnects the `ResizeObserver` instance. However, if the component is unmounted before the `ResizeObserver` is initialized, this will throw a runtime error. To fix this, you should add a check to ensure that the `ResizeObserver` instance is not null before calling its `disconnect` method.
+
+*   **Debounce Function**: The `debounce` function is used to debounce the `resize` function. However, if the component is unmounted before the debounced function is executed, this will lead to a memory leak. To fix this, you should add a check to ensure that the component is still mounted before executing the debounced function.
+
+#### 2. Security Vulnerabilities
+
+*   **Insecure Handling of User Input**: The `attachCustomKeyEventHandler` function is used to handle custom key events. However, it doesn't validate the user input, which might lead to security vulnerabilities such as command injection or arbitrary code execution. To fix this, you should add input validation to ensure that only authorized commands are executed.
+
+*   **Missing Input Validation**: The `useAutoSize` function doesn't validate its input parameters, such as `root`, `autoRows`, `autoCols`, `minCols`, `minRows`, and `onResize`. This might lead to runtime errors or unexpected behavior if these parameters are not valid. To fix this, you should add input validation to ensure that these parameters are valid.
+
+*   **XSS (Cross-Site Scripting) Vulnerability**: The `Terminal` instance is not sanitized, which might lead to XSS vulnerabilities if malicious code is injected into the terminal. To fix this, you should sanitize the terminal output to prevent XSS attacks.
+
+#### 3. Performance Bottlenecks
+
+*   **Frequent ResizeObserver Observations**: The `ResizeObserver` instance is observed frequently when the component is mounted, which might lead to performance issues if the component is resized frequently. To fix this, you should add a throttle or debounce mechanism to the `resize` function to prevent excessive observations.
+
+*   **Inefficient use of Debounce Function**: The `debounce` function is used to debounce the `resize` function. However, if the `resize` function is called frequently, this might lead to performance issues due to the overhead of the `debounce` function. To fix this, you should consider using a more efficient debouncing mechanism, such as `throttle`.
+
+#### 4. Code Quality: Anti-Patterns, Bad Practices
+
+*   **Tight Coupling**: The `useTerminal` composable is tightly coupled with the `Terminal` instance, which might make it difficult to replace or modify the terminal instance without affecting the rest of the code. To fix this, you should consider using dependency injection to loosen the coupling between the `useTerminal` composable and the `Terminal` instance.
+
+*   **Magic Numbers**: The `ensureValidRows` and `ensureValidCols` functions use magic numbers (e.g., `20`, `8`) to estimate the terminal size. To fix this, you should consider defining these numbers as constants or configurable options to make the code more readable and maintainable.
+
+*   **Missing Type Definitions**: The `useTerminal` composable doesn't have explicit type definitions for its return type, which might make it difficult for other developers to understand how to use the composable. To fix this, you should add explicit type definitions for the return type of the `useTerminal` composable.
+
+#### 5. Key Learnings: Patterns Worth Remembering for Future Coding
+
+*   **Dependency Injection**: The `useTerminal` composable uses dependency injection to provide the `Terminal` instance to the component. This pattern is useful for loosening the coupling between components and making
+
