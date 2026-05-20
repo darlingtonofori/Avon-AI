@@ -5723,3 +5723,103 @@ contract ContractTest is Test {
 
 *   **Dependency Injection**: The `useTerminal` composable uses dependency injection to provide the `Terminal` instance to the component. This pattern is useful for loosening the coupling between components and making
 
+[2026-05-20 11:54:16] VULNERABILITY:
+**Analysis of internal/server/oauth_helper.go**
+
+### 1. BUGS: Logical errors, edge cases, runtime issues
+
+*   The provided code snippet does not contain any logical errors, edge cases, or runtime issues that are immediately apparent. However, there are a few potential concerns:
+    *   **Type aliasing**: The code uses type aliasing for backward compatibility. While this is a good practice, it can lead to confusion if not properly documented. It's essential to ensure that the aliased types are correctly maintained and updated in the `oauth` module.
+    *   **Dependency on the oauth module**: The code relies heavily on the `oauth` module, which may lead to tight coupling between the `server` and `oauth` modules. This could make maintenance and updates more challenging.
+
+### 2. SECURITY VULNS: Injection, auth bypass, insecure handling, XSS, CSRF, buffer overflow
+
+*   **Lack of input validation**: Although the provided code snippet does not directly handle user input, it is essential to ensure that any input validation is performed correctly in the `oauth` module. Failure to do so could lead to security vulnerabilities such as injection attacks.
+*   **Insecure data handling**: The code deals with sensitive OAuth data (e.g., tokens, provider information). It is crucial to ensure that this data is handled securely, using secure storage and transmission mechanisms (e.g., encryption).
+*   **CSRF protection**: The code does not appear to handle CSRF protection directly. However, it's essential to ensure that any OAuth flows implemented using this code are protected against CSRF attacks.
+
+### 3. PERFORMANCE: Bottlenecks, inefficient patterns
+
+*   **Type aliasing overhead**: While type aliasing is generally a lightweight operation in Go, excessive use of type aliases can lead to increased compilation time and potentially impact performance. However, in this case, the number of type aliases is reasonable.
+*   **Module dependencies**: The code's dependency on the `oauth` module may introduce additional overhead due to module loading and import resolution. However, this is a common pattern in Go and is not typically a significant performance concern.
+
+### 4. CODE QUALITY: Anti-patterns, bad practices
+
+*   **Type aliasing for backward compatibility**: While type aliasing for backward compatibility is a good practice, it can lead to code complexity and maintenance issues if not properly managed. It's essential to ensure that the aliased types are correctly maintained and updated in the `oauth` module.
+*   **Tight coupling**: The code's reliance on the `oauth` module may lead to tight coupling between the `server` and `oauth` modules. This could make maintenance and updates more challenging. Consider using interfaces or abstraction layers to reduce coupling.
+
+### 5. KEY LEARNINGS: Patterns worth remembering for future coding
+
+*   **Use type aliasing for backward compatibility**: When refactoring code, consider using type aliasing to maintain backward compatibility and minimize disruptions to dependent code.
+*   **Dependency management**: Be mindful of module dependencies and their potential impact on performance and maintainability. Use interfaces and abstraction layers to reduce coupling and improve code organization.
+*   **Security considerations**: Always prioritize security when handling sensitive data (e.g., OAuth tokens, provider information). Ensure that input validation, secure data handling, and CSRF protection are properly implemented.
+
+To improve the code, consider the following:
+
+*   Implement input validation and secure data handling mechanisms in the `oauth` module.
+*   Use interfaces or abstraction layers to reduce coupling between the `server` and `oauth` modules.
+*   Ensure that the type aliases are correctly maintained and updated in the `oauth` module.
+*   Consider adding documentation to explain the purpose and usage of the type aliases.
+
+Example of how to improve the code by reducing coupling:
+```go
+// Define an interface for OAuth providers
+type OAuthProvider interface {
+    GetProviderInfo() OAuthProviderInfo
+    // ...
+}
+
+// Update the oauth module to implement the OAuthProvider interface
+type OAuthModule struct {
+    // ...
+}
+
+func (m *OAuthModule) GetProviderInfo() OAuthProviderInfo {
+    // ...
+}
+
+// Update the server code to use the OAuthProvider interface
+type OAuthHelper struct {
+    provider OAuthProvider
+}
+
+func (h *OAuthHelper) GetProviderInfo() OAuthProviderInfo {
+    return h.provider.GetProviderInfo()
+}
+```
+This approach reduces coupling between the `server` and `oauth` modules by introducing an abstraction layer (the `OAuthProvider` interface). This makes it easier to maintain and update the code, as changes to the `oauth` module do not directly affect the `server` module.
+
+[2026-05-20 12:54:40] VULNERABILITY:
+### Deep Analysis of BooleanMatcher.java
+
+#### 1. BUGS: Logical errors, edge cases, runtime issues
+
+*   The `matches` method does not handle the case where `matched` is `null` and `matcher` is not `null`. This could lead to a `NullPointerException` when trying to compare `matched` with `matcher`. To fix this, an explicit null check should be added for the `matched` variable.
+*   The `BooleanMatcher` constructor does not perform any null checks on the `mockServerLogger` parameter. If `mockServerLogger` is `null`, it could lead to a `NullPointerException` when trying to use the logger. A null check should be added in the constructor to ensure that `mockServerLogger` is not `null`.
+*   The `matches` method modifies the `context` object by adding a difference to it. However, there is no check to ensure that `context` is not `null` before modifying it. This could lead to a `NullPointerException` if `context` is `null`. An explicit null check should be added before modifying `context`.
+*   The `excludedFields` array is defined as `private static final`, which means it is shared among all instances of the `BooleanMatcher` class. If this array is modified accidentally, it could have unintended consequences on all instances of the class. To avoid this, the array should be defined as `private final` instead of `private static final`, so that each instance has its own copy of the array.
+
+#### 2. SECURITY VULNS: Injection, auth bypass, insecure handling, XSS, CSRF, buffer overflow
+
+*   The `BooleanMatcher` class uses the `MockServerLogger` to log messages. However, there is no validation or sanitization of the input data (`matched` and `matcher`) before logging it. This could potentially lead to a log injection vulnerability if the input data contains malicious characters. To mitigate this, the input data should be validated and sanitized before logging it.
+*   The `BooleanMatcher` class does not handle any user input directly. However, if the `mockServerLogger` object is not properly secured, it could potentially be used to log sensitive information. To avoid this, the `mockServerLogger` object should be properly secured and configured to log only non-sensitive information.
+
+#### 3. PERFORMANCE: Bottlenecks, inefficient patterns
+
+*   The `matches` method performs a comparison between `matched` and `matcher` using the `==` operator. This could potentially lead to performance issues if the comparison is done frequently, as it involves a method call under the hood. To improve performance, the comparison could be done using the `equals` method instead, which is optimized for performance.
+*   The `BooleanMatcher` class extends the `ObjectWithReflectiveEqualsHashCodeToString` class, which uses reflection to generate the `equals`, `hashCode`, and `toString` methods. While this provides a convenient way to implement these methods, it could potentially lead to performance issues due to the overhead of reflection. To improve performance, these methods could be implemented manually instead of relying on reflection.
+
+#### 4. CODE QUALITY: Anti-patterns, bad practices
+
+*   The `BooleanMatcher` class has a complex constructor that takes two parameters: `mockServerLogger` and `matcher`. However, there is no validation or documentation to explain the purpose of these parameters or the expected input values. To improve code quality, the constructor should be documented with clear and concise comments, and input validation should be added to ensure that the parameters are valid.
+*   The `matches` method has a complex logic with multiple conditional statements. While this is not necessarily an anti-pattern, it could make the code harder to read and maintain. To improve code quality, the logic could be simplified by breaking it down into smaller, more manageable methods.
+*   The `BooleanMatcher` class uses the `MockServerLogger` to log messages. However, there is no clear separation of concerns between the logging functionality and the matching functionality. To improve code quality, the logging functionality could be separated into a separate class or method, making the code more modular and reusable.
+
+#### 5. KEY LEARNINGS: Patterns worth remembering for future coding
+
+*   **Use explicit null checks**: When working with objects that could potentially be `null`, it's essential to use explicit null checks to avoid `NullPointerExceptions`.
+*   **Use `equals` instead of `==` for comparisons**: When comparing objects, use the `equals` method instead of the `==` operator, as it provides more accurate and efficient comparisons.
+*   **Separate concerns**: When designing classes or methods, separate concerns into different modules or methods to improve code quality, modularity, and reusability.
+*   **Use validation and sanitization**: When working with user input or external data, use validation and sanitization to prevent security vulnerabilities and ensure data integrity.
+*   **Document code clearly**: When writing code, use
+

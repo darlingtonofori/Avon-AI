@@ -2803,3 +2803,27 @@
 [2026-05-20 11:54:11] Language: go
 [2026-05-20 11:54:12] Repo: tingly-dev/tingly-box | Stars: 282
 [2026-05-20 11:54:12] Reading: internal/server/oauth_helper.go
+[2026-05-20 11:54:16] Saved. Vuln: True
+[2026-05-20 11:54:19] Reading: internal/guardrails/evaluate/operation_policy.go
+[2026-05-20 11:54:19] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99815, Requested 1969. Please try again in 25m41.376s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 11:54:22] Reading: vmodel/anthropic/defaults.go
+[2026-05-20 11:54:22] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99811, Requested 2004. Please try again in 26m8.159999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 11:54:26] Open issues to analyze: 3
+[2026-05-20 11:54:26] Issue: Add desktop shortcut creation for Tingly Box
+[2026-05-20 11:54:26] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99807, Requested 1457. Please try again in 18m12.096s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 11:54:29] Issue: Add tool blocking feature to filter request tools by name
+[2026-05-20 11:54:29] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99803, Requested 1460. Please try again in 18m11.232s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 11:54:32] Issue: Migrate claude_code profile rule UUIDs to deterministic builtin: format
+[2026-05-20 11:54:32] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99800, Requested 1451. Please try again in 18m0.864s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 11:54:35] === CYCLE DONE === Next in 1 hour.
+[2026-05-20 12:54:35] === SCAN CYCLE STARTING ===
+[2026-05-20 12:54:35] Language: java
+[2026-05-20 12:54:36] Repo: mock-server/mockserver-monorepo | Stars: 4874
+[2026-05-20 12:54:36] Reading: mockserver/mockserver-core/src/main/java/org/mockserver/matchers/BooleanMatcher.java
+[2026-05-20 12:54:40] Saved. Vuln: True
+[2026-05-20 12:54:43] Reading: mockserver/mockserver-core/src/test/java/org/mockserver/model/ParameterTest.java
+[2026-05-20 12:54:43] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99694, Requested 1565. Please try again in 18m7.776s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 12:54:46] Reading: mockserver/mockserver-netty/src/test/java/org/mockserver/netty/unification/EarlyMatchingHandlerTest.java
+[2026-05-20 12:54:46] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99690, Requested 1850. Please try again in 22m10.56s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 12:54:50] Open issues to analyze: 0
+[2026-05-20 12:54:50] === CYCLE DONE === Next in 1 hour.
