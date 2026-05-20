@@ -2922,3 +2922,31 @@
 [2026-05-20 18:56:50] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99291, Requested 1862. Please try again in 16m36.192s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-20 18:56:53] Open issues to analyze: 0
 [2026-05-20 18:56:53] === CYCLE DONE === Next in 1 hour.
+[2026-05-20 19:56:53] === SCAN CYCLE STARTING ===
+[2026-05-20 19:56:53] Language: c
+[2026-05-20 19:56:54] Repo: openldap/openldap | Stars: 581
+[2026-05-20 19:56:55] Reading: servers/lloadd/tier.c
+[2026-05-20 19:56:56] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99841, Requested 2057. Please try again in 27m19.872s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 19:56:59] Reading: servers/slapd/proxyp.c
+[2026-05-20 19:56:59] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99838, Requested 2315. Please try again in 31m0.192s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 19:57:02] Reading: contrib/slapd-modules/acl/now.c
+[2026-05-20 19:57:03] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99834, Requested 2075. Please try again in 27m29.376s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 19:57:06] Open issues to analyze: 0
+[2026-05-20 19:57:06] === CYCLE DONE === Next in 1 hour.
+[2026-05-20 20:57:06] === SCAN CYCLE STARTING ===
+[2026-05-20 20:57:06] Language: kotlin
+[2026-05-20 20:57:07] Repo: teja2495/quick-search | Stars: 262
+[2026-05-20 20:57:07] Reading: app/src/main/java/com/tk/quicksearch/search/appShortcuts/AppShortcutResultsSection.kt
+[2026-05-20 20:57:11] Saved. Vuln: True
+[2026-05-20 20:57:14] Reading: app/src/main/java/com/tk/quicksearch/settings/shared/settingsRoute/SettingsCallbacksBuilder.kt
+[2026-05-20 20:57:14] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99997, Requested 1971. Please try again in 28m20.351999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 20:57:17] Reading: app/src/main/java/com/tk/quicksearch/search/core/SearchViewModelInitialStateFactory.kt
+[2026-05-20 20:57:17] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99993, Requested 1826. Please try again in 26m11.616s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 20:57:21] Open issues to analyze: 3
+[2026-05-20 20:57:21] Issue: [Enhancement] Option to reorder pinned items and option add more than 10 pinned apps
+[2026-05-20 20:57:21] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99989, Requested 1130. Please try again in 16m6.816s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 20:57:24] Issue: [Enhancement] Optional toggles for a cleaner UI
+[2026-05-20 20:57:24] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99985, Requested 1160. Please try again in 16m29.28s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 20:57:27] Issue: Publish the app to F-droid
+[2026-05-20 20:57:27] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99982, Requested 1021. Please try again in 14m26.592s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-20 20:57:30] === CYCLE DONE === Next in 1 hour.
