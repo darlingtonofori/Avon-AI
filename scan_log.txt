@@ -3267,3 +3267,31 @@
 [2026-05-21 19:04:23] Issue: fix(silo): Reduce timeout and disable retries for synchronous proxy requests
 [2026-05-21 19:04:23] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99570, Requested 1370. Please try again in 13m32.16s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-21 19:04:26] === CYCLE DONE === Next in 1 hour.
+[2026-05-21 20:04:26] === SCAN CYCLE STARTING ===
+[2026-05-21 20:04:26] Language: swift
+[2026-05-21 20:04:27] Repo: AnimacX/AnimacX | Stars: 259
+[2026-05-21 20:04:27] Reading: Package.swift
+[2026-05-21 20:04:30] Saved. Vuln: True
+[2026-05-21 20:04:34] Open issues to analyze: 3
+[2026-05-21 20:04:34] Issue: 【功能】支持Jellyfin/emby私有资源库
+[2026-05-21 20:04:34] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98993, Requested 1198. Please try again in 2m45.024s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 20:04:37] Issue: 【功能】大佬，能支持HDR的视频不
+[2026-05-21 20:05:09] Issue solution saved.
+[2026-05-21 20:05:12] Issue: 【功能】添加影视库功能
+[2026-05-21 20:05:12] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99926, Requested 1037. Please try again in 13m52.031999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 20:05:15] === CYCLE DONE === Next in 1 hour.
+[2026-05-21 21:05:15] === SCAN CYCLE STARTING ===
+[2026-05-21 21:05:15] Language: javascript
+[2026-05-21 21:05:15] Repo: fdciabdul/Google-Trends-Keywords-Scraper | Stars: 147
+[2026-05-21 21:05:16] Reading: main.js
+[2026-05-21 21:05:20] Saved. Vuln: True
+[2026-05-21 21:05:23] Reading: utils/getData.js
+[2026-05-21 21:05:23] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99705, Requested 1994. Please try again in 24m27.936s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 21:05:27] Open issues to analyze: 3
+[2026-05-21 21:05:27] Issue: Dependabot npm and yarn node fetch 3.3.1
+[2026-05-21 21:05:27] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99701, Requested 1015. Please try again in 10m18.624s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 21:05:30] Issue: Revert 4 dependabot npm and yarn node fetch 3.3.0
+[2026-05-21 21:05:30] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99698, Requested 1019. Please try again in 10m19.488s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 21:05:33] Issue: Dependabot npm and yarn node fetch 3.3.1
+[2026-05-21 21:05:33] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99694, Requested 1015. Please try again in 10m12.576s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 21:05:36] === CYCLE DONE === Next in 1 hour.
