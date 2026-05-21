@@ -3239,3 +3239,31 @@
 [2026-05-21 17:03:46] Issue: Bump h2 from 2.0.202 to 2.2.220 in /2023-03/spring-10-orm/demo-projects/spring-jpa-ineritance-demo
 [2026-05-21 17:03:46] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99538, Requested 1753. Please try again in 18m35.424s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-21 17:03:49] === CYCLE DONE === Next in 1 hour.
+[2026-05-21 18:03:49] === SCAN CYCLE STARTING ===
+[2026-05-21 18:03:49] Language: c
+[2026-05-21 18:03:50] Repo: chernandezba/zesarux | Stars: 394
+[2026-05-21 18:03:51] Reading: src/machines/jupiterace.c
+[2026-05-21 18:03:51] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99458, Requested 1896. Please try again in 19m29.856s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 18:03:54] Reading: src/other_sources_not_ZEsarUX/spedtotxt.c
+[2026-05-21 18:03:54] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99454, Requested 1577. Please try again in 14m50.784s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 18:03:57] Reading: src/machines/pcw.c
+[2026-05-21 18:03:58] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99450, Requested 2175. Please try again in 23m24s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 18:04:01] Open issues to analyze: 0
+[2026-05-21 18:04:01] === CYCLE DONE === Next in 1 hour.
+[2026-05-21 19:04:01] === SCAN CYCLE STARTING ===
+[2026-05-21 19:04:01] Language: python
+[2026-05-21 19:04:02] Repo: getsentry/sentry | Stars: 43936
+[2026-05-21 19:04:03] Reading: tests/sentry/billing/platform/services/usage/test_outcomes_query.py
+[2026-05-21 19:04:07] Saved. Vuln: True
+[2026-05-21 19:04:10] Reading: src/sentry/preprod/migrations/0001_emerge_upload_models.py
+[2026-05-21 19:04:10] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99585, Requested 1848. Please try again in 20m38.112s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 19:04:13] Reading: src/sentry/snuba/metrics/naming_layer/__init__.py
+[2026-05-21 19:04:13] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99581, Requested 1293. Please try again in 12m35.136s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 19:04:17] Open issues to analyze: 3
+[2026-05-21 19:04:17] Issue: feat(seer): Add structured LLM context for replay list and detail pages
+[2026-05-21 19:04:17] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99577, Requested 1072. Please try again in 9m20.736s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 19:04:20] Issue: ref(issue detectors): Switch segment detectors to use a sample rate
+[2026-05-21 19:04:20] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99573, Requested 1083. Please try again in 9m26.784s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 19:04:23] Issue: fix(silo): Reduce timeout and disable retries for synchronous proxy requests
+[2026-05-21 19:04:23] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99570, Requested 1370. Please try again in 13m32.16s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 19:04:26] === CYCLE DONE === Next in 1 hour.
