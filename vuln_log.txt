@@ -6332,3 +6332,107 @@ void HitSurface(const Crystal& crystal, float n, size_t num,
                 float_bf_t d_out, float_bf_t w_out) {
     // Check if num is within
 
+[2026-05-21 06:00:02] VULNERABILITY:
+### Deep Analysis of Emoji.cpp
+
+#### 1. BUGS: Logical errors, edge cases, runtime issues
+
+*   The function `isEmojiBase` has a specific condition to handle the characters `0x1F91D` and `0x1F93C`, which were removed from Emoji_Modifier_Base in Emoji 4.0. However, this logic may not be sufficient if more characters are removed or added in future Emoji versions. To make the code more robust, it would be better to maintain a list or array of such exceptions rather than hardcoding them.
+
+*   The function `emojiBidiOverride` simply calls `u_charDirection(c)` without any input validation. If the input `c` is invalid or out of range, it may lead to undefined behavior. Adding input validation or error handling would improve the robustness of the function.
+
+*   The function `isEmoji`, `isEmojiModifier`, and `isEmojiBase` do not handle the case when the input `c` is not a valid Unicode codepoint. According to the Unicode standard, a valid Unicode codepoint is in the range of [0, 0x10FFFF]. Adding input validation to ensure the input is within this range would prevent potential issues.
+
+#### 2. SECURITY VULNS: Injection, auth bypass, insecure handling, XSS, CSRF, buffer overflow
+
+*   The code does not seem to have any direct security vulnerabilities like injection, auth bypass, or insecure handling. However, the functions `isEmoji`, `isEmojiModifier`, and `isEmojiBase` use `u_hasBinaryProperty` which is not shown in the given code snippet. If `u_hasBinaryProperty` is not properly implemented, it may lead to potential security issues.
+
+*   The function `emojiBidiOverride` takes a `void*` pointer as an argument but does not use it. This could potentially be a security issue if the function is modified in the future to use this pointer, as it could lead to unexpected behavior or crashes if the pointer is not properly validated.
+
+#### 3. PERFORMANCE: Bottlenecks, inefficient patterns
+
+*   The function `u_hasBinaryProperty` is called multiple times in the given code snippet. If this function is not efficient or has a high overhead, it could be a performance bottleneck. Consider caching the results of `u_hasBinaryProperty` or optimizing its implementation if possible.
+
+*   The function `isEmojiBase` checks for two specific Unicode codepoints before calling `u_hasBinaryProperty`. If these codepoints are not common, this may lead to an unnecessary function call. Consider rearranging the logic to call `u_hasBinaryProperty` first and then check for the special cases.
+
+#### 4. CODE QUALITY: Anti-patterns, bad practices
+
+*   The code does not follow the principle of Don't Repeat Yourself (DRY). The functions `isEmoji` and `isEmojiModifier` are very similar, with the only difference being the property they check. Consider combining these functions into a single function that takes the property as an argument.
+
+*   The code uses magic numbers (e.g., `0x1F91D`, `0x1F93C`) without explanation. Adding comments to explain the significance of these numbers would improve the readability of the code.
+
+*   The function `emojiBidiOverride` has an unused argument `context`. Consider removing this argument to make the function signature more accurate.
+
+#### 5. KEY LEARNINGS: Patterns worth remembering for future coding
+
+*   The use of Unicode properties (e.g., `UCHAR_EMOJI`) to check for specific Unicode characters. This is a concise and efficient way to perform such checks.
+
+*   The importance of input validation. Adding checks to ensure the input is within a valid range or has the expected format can prevent potential issues and make the code more robust.
+
+*   The principle of separation of concerns. The given code snippet separates the logic for checking different types of Unicode characters into separate functions, making the code easier to understand and maintain.
+
+Example of how the code can be refactored to improve quality and performance:
+
+```cpp
+bool hasUnicodeProperty(uint32_t c, int property) {
+    return u_hasBinaryProperty(c, property);
+}
+
+bool isEmoji(uint32_t c) {
+    return hasUnicodeProperty(c, UCHAR_EMOJI);
+}
+
+bool isEmojiModifier(uint32_t c) {
+    return hasUnicodeProperty(c, UCHAR_EMOJI_MODIFIER);
+}
+
+bool isEmojiBase(uint32_t c) {
+    static const uint32_t specialCases[] = {0x1F91D, 0x1F93C};
+    for (uint32_t specialCase : specialCases) {
+        if (c == specialCase) {
+            return true;
+        }
+    }
+    return hasUnicodeProperty(c, UCHAR_EMOJI_MODIFIER_BASE);
+}
+```
+
+[2026-05-21 07:00:26] VULNERABILITY:
+### Deep Analysis of `InstalledApplicationVersions` Class
+
+#### 1. BUGS
+
+*   **Potential `NumberFormatException`**: In the `nodeVersionBelowCurrentLtsVersion()` method, the code assumes that the first group of the matcher (i.e., the major version number) is always an integer. However, if the input string does not match the expected pattern, `matcher.group(1)` may return a non-numeric value, leading to a `NumberFormatException` when attempting to parse it to an integer. To mitigate this, consider using a more robust parsing approach or adding additional error handling.
+
+*   **Incomplete Matching**: The regular expression `NODE_VERSION_PATTERN_MAJOR` only matches the major version number (e.g., "v18" in "v18.10.0"). However, this might not be sufficient to accurately compare version numbers. For instance, if the current LTS version is "v18.10", a version "v18.9" would incorrectly be considered as being at or above the current LTS version. To fix this, consider using a more comprehensive version comparison approach, such as using a dedicated version parsing library.
+
+*   **No Handling for Null or Empty `nodeVersion`**: The `nodeVersionBelowCurrentLtsVersion()` method does not check if the `nodeVersion` field is null or empty before attempting to match and parse it. This could lead to `NullPointerExceptions` or unexpected behavior. To address this, add null checks and handle these cases accordingly.
+
+#### 2. SECURITY VULNS
+
+*   **Lack of Input Validation**: Although the `InstalledApplicationVersions` class is designed to work with version numbers, it does not explicitly validate its inputs. In a more critical context, this lack of validation could potentially lead to security vulnerabilities, such as exploiting buffer overflows or injection attacks. While not a significant concern in this specific class, it is essential to maintain a culture of robust input validation throughout the application.
+
+*   **No Specific Security Concerns**: Based on the provided code, there are no apparent security vulnerabilities, such as injection, authentication bypass, insecure handling, XSS, CSRF, or buffer overflow, that could be exploited.
+
+#### 3. PERFORMANCE
+
+*   **Matcher Creation Overhead**: The `NODE_VERSION_PATTERN_MAJOR` pattern is compiled only once as a static final field, which is efficient. However, the `Matcher` object creation occurs every time `nodeVersionBelowCurrentLtsVersion()` is called. While the overhead is likely negligible, it is worth considering reusing the `Matcher` instance or using a more efficient parsing method.
+
+*   **No Notable Performance Bottlenecks**: The code does not contain any obvious performance bottlenecks that would significantly impact the application's overall performance.
+
+#### 4. CODE QUALITY
+
+*   **Magic Number**: The `NODE_CURRENT_LTS_MAJOR_VERSION` field is a magic number (18). Consider defining a named constant or a configurable value to make the code more readable and maintainable.
+
+*   **Method Naming**: The method name `nodeVersionBelowCurrentLtsVersion()` is clear, but it could be improved by making it more concise while maintaining readability. For example, `isNodeVersionBelowLts()`.
+
+*   **Record Class**: The use of a record class is suitable for this simple data holder. However, if the class were to become more complex, consider switching to a traditional class to improve maintainability.
+
+#### 5. KEY LEARNINGS
+
+*   **Regular Expressions for Version Parsing**: While regular expressions can be an effective way to extract version numbers, they may not always be the best approach, especially when dealing with complex versioning schemes. Consider using dedicated version parsing libraries or more comprehensive comparison methods.
+
+*   **Input Validation and Error Handling**: Always prioritize input validation and robust error handling to ensure the reliability and security of your application.
+
+*   **Record Classes for Simple Data Holders**: Record classes can simplify the implementation of simple data holder classes by automatically generating boilerplate code (e.g., constructors, getters, equals, and hashCode).
+
