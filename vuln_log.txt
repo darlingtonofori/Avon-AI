@@ -6956,3 +6956,138 @@ async function main() {
 
     console.log(`Processing ${data
 
+[2026-05-21 22:05:40] VULNERABILITY:
+### Deep Analysis of Code
+
+#### 1. BUGS
+
+1. **Option handling**: The `max_fee_per_blob_gas` method returns an `Option<u128>`, which defaults to `None`. However, when setting the `max_fee_per_blob_gas`, it does not check if the value is already set. This could lead to a hidden bug if the `max_fee_per_blob_gas` is set to `None` after it has already been set to a value.
+2. **Non-checked panic**: The `reset_gas_limit` method is not checked for panics. If the gas limit is not reset properly, it could lead to a runtime error.
+3. **Invalid assumptions**: The `with_max_fee_per_blob_gas` method assumes that setting the `max_fee_per_blob_gas` will always succeed. However, it does not check for potential errors.
+
+#### 2. SECURITY VULNS
+
+1. **Lack of input validation**: The `set_max_fee_per_blob_gas` method does not validate the input `max_fee_per_blob_gas`. This could lead to potential security issues if an attacker provides a malicious input.
+2. **Insecure handling**: The `FoundryTransactionBuilder` trait does not handle sensitive information securely. For example, the `max_fee_per_blob_gas` is stored in plain text, which could be a security risk.
+3. **Potential for auth bypass**: The `set_authorization_list` method is not implemented in this code snippet, but it could potentially be used to bypass authorization checks if not implemented correctly.
+
+#### 3. PERFORMANCE
+
+1. **Inefficient pattern**: The `with_max_fee_per_blob_gas` method creates a new instance of `Self` every time it is called, which could lead to performance issues if called repeatedly.
+2. **Unnecessary cloning**: The `set_max_fee_per_blob_gas` method clones the `max_fee_per_blob_gas` value unnecessarily, which could lead to performance issues.
+
+#### 4. CODE QUALITY
+
+1. **Anti-pattern**: The `FoundryTransactionBuilder` trait uses a default implementation for all methods, which could lead to a "god object" anti-pattern if not implemented correctly.
+2. **Bad practice**: The `set_max_fee_per_blob_gas` method does not check for errors, which is a bad practice.
+3. **Unclear method names**: Some method names, such as `reset_gas_limit`, are unclear and do not indicate what the method does.
+
+#### 5. KEY LEARNINGS
+
+1. **Use Option types wisely**: Option types should be used to indicate the absence of a value, rather than using a default value.
+2. **Handle errors securely**: Errors should be handled securely to prevent potential security issues.
+3. **Validate inputs**: Inputs should be validated to prevent potential security issues.
+4. **Use efficient patterns**: Efficient patterns, such as using references instead of cloning, should be used to improve performance.
+5. **Follow best practices**: Best practices, such as checking for errors and using clear method names, should be followed to improve code quality.
+
+### Example of how to fix some of the issues
+
+```rust
+/// Set the max fee per blob gas for the transaction.
+///
+/// Returns an error if the max fee per blob gas cannot be set.
+fn set_max_fee_per_blob_gas(&mut self, max_fee_per_blob_gas: u128) -> Result<()> {
+    // Validate the input
+    if max_fee_per_blob_gas > u128::MAX {
+        return Err(eyre!("Invalid max fee per blob gas"));
+    }
+
+    // Set the max fee per blob gas
+    self.max_fee_per_blob_gas = Some(max_fee_per_blob_gas);
+    Ok(())
+}
+
+/// Builder-pattern method for setting max fee per blob gas.
+///
+/// Returns an error if the max fee per blob gas cannot be set.
+fn with_max_fee_per_blob_gas(mut self, max_fee_per_blob_gas: u128) -> Result<Self> {
+    self.set_max_fee_per_blob_gas(max_fee_per_blob_gas)?;
+    Ok(self)
+}
+```
+
+In this example, the `set_max_fee_per_blob_gas` method checks for potential errors and validates the input. The `with_max_fee_per_blob_gas` method uses the `set_max_fee_per_blob_gas` method and checks for errors. This improves the code quality and security of the `FoundryTransactionBuilder` trait.
+
+[2026-05-21 23:06:04] VULNERABILITY:
+### Deep Analysis of WorkflowHandle Class
+
+#### 1. BUGS: Logical errors, edge cases, runtime issues
+1. **Missing Import**: The code is missing the import statement for `_base64url_encode_no_padding` and `_base64url_decode_no_padding` functions. These functions are likely defined elsewhere in the codebase, but without an import statement, the code will throw a `NameError`.
+2. **Incomplete Method**: The `from_token` method has an incomplete line of code: `try: workflow_opera`. This line will cause a `SyntaxError` because it is incomplete. It should be replaced with the correct implementation.
+3. **No Validation for Workflow ID and Namespace**: The `__init__` method does not validate if the `workflow_id` and `namespace` are not empty. This could lead to unexpected behavior if empty strings are passed to the constructor.
+4. **No Validation for Version**: The `version` attribute is not validated. If a negative integer is passed, it may cause unexpected behavior.
+5. **Potential TypeError in to_token Method**: The `json.dumps` function may throw a `TypeError` if the `namespace` or `workflow_id` are not JSON serializable.
+
+#### 2. SECURITY VULNS: Injection, auth bypass, insecure handling, XSS, CSRF, buffer overflow
+1. **Potential JSON Injection**: The `to_token` method uses `json.dumps` to convert a dictionary to a JSON string. If the `namespace` or `workflow_id` contain user-controlled data, an attacker may be able to inject malicious JSON code.
+2. **Base64 Encoding**: The `_base64url_encode_no_padding` function is used to encode the JSON string. While base64 encoding is not inherently insecure, if the encoded string is not properly handled, it may be vulnerable to injection attacks.
+
+#### 3. PERFORMANCE: Bottlenecks, inefficient patterns
+1. **JSON Encoding and Decoding**: The `to_token` and `from_token` methods use `json.dumps` and `json.loads` to encode and decode the JSON string. These operations can be expensive, especially for large inputs.
+2. **Base64 Encoding and Decoding**: The `_base64url_encode_no_padding` and `_base64url_decode_no_padding` functions are used to encode and decode the JSON string. While these operations are generally fast, they can still introduce some overhead.
+
+#### 4. CODE QUALITY: Anti-patterns, bad practices
+1. **Type Hints**: The `WorkflowHandle` class is missing type hints for the `namespace` and `workflow_id` attributes.
+2. **Docstrings**: While the class has a docstring, some of the methods are missing docstrings.
+3. **Magic Numbers**: The `OPERATION_TOKEN_TYPE_WORKFLOW` constant is a magic number. While it is defined as a named constant, it would be better to define an `Enum` class to represent the different token types.
+4. **Private Methods**: The `_unsafe_from_client_workflow_handle` method is marked as private, but it is not clear why it is not intended to be used by users.
+
+#### 5. KEY LEARNINGS: Patterns worth remembering for future coding
+1. **Use Type Hints**: Type hints can help catch type-related errors at runtime and improve code readability.
+2. **Use Docstrings**: Docstrings can provide valuable documentation for users of your code.
+3. **Avoid Magic Numbers**: Magic numbers can make code harder to understand and maintain. Instead, use named constants or `Enum` classes.
+4. **Use Private Methods Judiciously**: Private methods can be useful for encapsulating implementation details, but they should be used judiciously to avoid confusing users of your code.
+
+Example refactored code for some of the issues mentioned above:
+
+```python
+from __future__ import annotations
+
+import base64
+import json
+from dataclasses import dataclass
+from enum import Enum
+from typing import TYPE_CHECKING, Any, Generic, Literal
+
+if TYPE_CHECKING:
+    import temporalio.client
+
+class OperationTokenType(Enum):
+    WORKFLOW = 1
+
+@dataclass(frozen=True)
+class WorkflowHandle(Generic[OutputT]):
+    """A handle to a workflow that is backing a Nexus operation.
+
+    Do not instantiate this directly. Use
+    :py:func:`temporalio.nexus.WorkflowRunOperationContext.start_workflow` to create a
+    handle.
+    """
+    namespace: str
+    workflow_id: str
+    version: int | None = None
+
+    def __post_init__(self):
+        """Validate the namespace and workflow_id."""
+        if not self.namespace:
+            raise ValueError("namespace cannot be empty")
+        if not self.workflow_id:
+            raise ValueError("workflow_id cannot be empty")
+
+    def to_token(self) -> str:
+        """Convert handle to a base64url-encoded token string."""
+        try:
+            json_string = json.dumps(
+                {
+                    "t": OperationTokenType.WORK
+
