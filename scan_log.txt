@@ -3211,3 +3211,31 @@
 [2026-05-21 15:03:05] Issue: using USB devices with the same name.
 [2026-05-21 15:03:05] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99989, Requested 1046. Please try again in 14m54.24s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-21 15:03:08] === CYCLE DONE === Next in 1 hour.
+[2026-05-21 16:03:08] === SCAN CYCLE STARTING ===
+[2026-05-21 16:03:08] Language: go
+[2026-05-21 16:03:09] Repo: chmouel/lazyworktree | Stars: 236
+[2026-05-21 16:03:10] Reading: internal/config/config_keybindings_test.go
+[2026-05-21 16:03:13] Saved. Vuln: True
+[2026-05-21 16:03:16] Reading: internal/bootstrap/subcommands.go
+[2026-05-21 16:03:17] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99997, Requested 1660. Please try again in 23m51.648s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 16:03:20] Reading: internal/app/services/ci_cache_test.go
+[2026-05-21 16:03:20] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99993, Requested 2149. Please try again in 30m50.688s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 16:03:23] Open issues to analyze: 0
+[2026-05-21 16:03:23] === CYCLE DONE === Next in 1 hour.
+[2026-05-21 17:03:23] === SCAN CYCLE STARTING ===
+[2026-05-21 17:03:23] Language: java
+[2026-05-21 17:03:24] Repo: OtusTeam/Spring | Stars: 174
+[2026-05-21 17:03:27] Reading: 2023-07/spring-13-data-jpa/solution-02/src/main/java/ru/otus/springdata/domain/Email.java
+[2026-05-21 17:03:30] Saved. Vuln: True
+[2026-05-21 17:03:33] Reading: 2021-03/spring-07-adv-conf/test-configuration-exercise-1/src/main/java/ru/otus/example/testconfigurationdemo/family/childrens/Son.java
+[2026-05-21 17:03:33] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99553, Requested 1361. Please try again in 13m9.696s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 17:03:36] Reading: 2023-03/spring-10-orm/orm-class-work/orm-solution-05/src/main/java/ru/otus/example/ormdemo/OrmDemoApplication.java
+[2026-05-21 17:03:37] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99549, Requested 1368. Please try again in 13m12.287999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 17:03:40] Open issues to analyze: 3
+[2026-05-21 17:03:40] Issue: IDE for Spring
+[2026-05-21 17:03:40] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99545, Requested 1408. Please try again in 13m43.392s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 17:03:43] Issue: Bump h2 from 2.0.202 to 2.2.220 in /2022-02/spring-08-orm/orm-class-work/orm-solution-08
+[2026-05-21 17:03:43] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99541, Requested 1751. Please try again in 18m36.288s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 17:03:46] Issue: Bump h2 from 2.0.202 to 2.2.220 in /2023-03/spring-10-orm/demo-projects/spring-jpa-ineritance-demo
+[2026-05-21 17:03:46] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99538, Requested 1753. Please try again in 18m35.424s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 17:03:49] === CYCLE DONE === Next in 1 hour.

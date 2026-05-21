@@ -6635,3 +6635,152 @@ The `TestHealthEndpointBeforeStartup` function uses a context to cancel the TSD 
 *   **Using `SPA_N_ELEMENTS` Macro**: The code demonstrates the use of the `SPA_N_ELEMENTS` macro to get the number of elements in an array. This is a convenient and safe way to avoid hardcoding array sizes, reducing the risk of errors.
 *   **
 
+[2026-05-21 16:03:13] VULNERABILITY:
+### Deep Analysis of `internal/config/config_keybindings_test.go`
+
+#### 1. BUGS:
+
+1. **Keybindings Parsing Edge Case**: In the `parseKeybindings` function, the code does not handle cases where the input map contains unknown keys or values. This could lead to unexpected behavior or panics at runtime.
+2. **Invalid Input Type**: The `parseKeybindings` function does not check if the input is a valid map. If the input is not a map, the function will panic when trying to access its elements.
+3. **Uninitialized Result Map**: In the `TestParseKeybindings` test cases, the `result` map is not initialized before being used. Although this is not a bug in this specific code, it's a potential issue if the `parseKeybindings` function is modified to return a nil map in certain cases.
+4. **Potential Key Collision**: In the `TestKeybindingsConfigAllForPane` test, the `kb` struct has duplicate key bindings (e.g., "G" is bound to both "git-lazygit" and "worktree-delete"). This could lead to unexpected behavior if the duplicate keys are not handled correctly.
+
+#### 2. SECURITY VULNS:
+
+1. **No Input Validation**: The `parseKeybindings` function does not validate the input map for potential security vulnerabilities such as JSON injection attacks. Although the current implementation only handles maps created within the code, it's essential to validate input in case the function is modified to accept external input in the future.
+2. **Potential for Denial of Service (DoS)**: If the input map contains a large number of nested maps, the `parseKeybindings` function could potentially consume excessive memory or CPU resources, leading to a denial-of-service attack.
+
+#### 3. PERFORMANCE:
+
+1. **Excessive Memory Allocation**: The `parseKeybindings` function creates a new map for each test case, which can lead to excessive memory allocation and garbage collection. Although this is not a significant performance bottleneck in the current implementation, it's essential to consider memory efficiency when dealing with large inputs.
+2. **Linear Search in Maps**: In the `TestKeybindingsConfigAllForPane` test, the code uses linear search to retrieve key bindings from the map. Although the current implementation uses small maps, it's essential to consider using more efficient data structures or algorithms for larger inputs.
+
+#### 4. CODE QUALITY:
+
+1. **Magic Strings**: The code uses magic strings (e.g., "universal", "worktrees", "G", "F") that are not explicitly defined. It's better to define these strings as constants to improve code readability and maintainability.
+2. **Duplicate Code**: The `TestParseKeybindings` test cases contain duplicate code for setting up test data and assertions. It's better to extract common logic into separate functions to improve code reusability and maintainability.
+3. **No Error Handling**: The `parseKeybindings` function does not return any error values, which makes it difficult to handle errors or unexpected input. It's essential to add proper error handling to ensure robustness and reliability.
+
+#### 5. KEY LEARNINGS:
+
+1. **Use of Tables for Test Cases**: The code uses a table-driven approach to define test cases, which makes it easy to add or remove test cases without modifying the underlying test logic.
+2. **Parallel Testing**: The code uses parallel testing to execute test cases concurrently, which can significantly improve test performance and reduce overall test execution time.
+3. **Use of assert.Equal**: The code uses `assert.Equal` to perform equality checks, which provides a clear and concise way to verify expected results. It's essential to use assert statements to ensure that tests are robust and reliable.
+
+### Example Refactored Code
+
+```go
+package config
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+const (
+	paneUniversal = "universal"
+	paneWorktrees = "worktrees"
+)
+
+func TestParseKeybindings(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    map[string]any
+		wantLen  int
+		wantKeys map[string]map[string]string
+	}{
+		{
+			name: "valid pane-scoped input",
+			input: map[string]any{
+				"keybindings": map[string]any{
+					paneUniversal: map[string]any{
+						"G": "git-lazygit",
+						"F": "git-fetch",
+					},
+					paneWorktrees: map[string]any{
+						"x": "worktree-delete",
+					},
+				},
+			},
+			wantLen: 2,
+			wantKeys: map[string]map[string]string{
+				paneUniversal: {"G": "git-lazygit", "F": "git-fetch"},
+				paneWorktrees: {"x": "worktree-delete"},
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name
+
+[2026-05-21 17:03:30] VULNERABILITY:
+### Deep Analysis of `Email.java`
+
+#### 1. BUGS: Logical errors, edge cases, runtime issues
+
+*   The `address` field is not validated to ensure it's a valid email address. This can lead to invalid data being persisted in the database.
+*   The `id` field is defined as a `long`, which is a primitive data type. In Java, it's generally recommended to use the `Long` wrapper class to avoid potential `NullPointerExceptions`. However, since it's annotated with `@Id` and `@GeneratedValue`, Hibernate will handle the initialization of this field, mitigating this risk.
+*   The class has three constructors: a no-arg constructor generated by Lombok, an all-arg constructor generated by Lombok, and a constructor that takes an `address` parameter. The no-arg constructor might be unnecessary, as JPA requires a no-arg constructor for entity classes, but the usage of Lombok's `@Data`, `@NoArgsConstructor`, and `@AllArgsConstructor` annotations makes it redundant. It can be safely removed.
+*   The `id` field is not final. Although it's not intended to be modified directly, making it `final` would prevent accidental changes.
+
+#### 2. SECURITY VULNS: Injection, auth bypass, insecure handling, XSS, CSRF, buffer overflow
+
+*   There are no obvious security vulnerabilities in this code. However, it's essential to consider the broader context in which this class is used. For example, if the `address` field is used in a SQL query without proper parameterization, it could be vulnerable to SQL injection attacks.
+*   The `address` field is not sanitized or validated, which could potentially lead to XSS vulnerabilities if it's displayed in a web application.
+
+#### 3. PERFORMANCE: Bottlenecks, inefficient patterns
+
+*   The use of Lombok's `@Data` annotation generates getters, setters, `toString`, `equals`, and `hashCode` methods. While this can improve productivity, it might introduce performance overhead due to the additional method calls.
+*   The `id` field is generated using `GenerationType.IDENTITY`, which can lead to performance issues if the database doesn't support efficient ID generation.
+
+#### 4. CODE QUALITY: Anti-patterns, bad practices
+
+*   The `Email` class is annotated with `@Entity`, indicating that it's a JPA entity. However, it doesn't follow the JavaBean naming conventions, which might cause issues with some frameworks or libraries.
+*   The `address` field is not null-checked in the constructor, which could lead to `NullPointerExceptions` if the field is not properly initialized.
+*   There are no Javadoc comments or other documentation, making it harder for other developers to understand the purpose and behavior of the class.
+
+#### 5. KEY LEARNINGS: Patterns worth remembering for future coding
+
+*   Using Lombok annotations like `@Data`, `@NoArgsConstructor`, and `@AllArgsConstructor` can simplify the development process and reduce boilerplate code.
+*   Properly validating and sanitizing user input (in this case, the email address) is crucial for preventing security vulnerabilities and ensuring data integrity.
+*   Consider using a more robust ID generation strategy, such as `GenerationType.SEQUENCE`, to improve performance and scalability.
+
+Example of improvement:
+
+```java
+package ru.otus.springdata.domain;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+public class Email {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull
+    @Email
+    private String address;
+
+    public Email(String address) {
+        this.address = address;
+    }
+}
+```
+
+In the improved version, the `id` field is defined as a `Long` wrapper class, and the `address` field is annotated with `@NotNull` and `@Email` to ensure proper validation. The `@Entity` annotation remains, and the `@Data`, `@NoArgsConstructor`, and `@AllArgsConstructor` annotations are preserved to simplify the development process.
+
