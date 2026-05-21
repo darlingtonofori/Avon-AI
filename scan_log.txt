@@ -3181,3 +3181,33 @@
 [2026-05-21 13:02:33] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99558, Requested 1678. Please try again in 17m47.904s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-21 13:02:37] Open issues to analyze: 0
 [2026-05-21 13:02:37] === CYCLE DONE === Next in 1 hour.
+[2026-05-21 14:02:37] === SCAN CYCLE STARTING ===
+[2026-05-21 14:02:37] Language: solidity
+[2026-05-21 14:02:38] Repo: jk-labs-inc/confetti | Stars: 105
+[2026-05-21 14:02:39] Reading: packages/react-app-revamp/contracts/bytecodeAndAbi/modules/VoterRewardsModule.6.13.updateFoundry.sol
+[2026-05-21 14:02:39] Error fetching file: 'list' object has no attribute 'get'
+[2026-05-21 14:02:39] Reading: packages/react-app-revamp/contracts/bytecodeAndAbi/Contest.6.5.onlySetOfficialModuleOnce.sol
+[2026-05-21 14:02:40] Error fetching file: 'list' object has no attribute 'get'
+[2026-05-21 14:02:40] Reading: packages/react-app-revamp/contracts/bytecodeAndAbi/Contest.5.10.onlyDeleteInEntry.sol
+[2026-05-21 14:02:40] Error fetching file: 'list' object has no attribute 'get'
+[2026-05-21 14:02:40] Open issues to analyze: 3
+[2026-05-21 14:02:40] Issue: feat: remove entry page
+[2026-05-21 14:02:41] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99528, Requested 1023. Please try again in 7m56.064s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 14:02:44] Issue: fix(deps): update dependency motion to v12.39.0
+[2026-05-21 14:02:44] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99524, Requested 1556. Please try again in 15m33.12s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 14:02:47] Issue: fix(deps): update dependency date-fns to v4.2.1
+[2026-05-21 14:02:47] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99521, Requested 1642. Please try again in 16m44.832s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 14:02:50] === CYCLE DONE === Next in 1 hour.
+[2026-05-21 15:02:50] === SCAN CYCLE STARTING ===
+[2026-05-21 15:02:50] Language: c
+[2026-05-21 15:02:51] Repo: PipeWire/pipewire | Stars: 2094
+[2026-05-21 15:02:51] Reading: test/test-spa-buffer.c
+[2026-05-21 15:02:55] Saved. Vuln: True
+[2026-05-21 15:02:58] Reading: src/modules/module-avb/aecp-vendor-unique-milan-v12-cmds-resps/cmd-get-milan-info.c
+[2026-05-21 15:02:59] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99997, Requested 2246. Please try again in 32m17.951999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 15:03:02] Reading: src/modules/module-protocol-native/local-socket.c
+[2026-05-21 15:03:02] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99993, Requested 2136. Please try again in 30m39.456s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 15:03:05] Open issues to analyze: 1
+[2026-05-21 15:03:05] Issue: using USB devices with the same name.
+[2026-05-21 15:03:05] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99989, Requested 1046. Please try again in 14m54.24s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-21 15:03:08] === CYCLE DONE === Next in 1 hour.
