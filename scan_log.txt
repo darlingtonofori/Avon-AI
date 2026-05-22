@@ -3521,3 +3521,37 @@
 [2026-05-22 11:10:52] Issue: Add browser focus mode
 [2026-05-22 11:10:52] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99227, Requested 1535. Please try again in 10m58.368s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-22 11:10:55] === CYCLE DONE === Next in 1 hour.
+[2026-05-22 12:10:55] === SCAN CYCLE STARTING ===
+[2026-05-22 12:10:55] Language: php
+[2026-05-22 12:10:56] Repo: elgentos/magento2-regenerate-catalog-urls | Stars: 284
+[2026-05-22 12:10:56] Reading: src/Model/CategoryUrlPathGenerator.php
+[2026-05-22 12:10:59] Saved. Vuln: True
+[2026-05-22 12:11:02] Reading: src/Console/Command/RegenerateProductUrlCommand.php
+[2026-05-22 12:11:03] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99024, Requested 1620. Please try again in 9m16.416s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 12:11:06] Reading: src/Console/Command/RegenerateCategoryUrlCommand.php
+[2026-05-22 12:11:06] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99020, Requested 1881. Please try again in 12m58.464s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 12:11:10] Open issues to analyze: 3
+[2026-05-22 12:11:10] Issue: Issue with regenerate:product:url in verbose
+[2026-05-22 12:12:11] Issue solution saved.
+[2026-05-22 12:12:14] Issue: Weird product urls on 2.4.7-p2
+[2026-05-22 12:12:14] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99997, Requested 1621. Please try again in 23m17.952s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 12:12:17] Issue: [FEATURE REQUEST] Allow ALL storeviews to generate a URL when triggered from product grid.
+[2026-05-22 12:12:17] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99993, Requested 1082. Please try again in 15m28.8s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 12:12:20] === CYCLE DONE === Next in 1 hour.
+[2026-05-22 13:12:20] === SCAN CYCLE STARTING ===
+[2026-05-22 13:12:20] Language: cpp
+[2026-05-22 13:12:20] Repo: openxla/xla | Stars: 4291
+[2026-05-22 13:12:21] Reading: xla/mlir_hlo/stablehlo_ext/transforms/symbolic_shape_optimization.cpp
+[2026-05-22 13:12:25] Saved. Vuln: True
+[2026-05-22 13:12:28] Reading: xla/mlir_hlo/stablehlo_ext/analysis/shape_component_analysis.cpp
+[2026-05-22 13:12:28] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99996, Requested 1989. Please try again in 28m35.04s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 13:12:31] Reading: xla/mlir_hlo/stablehlo_ext/IR/base.cpp
+[2026-05-22 13:12:32] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99993, Requested 1599. Please try again in 22m55.488s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 13:12:35] Open issues to analyze: 3
+[2026-05-22 13:12:35] Issue: Automated Code Change
+[2026-05-22 13:12:35] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99989, Requested 1011. Please try again in 14m24s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 13:12:38] Issue: [XLA:GPU] Add support for experimental tiling infra in TryFindTopKBestTilingsForFusion.
+[2026-05-22 13:12:38] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99985, Requested 1002. Please try again in 14m12.768s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 13:12:41] Issue: [XLA:GPU] Skip NoCudnnVectorizationOnHopperAndBeyond test on GB200 with older cuDNN.
+[2026-05-22 13:12:41] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99982, Requested 1084. Please try again in 15m21.023999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 13:12:44] === CYCLE DONE === Next in 1 hour.
