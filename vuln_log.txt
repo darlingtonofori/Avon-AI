@@ -7724,3 +7724,109 @@ This updated version defines the `MINIMAL_CATEGORY_LEVEL_FOR_PROCESSING` constan
 3. **Environment Awareness**: The code shows awareness of its execution environment, which is crucial for libraries that need to behave differently across environments (e.g., Node.js vs. browser).
 4. **Minimalism**: The code is minimal and directly addresses its purpose without unnecessary complexity, making it easy to understand and maintain.
 
+[2026-05-22 16:13:37] VULNERABILITY:
+### Deep Analysis of `apps/core/character/offline/index.js`
+
+#### 1. BUGS: Logical errors, edge cases, runtime issues
+
+*   The `characterSubstitute` object contains arrays with inconsistent structures. For example, `"jd_sb_sp_zhugeliang"` has an empty array as its second element, while `"zc26_sp_xushi"` has a non-empty array with a string that seems to be a condition (`"die:xushi"`). This inconsistency might lead to errors when processing these substitutions.
+*   The `connectBanned` array is not validated. If it contains invalid character names, it may cause issues when trying to connect or ban characters.
+*   The `characterSort` function is not defined in this file, but it's being used in the `characterSort` object. If this function is not properly defined in the imported `./sort.js` file, it will throw a runtime error.
+*   There is no error handling for the `game.import` method. If the import fails for any reason, it may cause unexpected behavior.
+*   The `character` object is being spread from the `characters` import, but it's not clear if this import is guaranteed to have the same structure. If the structure changes, it could lead to unexpected behavior.
+
+#### 2. SECURITY VULNS: Injection, auth bypass, insecure handling, XSS, CSRF, buffer overflow
+
+*   The `characterSubstitute` object contains user-defined data, which could potentially lead to injection vulnerabilities if not properly sanitized.
+*   The `connectBanned` array is not validated, which could lead to unauthorized access if an attacker can manipulate the character names.
+*   The `game.import` method is not validated, which could lead to unauthorized access or code execution if an attacker can manipulate the import process.
+*   There is no clear authentication mechanism in place, which could lead to unauthorized access to the game's functionality.
+
+#### 3. PERFORMANCE: Bottlenecks, inefficient patterns
+
+*   The `character` object is being spread from the `characters` import, which could lead to performance issues if the `characters` object is large.
+*   The `characterSubstitute` object is using nested arrays, which could lead to performance issues if the object is large.
+*   The `game.import` method is not optimized for performance, as it's using a callback function instead of a promise or async/await.
+
+#### 4. CODE QUALITY: Anti-patterns, bad practices
+
+*   The file is importing a large number of modules, which could lead to namespace pollution and make it harder to maintain the code.
+*   The `characterSubstitute` object is using magic strings (`"die:xushi"`) instead of named constants, which could make the code harder to understand and maintain.
+*   The `connectBanned` array is using hardcoded values instead of configurable values, which could make it harder to maintain the code.
+*   There is no clear separation of concerns, as the file is handling both game logic and data import.
+
+#### 5. KEY LEARNINGS: Patterns worth remembering for future coding
+
+*   **Use named constants instead of magic strings**: Instead of using magic strings like `"die:xushi"`, define named constants to make the code more readable and maintainable.
+*   **Use configurable values instead of hardcoded values**: Instead of hardcoding values like `connectBanned`, use configurable values to make the code more flexible and maintainable.
+*   **Use async/await instead of callbacks**: Instead of using callbacks like `game.import`, use async/await to make the code more readable and maintainable.
+*   **Use separate files for separate concerns**: Instead of handling both game logic and data import in a single file, separate the concerns into different files to make the code more maintainable.
+
+Example of improved code:
+```javascript
+import { lib, game, ui, get, ai, _status } from "noname";
+import characters from "./character.js";
+import { characterSort, characterSortTranslate } from "./sort.js";
+
+const SUBSTITUTE_CONDITIONS = {
+  DIE: "die",
+};
+
+const connectBanned = [
+  // Use named constants instead of hardcoded values
+  "zhangliang",
+  "yj_tianchuan",
+];
+
+game.import("character", async () => {
+  return {
+    name: "offline",
+    connect: true,
+    connectBanned,
+    character: { ...characters },
+    characterSort: {
+      offline: characterSort,
+    },
+    // ...
+  };
+});
+```
+Note: This is just a sample improvement and may not cover all the issues mentioned in the analysis.
+
+[2026-05-22 17:14:01] VULNERABILITY:
+### Deep Analysis of commithook.go
+
+#### BUGS: Logical errors, edge cases, runtime issues
+
+1. **Missing error handling**: In the `newCommitHook` function, the `ret` variable is not initialized properly before being returned. Specifically, the `nextPushAttempt`, `lastSuccess`, and `nextHeadIncomingTime` fields are not initialized. This could lead to unexpected behavior or runtime errors when these fields are accessed.
+2. **Atomic variable usage**: The `lgr` field is an atomic variable, but it is not being updated atomically. The `lgr` field is being updated directly using the `Value` method, which can lead to data races. Instead, the `Store` method should be used to update the atomic variable.
+3. **Deadlock potential**: The `mu` mutex is used to protect access to the `progressNotifier` field, but it is also used to protect access to the `wg` wait group. If the `wg` wait group is used to wait for a goroutine that is holding the `mu` mutex, a deadlock can occur.
+4. **Nil pointer dereference**: In the `commithook` struct, the `destDBF` field is a function that returns a `*doltdb.DoltDB` and an error. If the `destDBF` function returns a nil pointer, and the `destDB` field is accessed without checking for nil, a runtime error will occur.
+5. **Incorrect usage of `sync/atomic`**: The `shutdown` field is an atomic bool, but it is not being used correctly. The `shutdown` field is being accessed and updated directly, without using the `CompareAndSwap` or `Store` methods. This can lead to data races and incorrect behavior.
+
+#### SECURITY VULNS: Injection, auth bypass, insecure handling, XSS, CSRF, buffer overflow
+
+1. **Unvalidated input**: The `remotename`, `remoteurl`, and `dbname` fields are not validated or sanitized, which can lead to injection attacks or other security vulnerabilities.
+2. **Insecure logging**: The `rootLgr` field is a logrus logger, but it is not configured to handle sensitive information securely. Log messages may contain sensitive information, such as database credentials or encryption keys.
+3. **Missing authentication**: The `commithook` struct does not appear to have any authentication or authorization mechanisms in place. This can allow unauthorized access to the database or other sensitive resources.
+
+#### PERFORMANCE: Bottlenecks, inefficient patterns
+
+1. **Synchronized access**: The `mu` mutex is used to protect access to multiple fields, which can lead to performance bottlenecks. Consider using separate mutexes or other synchronization primitives to reduce contention.
+2. **Blocking calls**: The `waitNotify` and `cancelReplicate` fields are functions that can block the calling goroutine. Consider using non-blocking calls or asynchronous programming patterns to improve performance.
+3. **Frequent logging**: The `rootLgr` field is used to log messages frequently, which can lead to performance issues. Consider using a logging mechanism that can handle high volumes of log messages efficiently.
+
+#### CODE QUALITY: Anti-patterns, bad practices
+
+1. **God object**: The `commithook` struct appears to have a large number of responsibilities, which can make it difficult to understand and maintain. Consider breaking the struct into smaller, more focused components.
+2. **Complex initialization**: The `newCommitHook` function has a large number of parameters, which can make it difficult to understand and use. Consider using a builder pattern or other construction mechanism to simplify initialization.
+3. **Magic strings**: The `logFieldThread` and `logFieldRole` constants are magic strings that are used throughout the code. Consider defining these strings as constants or enumerations to improve readability and maintainability.
+
+#### KEY LEARNINGS: Patterns worth remembering for future coding
+
+1. **Use atomic variables correctly**: When using atomic variables, make sure to use the `Store` and `Load` methods correctly to avoid data races.
+2. **Avoid synchronized access**: When possible, avoid using synchronized access mechanisms like mutexes, and instead use other synchronization primitives like channels or atomic variables.
+3. **Use logging mechanisms securely**: When logging sensitive information, make sure to use secure logging mechanisms that can handle sensitive information correctly.
+4. **Validate and sanitize input**: Always validate and sanitize input to prevent injection attacks or other security vulnerabilities.
+5. **Use asynchronous programming patterns**: When possible, use asynchronous programming patterns to improve performance and reduce contention.
+
