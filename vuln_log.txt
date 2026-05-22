@@ -7091,3 +7091,114 @@ class WorkflowHandle(Generic[OutputT]):
                 {
                     "t": OperationTokenType.WORK
 
+[2026-05-22 00:06:27] VULNERABILITY:
+### Deep Analysis of `TaskCompletionStatus.swift`
+
+#### 1. BUGS: Logical errors, edge cases, runtime issues
+
+*   The provided code does not contain any obvious logical errors or edge cases that could cause runtime issues. However, the `displayTitle` property relies on the `L10n` class for localized strings. If `L10n` is not properly configured or if the required localized strings are missing, it could lead to runtime errors or unexpected behavior.
+*   The code assumes that `L10n` is a singleton or a static class with static properties. If `L10n` is an instance class and its instances are not properly managed, it could lead to issues with localization.
+*   There are no null or optional checks for the `L10n` class or its properties. If any of these are null or optional, it could lead to runtime errors.
+
+#### 2. SECURITY VULNS: Injection, auth bypass, insecure handling, XSS, CSRF, buffer overflow
+
+*   The provided code does not contain any obvious security vulnerabilities. However, the use of `L10n` for localization could potentially introduce security issues if the localized strings are not properly sanitized.
+*   If the `L10n` class loads localized strings from external sources, such as files or databases, it could introduce security risks if these sources are not properly validated and sanitized.
+*   The code does not appear to handle any user input or external data, which reduces the risk of injection attacks.
+
+#### 3. PERFORMANCE: Bottlenecks, inefficient patterns
+
+*   The provided code does not contain any obvious performance bottlenecks. The `displayTitle` property is a simple switch statement that returns a localized string, which should be relatively fast.
+*   The use of a switch statement with enum cases is efficient, as it avoids the need for multiple if-else statements or dictionary lookups.
+*   The code does not appear to perform any network requests or database queries, which reduces the risk of performance issues related to external dependencies.
+
+#### 4. CODE QUALITY: Anti-patterns, bad practices
+
+*   The provided code follows good coding practices, such as using a switch statement with enum cases and using localization for display titles.
+*   The code is concise and easy to read, with clear and descriptive variable names.
+*   However, the code could benefit from additional documentation, such as comments or docstrings, to explain the purpose of the `displayTitle` property and the `L10n` class.
+*   The code uses a custom `L10n` class for localization, which may not be immediately familiar to all developers. Consider using a standard localization approach, such as `NSLocalizedString`, to improve code readability and maintainability.
+
+#### 5. KEY LEARNINGS: Patterns worth remembering for future coding
+
+*   **Enum-based switch statements**: The code demonstrates the use of enum-based switch statements, which can improve code readability and maintainability. This pattern can be applied to other situations where a value needs to be mapped to a specific action or value.
+*   **Localization**: The code shows how to use localization to provide display titles for different task completion statuses. This pattern can be applied to other situations where localized strings are needed.
+*   **Extensions**: The code demonstrates the use of extensions to add functionality to existing types. This pattern can be applied to other situations where additional functionality needs to be added to a type without modifying its original implementation.
+*   **Clear and descriptive variable names**: The code uses clear and descriptive variable names, such as `displayTitle`, to improve code readability. This pattern can be applied to other situations where variable names need to be chosen.
+
+Example of a potential improvement:
+```swift
+// Add documentation to explain the purpose of the displayTitle property
+/// Returns a localized display title for the task completion status.
+var displayTitle: String {
+    switch self {
+    case .completed:
+        L10n.taskCompleted
+    case .failed:
+        L10n.taskFailed
+    case .cancelled:
+        L10n.taskCancelled
+    case .aborted:
+        L10n.taskAborted
+    }
+}
+```
+
+[2026-05-22 01:06:51] VULNERABILITY:
+**Deep Analysis of `agentApi.test.ts`**
+
+### 1. BUGS: Logical errors, edge cases, runtime issues
+
+*   **Potential Issue:** In the line `const body = JSON.parse(String((init as RequestInit).body))`, if the body is not a valid JSON string, it will throw a `SyntaxError`. To handle this, consider adding a try-catch block to handle potential parsing errors.
+
+*   **Edge Case:** The `callAgentResponsesApi` function does not seem to handle cases where the `streamImages` or `streamPartialImages` settings are invalid (e.g., not a boolean or not a positive integer). It would be a good idea to add input validation for these settings.
+
+*   **Potential Issue:** In the line `const streamBody = [...].join('\n')`, if the `streamBody` array contains a very large number of elements, the `join` method could potentially exceed the maximum allowed string length in JavaScript. However, this is unlikely given the context of the code.
+
+### 2. SECURITY VULNS: Injection, auth bypass, insecure handling, XSS, CSRF, buffer overflow
+
+*   **Security Vulnerability:** The `fetchMock` is mocking the `fetch` function to return a `Response` object with a hardcoded `body`. However, in a real-world scenario, this `body` could potentially be user-supplied, leading to a potential XSS vulnerability. To mitigate this, ensure that any user-supplied data is properly sanitized before being used to construct a `Response` object.
+
+*   **Security Vulnerability:** The `apiKey` is passed as a plain string in the `createDefaultOpenAIProfile` function. If this apiKey is not properly secured, it could potentially be exposed to unauthorized parties. Consider storing the apiKey securely, such as in an environment variable.
+
+*   **Security Vulnerability:** The `body` of the `fetch` request is not validated or sanitized before being used. This could potentially lead to a security vulnerability if the `body` is constructed from user-supplied data. Ensure that any user-supplied data is properly validated and sanitized before being used to construct the `body`.
+
+### 3. PERFORMANCE: Bottlenecks, inefficient patterns
+
+*   **Performance Bottleneck:** The `fetchMock` is mocking the `fetch` function to return a `Response` object. However, in a real-world scenario, this `fetch` call could potentially be a slow operation, leading to performance issues. Consider adding a timeout to the `fetch` call to handle cases where the request takes too long to complete.
+
+*   **Inefficient Pattern:** The `callAgentResponsesApi` function seems to be using a callback (`onTextDelta`) to handle text delta updates. While this is not inherently inefficient, it could potentially lead to performance issues if the callback is called excessively. Consider using a more efficient pattern, such as using a `Promise` or an `Observable` to handle text delta updates.
+
+### 4. CODE QUALITY: Anti-patterns, bad practices
+
+*   **Anti-Pattern:** The `fetchMock` is mocking the `fetch` function, but it's not clear why this is being done. If this is for testing purposes, consider using a more explicit testing library or framework to avoid confusion. If this is for production code, consider using a more explicit way to handle fetch requests, such as using a separate module or function.
+
+*   **Bad Practice:** The `body` of the `fetch` request is being constructed manually using `JSON.stringify`. While this is not inherently bad, it could potentially lead to issues if the `body` is constructed incorrectly. Consider using a more explicit way to construct the `body`, such as using a library or framework that provides a more convenient API for constructing JSON requests.
+
+*   **Bad Practice:** The `callAgentResponsesApi` function seems to be handling multiple concerns (e.g., fetching data, parsing responses, handling text deltas). Consider breaking this down into separate functions or modules to improve code organization and reusability.
+
+### 5. KEY LEARNINGS: Patterns worth remembering for future coding
+
+*   **Pattern:** Using `try-catch` blocks to handle potential parsing errors when working with JSON data.
+
+*   **Pattern:** Validating and sanitizing user-supplied data to prevent security vulnerabilities.
+
+*   **Pattern:** Using explicit libraries or frameworks to handle tasks such as constructing JSON requests or parsing responses.
+
+*   **Pattern:** Breaking down complex functions or modules into separate concerns to improve code organization and reusability.
+
+*   **Pattern:** Using `Promise` or `Observable` to handle asynchronous operations, such as fetching data or handling text delta updates.
+
+Here is a sample refactored version of the `callAgentResponsesApi` function that addresses some of the issues mentioned above:
+
+```typescript
+async function callAgentResponsesApi({
+  settings,
+  profile,
+  params,
+  input,
+  onTextDelta,
+  maskDataUrl,
+}: {
+
+
