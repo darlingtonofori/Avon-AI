@@ -3493,3 +3493,31 @@
 [2026-05-22 09:10:13] Issue: Documentation for Grafana Alloy Helm Chart set up doesn't mention importance of `hostNetwork: true` for inter-zone data transfer metrics
 [2026-05-22 09:10:13] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99981, Requested 1231. Please try again in 17m27.168s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-22 09:10:16] === CYCLE DONE === Next in 1 hour.
+[2026-05-22 10:10:16] === SCAN CYCLE STARTING ===
+[2026-05-22 10:10:16] Language: javascript
+[2026-05-22 10:10:17] Repo: cdk8s-team/cdk8s | Stars: 4813
+[2026-05-22 10:10:18] Open issues to analyze: 3
+[2026-05-22 10:10:18] Issue: Contribai/improve/quality/gracefully handle missing schema definit
+[2026-05-22 10:10:21] Issue solution saved.
+[2026-05-22 10:10:24] Issue: fix: resolve #2634 — Import of Bitnami Redis Helm Chart failed
+[2026-05-22 10:10:24] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98975, Requested 1128. Please try again in 1m28.992s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 10:10:27] Issue: fix: resolve #2657 — Cannot specify generateName as part of the ApiObjectMetadata for imported CRD
+[2026-05-22 10:10:27] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98971, Requested 1314. Please try again in 4m6.24s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 10:10:30] === CYCLE DONE === Next in 1 hour.
+[2026-05-22 11:10:30] === SCAN CYCLE STARTING ===
+[2026-05-22 11:10:30] Language: swift
+[2026-05-22 11:10:32] Repo: manaflow-ai/cmux | Stars: 17681
+[2026-05-22 11:10:32] Reading: Packages/CMUXAgentLaunch/Sources/CMUXAgentLaunch/AgentLaunchSanitizer.swift
+[2026-05-22 11:10:35] Saved. Vuln: True
+[2026-05-22 11:10:38] Reading: Sources/DockPanelView.swift
+[2026-05-22 11:10:39] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99242, Requested 1933. Please try again in 16m55.2s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 11:10:42] Reading: CLI/CMUXCLI+DocsSettings.swift
+[2026-05-22 11:10:42] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99238, Requested 1924. Please try again in 16m43.968s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 11:10:46] Open issues to analyze: 3
+[2026-05-22 11:10:46] Issue: Add CI memory leak guard
+[2026-05-22 11:10:46] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99234, Requested 1515. Please try again in 10m47.136s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 11:10:49] Issue: Simplify Grok and Antigravity hook dispatch
+[2026-05-22 11:10:49] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99231, Requested 1552. Please try again in 11m16.512s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 11:10:52] Issue: Add browser focus mode
+[2026-05-22 11:10:52] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99227, Requested 1535. Please try again in 10m58.368s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 11:10:55] === CYCLE DONE === Next in 1 hour.
