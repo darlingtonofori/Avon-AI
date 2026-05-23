@@ -3703,3 +3703,35 @@
 [2026-05-22 22:00:47] Issue: DEV++ pricing different in https://dev.to/free-postgres-database-tier and https://dev.to/++
 [2026-05-22 22:00:48] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99982, Requested 1487. Please try again in 21m9.216s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
 [2026-05-22 22:00:51] === CYCLE DONE === Next in 1 hour.
+[2026-05-22 23:00:51] === SCAN CYCLE STARTING ===
+[2026-05-22 23:00:51] Language: java
+[2026-05-22 23:00:51] Repo: AndriyKalashnykov/spring-microservices-k8s | Stars: 142
+[2026-05-22 23:00:52] Reading: organization-service/src/test/java/vmware/services/organization/OrganizationWithEmployeesIT.java
+[2026-05-22 23:00:55] Saved. Vuln: True
+[2026-05-22 23:00:58] Reading: department-service/src/main/java/vmware/services/department/controller/DepartmentController.java
+[2026-05-22 23:00:58] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98692, Requested 1732. Please try again in 6m6.336s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 23:01:01] Reading: organization-service/src/test/java/vmware/services/organization/OrganizationDeepFanOutIT.java
+[2026-05-22 23:01:01] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98688, Requested 1863. Please try again in 7m56.064s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 23:01:05] Open issues to analyze: 2
+[2026-05-22 23:01:05] Issue: Dependency Dashboard
+[2026-05-22 23:01:05] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98684, Requested 1815. Please try again in 7m11.135999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-22 23:01:08] Issue: Ingress is not able to map the correct backend service.
+[2026-05-22 23:01:10] Issue solution saved.
+[2026-05-22 23:01:13] === CYCLE DONE === Next in 1 hour.
+[2026-05-23 00:01:13] === SCAN CYCLE STARTING ===
+[2026-05-23 00:01:13] Language: php
+[2026-05-23 00:01:14] Repo: markjaquith/WordPress | Stars: 227
+[2026-05-23 00:01:15] Reading: wp-includes/IXR/class-IXR-request.php
+[2026-05-23 00:01:19] Saved. Vuln: True
+[2026-05-23 00:01:22] Reading: wp-includes/bookmark-template.php
+[2026-05-23 00:01:22] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98418, Requested 2043. Please try again in 6m38.304s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-23 00:01:25] Reading: wp-includes/blocks/site-logo.php
+[2026-05-23 00:01:26] Analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98414, Requested 2157. Please try again in 8m13.344s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-23 00:01:29] Open issues to analyze: 3
+[2026-05-23 00:01:29] Issue: Bump webpack from 5.75.0 to 5.76.1 in /wp-content/themes/twentytwenty
+[2026-05-23 00:01:29] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98410, Requested 1697. Please try again in 1m32.448s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-23 00:01:32] Issue: Bump minimatch from 3.0.4 to 3.0.8 in /wp-content/themes/twentynineteen
+[2026-05-23 00:01:32] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98406, Requested 1817. Please try again in 3m12.672s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-23 00:01:35] Issue: Bump json5 from 1.0.1 to 1.0.2 in /wp-content/themes/twentytwenty
+[2026-05-23 00:01:35] Issue analysis error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01krmyj631f1f9b4xrbzpygher` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 98403, Requested 1700. Please try again in 1m28.992s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+[2026-05-23 00:01:38] === CYCLE DONE === Next in 1 hour.
